@@ -21,6 +21,7 @@ public class ImageViewer extends JFrame {
     private void setup(){
         this.getContentPane().setLayout(new FlowLayout());
         this.getContentPane().add(lab);
+        lab.setVisible(true);
         this.pack();
     }
 

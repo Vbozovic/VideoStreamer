@@ -11,27 +11,26 @@ import java.util.concurrent.Executors;
 
 public class Server implements Runnable {
 
-    private int port;
+    public int port;
     private String host;
     private ExecutorService clientProcessingPool;
 
     public Server(int port, String host) {
         this.port = port;
         this.host = host;
-        this.clientProcessingPool = Executors.newFixedThreadPool(10);
+        this.clientProcessingPool = Executors.newFixedThreadPool(20);
     }
 
-    public void establish(String ip){
+    public void establish(String ip, int port) {
 
         try {
-            Socket sock = new Socket(ip,this.port);
-
+            Socket sock = new Socket(ip, port);
             SenderTask st = new SenderTask(sock);
-            ReciverTask rt = new ReciverTask(sock,this);
+            ReciverTask rt = new ReciverTask(sock, this);
 
             synchronized (clientProcessingPool) {
-                clientProcessingPool.submit(st);
-                clientProcessingPool.submit(rt);
+                clientProcessingPool.execute(st);
+                clientProcessingPool.execute(rt);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -45,8 +44,8 @@ public class Server implements Runnable {
 
             while (true) {
                 Socket clientSocket = ssocket.accept();
-                clientProcessingPool.submit(new ReciverTask(clientSocket, this));
-                clientProcessingPool.submit(new SenderTask(clientSocket));
+                clientProcessingPool.execute(new ReciverTask(clientSocket, this));
+                clientProcessingPool.execute(new SenderTask(clientSocket));
             }
 
         } catch (IOException e) {

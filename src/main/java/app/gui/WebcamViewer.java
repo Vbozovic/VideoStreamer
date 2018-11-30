@@ -1,4 +1,4 @@
-package app;
+package app.gui;
 
 import java.awt.BorderLayout;
 import java.awt.event.ItemEvent;

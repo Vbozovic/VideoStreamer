@@ -1,13 +1,16 @@
 package app.threads;
 
+import app.gui.Displayer;
 import app.server.Server;
 import com.github.sarxos.webcam.Webcam;
 
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-public class SenderTask implements Runnable {
+public class SenderTask implements Runnable{
 
     private Socket client;
     private boolean running;
@@ -15,7 +18,7 @@ public class SenderTask implements Runnable {
 
     public SenderTask(Socket client) {
         this.client = client;
-        running = false;
+        running = true;
     }
 
     public void run() {
@@ -26,8 +29,20 @@ public class SenderTask implements Runnable {
             cam.open();
             ObjectOutputStream out = new ObjectOutputStream(client.getOutputStream());
 
+            BufferedImage img = cam.getImage();
+
+
+            out.writeInt(img.getHeight()); //saljemo visinu
+            out.writeInt(img.getWidth()); //saljemo sirinu
+
+            System.out.println(img.getHeight()+" "+img.getWidth());
+
             while(running){
-                out.writeObject(cam.getImage());
+                System.out.println("Send");
+                byte[] pixels = ((DataBufferByte) img.getRaster().getDataBuffer()).getData();
+                out.write(pixels);
+                out.flush();
+                img = cam.getImage();
             }
 
             out.close();

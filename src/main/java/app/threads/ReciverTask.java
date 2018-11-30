@@ -1,16 +1,20 @@
 package app.threads;
 
+import app.gui.Displayer;
 import app.gui.ImageViewer;
 import app.server.Server;
 import com.github.sarxos.webcam.WebcamPanel;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.image.BufferedImage;
+import java.awt.*;
+import java.awt.image.*;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
 
-public class ReciverTask implements Runnable {
+public class ReciverTask implements Runnable{
 
     private Socket client;
     private boolean runnig;
@@ -18,7 +22,7 @@ public class ReciverTask implements Runnable {
 
     public ReciverTask(Socket client,Server server) {
         this.client = client;
-        runnig = false;
+        runnig = true;
         this.server = server;
     }
 
@@ -32,19 +36,33 @@ public class ReciverTask implements Runnable {
 
 
         try {
-            ObjectInputStream in = (ObjectInputStream) client.getInputStream();
 
+            int colorModel;
+
+            ObjectInputStream in = new ObjectInputStream(client.getInputStream());
+
+            int width,height;
+
+            height = in.readInt();
+            width = in.readInt();
+
+            byte[] pixels = new byte[height*width*3];// 3 = broj bajtova po pikselu
             while (runnig){
-                iv.displayImage((BufferedImage)in.readObject());
+                in.readFully(pixels);
+                iv.displayImage(createImageFromBytes(pixels,width,height));
             }
 
             in.close();
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         }
 
+    }
+
+    private BufferedImage createImageFromBytes(byte[] pixels,int width,int height) {
+        BufferedImage img = new BufferedImage(width,height,BufferedImage.TYPE_3BYTE_BGR);
+        img.setData(Raster.createRaster(img.getSampleModel(), new DataBufferByte(pixels, pixels.length), new Point() ) );
+        return img;
     }
 
     public void stop(){
