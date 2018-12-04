@@ -4,20 +4,25 @@ import app.gui.Displayer;
 import app.server.Server;
 import com.github.sarxos.webcam.Webcam;
 
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-public class SenderTask implements Runnable{
+public class VideoSenderTask implements Runnable{
 
     private Socket client;
     private boolean running;
     private Server server;
+    private ObjectOutputStream out;
 
-    public SenderTask(Socket client) {
-        this.client = client;
+
+    public VideoSenderTask(Server server, ObjectOutputStream out) {
+        this.server = server;
+        this.out = out;
         running = true;
     }
 
@@ -27,7 +32,7 @@ public class SenderTask implements Runnable{
         try {
             Webcam cam = Webcam.getDefault();
             cam.open();
-            ObjectOutputStream out = new ObjectOutputStream(client.getOutputStream());
+            //ObjectOutputStream out = new ObjectOutputStream(client.getOutputStream());
 
             BufferedImage img = cam.getImage();
 
@@ -40,8 +45,10 @@ public class SenderTask implements Runnable{
             while(running){
                 System.out.println("Send");
                 byte[] pixels = ((DataBufferByte) img.getRaster().getDataBuffer()).getData();
-                out.write(pixels);
-                out.flush();
+                synchronized (out){
+                    out.write(pixels);
+                    out.flush();
+                }
                 img = cam.getImage();
             }
 
@@ -59,5 +66,6 @@ public class SenderTask implements Runnable{
     public void stop(){
         this.running = false;
     }
+
 
 }

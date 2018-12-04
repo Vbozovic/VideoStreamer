@@ -1,9 +1,12 @@
 package app.server;
 
-import app.threads.ReciverTask;
-import app.threads.SenderTask;
+import app.threads.VideoReciverTask;
+import app.threads.VideoSenderTask;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
@@ -25,8 +28,12 @@ public class Server implements Runnable {
 
         try {
             Socket sock = new Socket(ip, port);
-            SenderTask st = new SenderTask(sock);
-            ReciverTask rt = new ReciverTask(sock, this);
+
+            ObjectOutputStream out = new ObjectOutputStream(sock.getOutputStream());
+            ObjectInputStream in = new ObjectInputStream(sock.getInputStream());
+
+            VideoSenderTask st = new VideoSenderTask(this,out);
+            VideoReciverTask rt = new VideoReciverTask(this,in);
 
             synchronized (clientProcessingPool) {
                 clientProcessingPool.execute(st);
@@ -44,8 +51,12 @@ public class Server implements Runnable {
 
             while (true) {
                 Socket clientSocket = ssocket.accept();
-                clientProcessingPool.execute(new ReciverTask(clientSocket, this));
-                clientProcessingPool.execute(new SenderTask(clientSocket));
+
+                ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
+                ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream());
+
+                clientProcessingPool.execute(new VideoReciverTask(this,in));
+                clientProcessingPool.execute(new VideoSenderTask(this,out));
             }
 
         } catch (IOException e) {

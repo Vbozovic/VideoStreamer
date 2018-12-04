@@ -8,22 +8,26 @@ import com.github.sarxos.webcam.WebcamPanel;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.awt.image.*;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
 
-public class ReciverTask implements Runnable{
+public class VideoReciverTask implements Runnable, WindowListener {
 
-    private Socket client;
+
     private boolean runnig;
     private Server server;
+    private ObjectInputStream in;
 
-    public ReciverTask(Socket client,Server server) {
-        this.client = client;
-        runnig = true;
+
+    public VideoReciverTask(Server server, ObjectInputStream in) {
         this.server = server;
+        this.in = in;
+        runnig = true;
     }
 
     public void run() {
@@ -32,15 +36,13 @@ public class ReciverTask implements Runnable{
         ImageViewer iv = new ImageViewer();
         iv.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         iv.setSize(660,340);
+        iv.addWindowListener(this);
         iv.setVisible(true);
 
 
         try {
 
             int colorModel;
-
-            ObjectInputStream in = new ObjectInputStream(client.getInputStream());
-
             int width,height;
 
             height = in.readInt();
@@ -48,7 +50,10 @@ public class ReciverTask implements Runnable{
 
             byte[] pixels = new byte[height*width*3];// 3 = broj bajtova po pikselu
             while (runnig){
-                in.readFully(pixels);
+                System.out.println("Read");
+                synchronized (in){
+                    in.readFully(pixels);
+                }
                 iv.displayImage(createImageFromBytes(pixels,width,height));
             }
 
@@ -69,4 +74,32 @@ public class ReciverTask implements Runnable{
         this.runnig = false;
     }
 
+    public void windowOpened(WindowEvent e) {
+
+    }
+
+    public void windowClosing(WindowEvent e) {
+
+    }
+
+    public void windowClosed(WindowEvent e) {
+        System.out.println("Closed");
+        this.stop();
+    }
+
+    public void windowIconified(WindowEvent e) {
+
+    }
+
+    public void windowDeiconified(WindowEvent e) {
+
+    }
+
+    public void windowActivated(WindowEvent e) {
+
+    }
+
+    public void windowDeactivated(WindowEvent e) {
+
+    }
 }
