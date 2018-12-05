@@ -3,6 +3,10 @@ package app.server;
 import app.threads.VideoReciverTask;
 import app.threads.VideoSenderTask;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
@@ -12,16 +16,40 @@ import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class Server implements Runnable {
+public class Server extends JFrame implements Runnable, ActionListener {
 
     public int port;
     private String host;
     private ExecutorService clientProcessingPool;
 
+    private JTextField input;
+
     public Server(int port, String host) {
         this.port = port;
         this.host = host;
         this.clientProcessingPool = Executors.newFixedThreadPool(20);
+        setup();
+    }
+
+    private void setup(){
+        input = new JTextField(15);
+        this.setSize(300,300);
+
+        JPanel pan = new JPanel();
+        JLabel lab = new JLabel("IP:");
+        JButton ok = new JButton("Connect");
+
+        pan.setLayout(new FlowLayout());
+        pan.add(lab);
+        pan.add(input);
+        pan.add(ok);
+
+        ok.addActionListener(this);
+
+        this.add(pan);
+
+        this.setVisible(true);
+        this.pack();
     }
 
     public void establish(String ip, int port) {
@@ -63,6 +91,10 @@ public class Server implements Runnable {
             e.printStackTrace();
         }
 
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        establish(input.getText(),this.port);
     }
 }
 

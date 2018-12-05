@@ -2,16 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e2a24818-6d83-495e-a736-829fccf9e36a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/app/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/app/server/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/server/Server.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/app/threads/ReciverTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/threads/VideoReciverTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/app/threads/SenderTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/threads/VideoSenderTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/app/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/app/server/Server.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/server/Server.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/app/threads/ReciverTask.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/app/threads/SenderTask.class" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -51,13 +42,13 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="5533" />
+          <entry key="java" value="5878" />
           <entry key="xml" value="11" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="5533" />
+          <entry key="JAVA" value="5878" />
           <entry key="XML" value="11" />
         </counts>
       </usages-collector>
@@ -84,11 +75,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/app/threads/AudioSender.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="393">
-              <caret line="64" column="48" selection-start-line="64" selection-start-column="48" selection-end-line="64" selection-end-column="48" />
+            <state relative-caret-position="257">
+              <caret line="56" column="18" selection-start-line="56" selection-start-column="18" selection-end-line="56" selection-end-column="18" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#497#498#0" expanded="true" />
@@ -110,7 +101,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/java/app/threads/AudioSenderTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
+            <state relative-caret-position="221">
               <caret line="18" column="32" selection-start-line="18" selection-start-column="32" selection-end-line="18" selection-end-column="32" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -128,13 +119,15 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/app/server/Server.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="190">
-              <caret line="26" column="16" selection-start-line="26" selection-start-column="16" selection-end-line="26" selection-end-column="16" />
+            <state relative-caret-position="463">
+              <caret line="48" column="22" selection-start-line="48" selection-start-column="22" selection-end-line="48" selection-end-column="22" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#2641#2642#0" expanded="true" />
+                <element signature="e#2668#2669#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -143,7 +136,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/app/threads/VideoReciverTask.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="163">
+            <state relative-caret-position="442">
               <caret line="40" selection-start-line="40" selection-end-line="40" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -162,12 +155,10 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/app/threads/VideoSenderTask.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
+            <state relative-caret-position="544">
               <caret line="42" column="54" selection-start-line="42" selection-start-column="54" selection-end-line="42" selection-end-column="54" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#1621#1622#0" expanded="true" />
-                <element signature="e#1657#1658#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -226,13 +217,13 @@
         <option value="$PROJECT_DIR$/src/main/java/app/threads/SenderTask.java" />
         <option value="$PROJECT_DIR$/src/main/java/app/threads/ReciverTask.java" />
         <option value="$PROJECT_DIR$/src/main/java/app/threads/AudioReciverTask.java" />
-        <option value="$PROJECT_DIR$/src/main/java/app/server/Server.java" />
         <option value="$PROJECT_DIR$/src/main/java/app/threads/VideoSenderTask.java" />
         <option value="$PROJECT_DIR$/src/main/java/app/threads/VideoReciverTask.java" />
         <option value="$PROJECT_DIR$/src/main/java/app/Main.java" />
         <option value="$PROJECT_DIR$/src/main/java/app/threads/AudioReciver.java" />
         <option value="$PROJECT_DIR$/src/test/java/app/threads/AudioSenderTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/app/threads/AudioSender.java" />
+        <option value="$PROJECT_DIR$/src/main/java/app/server/Server.java" />
       </list>
     </option>
   </component>
@@ -262,7 +253,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
@@ -349,6 +339,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -386,7 +377,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.AudioSenderTest.microphoneTest">
+  <component name="RunManager" selected="Application.FullServer">
     <configuration name="FullServer" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="app.Main" />
       <module name="VideoStreamer" />
@@ -481,9 +472,6 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="AudioSenderTest_availableTest - 2018.12.04 at 19h 39m 09s.xml">
-      <configuration name="AudioSenderTest.availableTest" configurationId="JUnit" />
-    </history-entry>
     <history-entry file="AudioSenderTest_availableTest - 2018.12.04 at 19h 41m 24s.xml">
       <configuration name="AudioSenderTest.availableTest" configurationId="JUnit" />
     </history-entry>
@@ -511,16 +499,19 @@
     <history-entry file="AudioSenderTest_microphoneTest - 2018.12.04 at 20h 05m 06s.xml">
       <configuration name="AudioSenderTest.microphoneTest" configurationId="JUnit" />
     </history-entry>
+    <history-entry file="AudioSenderTest_microphoneTest - 2018.12.05 at 21h 34m 24s.xml">
+      <configuration name="AudioSenderTest.microphoneTest" configurationId="JUnit" />
+    </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="27017000" />
+    <option name="totallyTimeSpent" value="27425000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="953" y="0" width="974" height="1047" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.60545456" visible="true" weight="0.3632385" />
-      <window_info id="Structure" order="1" sideWeight="0.39454547" side_tool="true" visible="true" weight="0.3632385" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.6035889" visible="true" weight="0.37089714" />
+      <window_info id="Structure" order="1" sideWeight="0.3964111" side_tool="true" visible="true" weight="0.37089714" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
       <window_info id="UI Designer" order="4" />
@@ -528,8 +519,8 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.32932165" />
-      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.39824945" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32932165" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.39824945" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -636,19 +627,17 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/app/threads/VideoSenderTask.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
+        <state relative-caret-position="544">
           <caret line="42" column="54" selection-start-line="42" selection-start-column="54" selection-end-line="42" selection-end-column="54" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1621#1622#0" expanded="true" />
-            <element signature="e#1657#1658#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/app/threads/VideoReciverTask.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="163">
+        <state relative-caret-position="442">
           <caret line="40" selection-start-line="40" selection-end-line="40" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -665,10 +654,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/app/server/Server.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="26" column="16" selection-start-line="26" selection-start-column="16" selection-end-line="26" selection-end-column="16" />
+        <state relative-caret-position="463">
+          <caret line="48" column="22" selection-start-line="48" selection-start-column="22" selection-end-line="48" selection-end-column="22" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#2641#2642#0" expanded="true" />
+            <element signature="e#2668#2669#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -696,7 +687,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/app/threads/AudioSenderTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
+        <state relative-caret-position="221">
           <caret line="18" column="32" selection-start-line="18" selection-start-column="32" selection-end-line="18" selection-end-column="32" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -706,8 +697,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/app/threads/AudioSender.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="393">
-          <caret line="64" column="48" selection-start-line="64" selection-start-column="48" selection-end-line="64" selection-end-column="48" />
+        <state relative-caret-position="257">
+          <caret line="56" column="18" selection-start-line="56" selection-start-column="18" selection-end-line="56" selection-end-column="18" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#497#498#0" expanded="true" />
