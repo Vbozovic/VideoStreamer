@@ -29,7 +29,6 @@ public class Server extends JFrame implements Runnable, ActionListener {
         this.host = host;
         this.clientProcessingPool = Executors.newFixedThreadPool(20);
         setup();
-        
     }
 
     private void setup(){
