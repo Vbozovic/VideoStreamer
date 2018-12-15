@@ -4,13 +4,15 @@ import app.gui.Displayer;
 import app.gui.ImageViewer;
 import app.server.Server;
 import com.github.sarxos.webcam.WebcamPanel;
-import org.opencv.core.Core;
-import org.opencv.core.CvType;
-import org.opencv.core.Mat;
+import org.opencv.core.*;
+import org.opencv.imgproc.Imgproc;
+import org.opencv.objdetect.CascadeClassifier;
+import org.opencv.objdetect.Objdetect;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.Point;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.image.*;
@@ -29,12 +31,19 @@ public class VideoReciverTask implements Runnable, WindowListener {
     private boolean runnig;
     private Server server;
     private ObjectInputStream in;
+    private CascadeClassifier faceClas;
+
 
 
     public VideoReciverTask(Server server, ObjectInputStream in) {
+        this();
         this.server = server;
         this.in = in;
-        runnig = true;
+    }
+
+    public VideoReciverTask() {
+        this.runnig = true;
+        this.faceClas = new CascadeClassifier("C:\\Users\\Vuk\\Desktop\\Diplomskiv2\\resources\\haarcascade_frontalcatface.xml");
     }
 
     public void run() {
@@ -70,13 +79,33 @@ public class VideoReciverTask implements Runnable, WindowListener {
 
     }
 
+    private void faceDetect(Mat img){
+        Mat grayScale = new Mat(img.rows(),img.cols(),img.type());
+        Imgproc.cvtColor(img,grayScale,Imgproc.COLOR_BayerBG2BGR);
+        Imgproc.equalizeHist(grayScale,grayScale);
+        int faceSize = 0;
+        if(Math.round(img.rows()*0.2f) > 0){
+            faceSize = Math.round(img.rows()*0.2f);
+        }
+
+        MatOfRect faces = new MatOfRect();
+        faceClas.detectMultiScale(grayScale,faces,1.1,2,0| Objdetect.CASCADE_SCALE_IMAGE,new Size(faceSize,faceSize));
+        Rect[] facesArray = faces.toArray();
+        for(int i=0;i<facesArray.length;i++){
+            Imgproc.rectangle(img,facesArray[i].tl(),facesArray[i].br(),new Scalar(0,255,0,2550),3);
+        }
+    }
+
+
     private BufferedImage faceStuff(BufferedImage img) {
         byte[] pixels = ((DataBufferByte) img.getRaster().getDataBuffer()).getData();
-        Mat mat = new Mat(img.getHeight(),img.getWidth(), CvType.CV_8UC3);
-        mat.put(0,0,pixels);
+        Mat mat_pixels = new Mat(img.getHeight(),img.getWidth(), CvType.CV_8UC3);
+        mat_pixels.put(0,0,pixels);
 
         //transformation
-        mat.get(0,0,pixels);
+        faceDetect(mat_pixels);
+
+        mat_pixels.get(0,0,pixels);
         return createImageFromBytes(pixels,img.getWidth(),img.getHeight());
     }
 
