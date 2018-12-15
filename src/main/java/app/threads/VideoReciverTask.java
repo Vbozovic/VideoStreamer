@@ -81,7 +81,7 @@ public class VideoReciverTask implements Runnable, WindowListener {
 
     private void faceDetect(Mat img){
         Mat grayScale = new Mat(img.rows(),img.cols(),img.type());
-        Imgproc.cvtColor(img,grayScale,Imgproc.COLOR_BayerBG2BGR);
+        Imgproc.cvtColor(img,grayScale,Imgproc.COLOR_BGR2GRAY);
         Imgproc.equalizeHist(grayScale,grayScale);
         int faceSize = 0;
         if(Math.round(img.rows()*0.2f) > 0){
