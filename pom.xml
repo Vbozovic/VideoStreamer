@@ -19,7 +19,6 @@
             </plugin>
         </plugins>
     </build>
-
     <dependencies>
 
         <dependency>
@@ -33,6 +32,13 @@
             <version>RELEASE</version>
             <scope>test</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/xuggle/xuggle-xuggler -->
+        <dependency>
+            <groupId>io.humble</groupId>
+            <artifactId>humble-video-all</artifactId>
+            <version>0.3.0</version>
+        </dependency>
+
 
     </dependencies>
 

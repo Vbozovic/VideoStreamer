@@ -10,30 +10,46 @@ import java.awt.image.BufferedImage;
 
 public class ImageViewer extends JFrame {
 
+
+    private class ImagePanel extends JPanel{
+
+        BufferedImage img;
+
+        public ImagePanel() {
+            super();
+            img = null;
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            g.drawImage(img,0,0,null);
+            //super.paintComponent(g);
+        }
+    }
+
     static{
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
     }
 
-    private JLabel lab;
+    private ImagePanel pan;
     private CascadeClassifier faceDetector;
     private Imgproc imgproc;
 
     public ImageViewer(){
         super();
-        lab = new JLabel();
+        pan = new ImagePanel();
         setup();
     }
 
     public void displayImage(BufferedImage img){
-
-
-        lab.setIcon(new ImageIcon(img));
+        pan.img = img;
+        pan.repaint();
     }
 
     private void setup(){
         this.getContentPane().setLayout(new FlowLayout());
-        this.getContentPane().add(lab);
-        lab.setVisible(true);
+        this.setContentPane(pan);
+
 
         faceDetector = new CascadeClassifier("resources/haarcascade_frontalcatface.xml");
         imgproc = new Imgproc();

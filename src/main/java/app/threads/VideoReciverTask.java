@@ -50,7 +50,7 @@ public class VideoReciverTask implements Runnable, WindowListener {
 
             byte[] pixels = new byte[height*width*3];// 3 = broj bajtova po pikselu
             while (runnig){
-                System.out.println("Read");
+                //System.out.println("Read");
                 synchronized (in){
                     in.readFully(pixels);
                 }
@@ -83,7 +83,7 @@ public class VideoReciverTask implements Runnable, WindowListener {
     }
 
     public void windowClosed(WindowEvent e) {
-        System.out.println("Closed");
+        //System.out.println("Closed");
         this.stop();
     }
 

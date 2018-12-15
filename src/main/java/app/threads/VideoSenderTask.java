@@ -43,7 +43,7 @@ public class VideoSenderTask implements Runnable{
             System.out.println(img.getHeight()+" "+img.getWidth());
 
             while(running){
-                System.out.println("Send");
+                //System.out.println("Send");
                 byte[] pixels = ((DataBufferByte) img.getRaster().getDataBuffer()).getData();
                 synchronized (out){
                     out.write(pixels);
