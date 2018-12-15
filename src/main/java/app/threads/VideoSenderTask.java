@@ -45,10 +45,10 @@ public class VideoSenderTask implements Runnable{
             while(running){
                 //System.out.println("Send");
                 byte[] pixels = ((DataBufferByte) img.getRaster().getDataBuffer()).getData();
-                synchronized (out){
-                    out.write(pixels);
-                    out.flush();
-                }
+
+                out.write(pixels);
+                out.flush();
+
                 img = cam.getImage();
             }
 

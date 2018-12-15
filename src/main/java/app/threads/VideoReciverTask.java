@@ -51,9 +51,7 @@ public class VideoReciverTask implements Runnable, WindowListener {
             byte[] pixels = new byte[height*width*3];// 3 = broj bajtova po pikselu
             while (runnig){
                 //System.out.println("Read");
-                synchronized (in){
-                    in.readFully(pixels);
-                }
+                in.readFully(pixels);
                 iv.displayImage(createImageFromBytes(pixels,width,height));
             }
 
