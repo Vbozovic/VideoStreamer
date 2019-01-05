@@ -88,6 +88,7 @@ public class VideoReciverTask implements Runnable, WindowListener {
             faceSize = Math.round(img.rows()*0.2f);
         }
 
+
         MatOfRect faces = new MatOfRect();
         faceClas.detectMultiScale(grayScale,faces,1.1,2,0| Objdetect.CASCADE_SCALE_IMAGE,new Size(faceSize,faceSize));
         Rect[] facesArray = faces.toArray();
