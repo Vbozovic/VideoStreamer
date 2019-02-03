@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="Diplomskiv2" />
         <module name="VideoStreamer" />
+        <module name="Vstreamer" />
       </profile>
     </annotationProcessing>
   </component>
