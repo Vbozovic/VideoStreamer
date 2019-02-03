@@ -16,12 +16,10 @@ public class VideoSenderTask implements Runnable{
 
     private Socket client;
     private boolean running;
-    private Server server;
     private ObjectOutputStream out;
 
 
-    public VideoSenderTask(Server server, ObjectOutputStream out) {
-        this.server = server;
+    public VideoSenderTask(ObjectOutputStream out) {
         this.out = out;
         running = true;
     }

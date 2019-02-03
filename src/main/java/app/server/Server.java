@@ -60,8 +60,8 @@ public class Server extends JFrame implements Runnable, ActionListener {
             ObjectOutputStream out = new ObjectOutputStream(sock.getOutputStream());
             ObjectInputStream in = new ObjectInputStream(sock.getInputStream());
 
-            VideoSenderTask st = new VideoSenderTask(this,out);
-            VideoReciverTask rt = new VideoReciverTask(this,in);
+            VideoSenderTask st = new VideoSenderTask(out);
+            VideoReciverTask rt = new VideoReciverTask(in);
 
             synchronized (clientProcessingPool) {
                 clientProcessingPool.execute(st);
@@ -83,8 +83,8 @@ public class Server extends JFrame implements Runnable, ActionListener {
                 ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
                 ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream());
 
-                clientProcessingPool.execute(new VideoReciverTask(this,in));
-                clientProcessingPool.execute(new VideoSenderTask(this,out));
+                clientProcessingPool.execute(new VideoReciverTask(in));
+                clientProcessingPool.execute(new VideoSenderTask(out));
             }
 
         } catch (IOException e) {
