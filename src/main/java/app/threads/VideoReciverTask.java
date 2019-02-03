@@ -98,13 +98,13 @@ public class VideoReciverTask implements Runnable, WindowListener, Callback {
         MatOfRect faces = new MatOfRect();
         faceClas.detectMultiScale(grayScale, faces, 1.095, 2, 0 | Objdetect.CASCADE_SCALE_IMAGE, new Size(faceSize, faceSize));
 
-        Rect[] facesArray = new Rect[0]; //detected faces
+        Rect[] facesArray; //detected faces
         facesArray = faces.toArray();
 
         if (this.faces.length != facesArray.length && facesArray.length != 0) {
             // new faces detected
-            faceChange(facesArray);
-            System.out.println("Number of faces changed");
+//            System.out.println("Number of faces changed");
+
         }
 
 
@@ -113,19 +113,6 @@ public class VideoReciverTask implements Runnable, WindowListener, Callback {
         }
     }
 
-    private void faceChange(Rect[] facesArray) {
-
-        //make a request and when i finishes update the display with names of faces
-        //frequently there will be no faces detected while in reallity there are faces on screen
-        //so when no faces are detected we will wait a few seconds and then maybe do something about
-        //no faces being detected
-
-
-
-
-        System.out.println(facesArray.length);
-        this.faces = facesArray;
-    }
 
     private BufferedImage faceStuff(BufferedImage img) {
         byte[] pixels = ((DataBufferByte) img.getRaster().getDataBuffer()).getData();
