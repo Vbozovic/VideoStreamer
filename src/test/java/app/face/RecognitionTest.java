@@ -22,8 +22,8 @@ public class RecognitionTest {
         //Response req = FaceClient.postFaceDetect("faces/jana.jpg");
         //System.out.println(req.body().string());
 
-        FaceClient.postFaceDetect(FaceClient.encodeFileToBinary(new File("faces/jana.jpg")));
-        FaceClient.postFaceVector(FaceClient.encodeFileToBinary(new File("faces/jana.jpg")));
-        FaceClient.postCompareVectors(FaceClient.encodeFileToBinary(new File("faces/ja1.jpg")),FaceClient.encodeFileToBinary(new File("faces/ja2.jpg")));
+//        FaceClient.postFaceDetect(FaceClient.encodeFileToBinary(new File("faces/jana.jpg")));
+//        FaceClient.postFaceVector(FaceClient.encodeFileToBinary(new File("faces/jana.jpg")));
+//        FaceClient.postCompareVectors(FaceClient.encodeFileToBinary(new File("faces/ja1.jpg")),FaceClient.encodeFileToBinary(new File("faces/ja2.jpg")));
     }
 }

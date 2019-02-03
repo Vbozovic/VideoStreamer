@@ -29,8 +29,14 @@ public class FaceClient {
 
     }
 
+    private static void OkCall(OkHttpClient client,Callback callback, Request request) throws IOException {
+        Call call = client.newCall(request);
+        call.enqueue(callback);
+    }
 
-    public static void postFaceDetect(byte[] picture) throws IOException {
+
+
+    public static void postFaceDetect(OkHttpClient client,Callback handler, byte[] picture) throws IOException {
 
         final MediaType MEDIA_TYPE_JPG = MediaType.parse("image/jpg");
 
@@ -46,11 +52,11 @@ public class FaceClient {
                 .post(requestBody)
                 .build();
 
-        OkCall(request);
+        OkCall(client,handler,request);
     }
 
 
-    public static void postFaceVector(byte[] picture) throws IOException {
+    public static void postFaceVector(OkHttpClient client,Callback handler,byte[] picture) throws IOException {
         //http://106.51.58.118:5000/get_face_vec?face_det=0
         final MediaType MEDIA_TYPE_JPG = MediaType.parse("image/jpg");
 
@@ -66,18 +72,12 @@ public class FaceClient {
                 .post(requestBody)
                 .build();
 
-        OkCall(request);
+        OkCall(client,handler,request);
     }
 
-    private static void OkCall(Request request) throws IOException {
-        OkHttpClient client = new OkHttpClient();
-        Response response = client.newCall(request).execute();
-        String res = response.body().string();
-        System.out.println(res);
-        response.close();
-    }
 
-    public static void postCompareVectors(byte[] img1, byte[] img2) throws IOException {
+
+    public static void postCompareVectors(OkHttpClient client,Callback handler,byte[] img1, byte[] img2) throws IOException {
         final MediaType MEDIA_TYPE_JPG = MediaType.parse("image/jpg");
 
         RequestBody requestBody = new MultipartBody.Builder()
@@ -93,7 +93,7 @@ public class FaceClient {
                 .post(requestBody)
                 .build();
 
-        OkCall(request);
+        OkCall(client,handler,request);
     }
 
 }

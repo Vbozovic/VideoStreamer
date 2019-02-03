@@ -1,31 +1,26 @@
 package app.threads;
 
-import app.gui.Displayer;
 import app.gui.ImageViewer;
-import app.server.Server;
-import com.github.sarxos.webcam.WebcamPanel;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 import org.asynchttpclient.AsyncHttpClient;
 import org.asynchttpclient.DefaultAsyncHttpClientConfig;
 import org.asynchttpclient.Dsl;
-import org.asynchttpclient.Request;
 import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
 import org.opencv.objdetect.Objdetect;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.*;
 import java.awt.Point;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.image.*;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.net.Socket;
 
-public class VideoReciverTask implements Runnable, WindowListener {
+public class VideoReciverTask implements Runnable, WindowListener, Callback {
 
 
     static {
@@ -109,6 +104,7 @@ public class VideoReciverTask implements Runnable, WindowListener {
         if (this.faces.length != facesArray.length && facesArray.length != 0) {
             // new faces detected
             faceChange(facesArray);
+            System.out.println("Number of faces changed");
         }
 
 
@@ -179,6 +175,16 @@ public class VideoReciverTask implements Runnable, WindowListener {
     }
 
     public void windowDeactivated(WindowEvent e) {
+
+    }
+
+    @Override
+    public void onFailure(Call call, IOException e) {
+
+    }
+
+    @Override
+    public void onResponse(Call call, Response response) throws IOException {
 
     }
 }
