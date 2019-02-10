@@ -1,8 +1,11 @@
 package app.threads;
 
+import app.callback.FaceAttributeCallback;
+import app.client.FaceClient;
 import app.gui.ImageViewer;
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.OkHttpClient;
 import okhttp3.Response;
 import org.asynchttpclient.DefaultAsyncHttpClientConfig;
 import org.asynchttpclient.Dsl;
@@ -11,11 +14,13 @@ import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
 import org.opencv.objdetect.Objdetect;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.Point;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.image.*;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
@@ -31,6 +36,7 @@ public class VideoReciverTask implements Runnable, WindowListener, Callback {
     private CascadeClassifier faceClas;
     private Rect[] faces;
     private ImageViewer iv;
+    private OkHttpClient client;
 
 
     public VideoReciverTask(ObjectInputStream in) {
@@ -39,6 +45,7 @@ public class VideoReciverTask implements Runnable, WindowListener, Callback {
     }
 
     public VideoReciverTask() {
+        this.client = new OkHttpClient();
         this.runnig = true;
         this.faceClas = new CascadeClassifier("C:\\Users\\ybv\\Desktop\\VideoStreamer\\resources\\haarcascade_frontalcatface.xml");
         this.faces = new Rect[0];
@@ -82,7 +89,7 @@ public class VideoReciverTask implements Runnable, WindowListener, Callback {
 
     }
 
-    private void faceDetect(Mat img) {
+    private void faceDetect(Mat img,BufferedImage image) {
         Mat grayScale = new Mat(img.rows(), img.cols(), img.type());
         Imgproc.cvtColor(img, grayScale, Imgproc.COLOR_BGR2GRAY);
         Imgproc.equalizeHist(grayScale, grayScale);
@@ -99,8 +106,19 @@ public class VideoReciverTask implements Runnable, WindowListener, Callback {
         facesArray = faces.toArray();
 
         if (this.faces.length != facesArray.length && facesArray.length != 0) {
+            this.faces = facesArray;
             // new faces detected
-//            System.out.println("Number of faces changed");
+            System.out.println("Number of faces changed "+this.faces.length);
+            try {
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                ImageIO.write(image, "jpg", baos);
+                byte[] bytes = baos.toByteArray();
+                System.out.println("Sending FaceX");
+                FaceClient.postFaceDetect(this.client,new FaceAttributeCallback(),bytes);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
 
         }
 
@@ -117,7 +135,7 @@ public class VideoReciverTask implements Runnable, WindowListener, Callback {
         mat_pixels.put(0, 0, pixels);
 
         //transformation
-        faceDetect(mat_pixels);
+        faceDetect(mat_pixels,img);
 
         mat_pixels.get(0, 0, pixels);
         return createImageFromBytes(pixels, img.getWidth(), img.getHeight());

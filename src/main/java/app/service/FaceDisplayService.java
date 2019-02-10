@@ -15,6 +15,8 @@ public class FaceDisplayService {
 
     public void addFaces(BufferedImage image, Rect[] faces){
 
+        //Add face Panel to displayTo
+
     }
 
 

@@ -44,4 +44,11 @@ public class ImageViewer extends JFrame {
         this.pack();
     }
 
+    public FaceDisplayService getFaceDisplay() {
+        return faceDisplay;
+    }
+
+    public void setFaceDisplay(FaceDisplayService faceDisplay) {
+        this.faceDisplay = faceDisplay;
+    }
 }
