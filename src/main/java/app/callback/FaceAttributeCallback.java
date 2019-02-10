@@ -14,6 +14,7 @@ public class FaceAttributeCallback extends FaceXCallback {
     @Override
     public void onResponse(Call call, Response response) throws IOException {
         String body = response.body().string();
-        System.out.println(body);
+        //For every unique face in the sent picture, there will be a Json OBJECT with name face_id_*
+
     }
 }

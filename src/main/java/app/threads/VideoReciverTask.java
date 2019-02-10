@@ -24,7 +24,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
-public class VideoReciverTask implements Runnable, WindowListener, Callback {
+public class VideoReciverTask implements Runnable, WindowListener {
 
 
     static {
@@ -177,16 +177,6 @@ public class VideoReciverTask implements Runnable, WindowListener, Callback {
     }
 
     public void windowDeactivated(WindowEvent e) {
-
-    }
-
-    @Override
-    public void onFailure(Call call, IOException e) {
-
-    }
-
-    @Override
-    public void onResponse(Call call, Response response) throws IOException {
 
     }
 }
