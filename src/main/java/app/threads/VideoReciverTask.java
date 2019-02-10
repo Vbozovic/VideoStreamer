@@ -4,7 +4,6 @@ import app.gui.ImageViewer;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
-import org.asynchttpclient.AsyncHttpClient;
 import org.asynchttpclient.DefaultAsyncHttpClientConfig;
 import org.asynchttpclient.Dsl;
 import org.opencv.core.*;
@@ -31,7 +30,6 @@ public class VideoReciverTask implements Runnable, WindowListener, Callback {
     private ObjectInputStream in;
     private CascadeClassifier faceClas;
     private Rect[] faces;
-    private AsyncHttpClient client;
     private ImageViewer iv;
 
 
@@ -47,7 +45,6 @@ public class VideoReciverTask implements Runnable, WindowListener, Callback {
 
         DefaultAsyncHttpClientConfig.Builder clientBuilder = Dsl.config()
                 .setConnectTimeout(5000);
-        this.client = Dsl.asyncHttpClient(clientBuilder);
         setupView();
     }
 
@@ -75,7 +72,7 @@ public class VideoReciverTask implements Runnable, WindowListener, Callback {
                 //System.out.println("Read");
                 in.readFully(pixels);
                 BufferedImage img = createImageFromBytes(pixels, width, height);
-                iv.displayImage(faceStuff(img));
+                iv.displayWebcamImage(faceStuff(img));
             }
 
             in.close();

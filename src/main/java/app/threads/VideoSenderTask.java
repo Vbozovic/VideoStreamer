@@ -1,11 +1,6 @@
 package app.threads;
 
-import app.gui.Displayer;
-import app.server.Server;
 import com.github.sarxos.webcam.Webcam;
-
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.IOException;

@@ -1,8 +1,8 @@
 package app.gui;
 
+import app.service.FaceDisplayService;
 import org.opencv.core.Core;
-import org.opencv.imgproc.Imgproc;
-import org.opencv.objdetect.CascadeClassifier;
+import org.opencv.core.Rect;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,51 +10,37 @@ import java.awt.image.BufferedImage;
 
 public class ImageViewer extends JFrame {
 
-
-    private class ImagePanel extends JPanel{
-
-        BufferedImage img;
-
-        public ImagePanel() {
-            super();
-            img = null;
-        }
-
-        @Override
-        protected void paintComponent(Graphics g) {
-            g.drawImage(img,0,0,null);
-            //super.paintComponent(g);
-        }
-    }
-
     static{
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
     }
 
-    private ImagePanel pan;
-    private CascadeClassifier faceDetector;
-    private Imgproc imgproc;
+    private JPanel facePan;
+    private ImagePanel webcamPan;
+    private FaceDisplayService faceDisplay;
+
 
     public ImageViewer(){
         super();
-        pan = new ImagePanel();
         setup();
     }
 
-    public void displayImage(BufferedImage img){
-        pan.img = img;
-        pan.repaint();
+    public void displayWebcamImage(BufferedImage img){
+        webcamPan.img = img;
+        webcamPan.repaint();
     }
 
+
+
     private void setup(){
-        this.getContentPane().setLayout(new FlowLayout());
-        this.setContentPane(pan);
+        this.setSize(500,500);
+        JPanel migPanel = new JPanel(new GridLayout(1,2));
+        this.webcamPan = new ImagePanel(this.getWidth(),this.getHeight());
+        this.facePan = new JPanel();
+        migPanel.add(webcamPan);
+        migPanel.add(facePan);
+        faceDisplay = new FaceDisplayService(facePan);
 
-
-        faceDetector = new CascadeClassifier("resources/haarcascade_frontalcatface.xml");
-        imgproc = new Imgproc();
-
-
+        this.setContentPane(migPanel);
         this.pack();
     }
 
