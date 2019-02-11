@@ -1,5 +1,7 @@
 package app.dto;
 
+import java.util.Arrays;
+
 public class FaceDto {
 
     private static int ULX = 0;
@@ -68,5 +70,15 @@ public class FaceDto {
 
     public int LRY(){
         return this.face_rectangle[LRY];
+    }
+
+    @Override
+    public String toString() {
+        return "FaceDto{" +
+                "age=" + age +
+                ", face_rectangle=" + Arrays.toString(face_rectangle) +
+                ", gender='" + gender + '\'' +
+                ", gender_confidence=" + gender_confidence +
+                '}';
     }
 }

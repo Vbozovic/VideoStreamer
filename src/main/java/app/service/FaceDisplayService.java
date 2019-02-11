@@ -1,9 +1,10 @@
 package app.service;
 
-import org.opencv.core.Rect;
+import app.dto.FaceDto;
 
 import javax.swing.*;
 import java.awt.image.BufferedImage;
+import java.util.List;
 
 public class FaceDisplayService {
 
@@ -13,7 +14,7 @@ public class FaceDisplayService {
         this.displayTo = displayTo;
     }
 
-    public void addFaces(BufferedImage image, Rect[] faces){
+    public void addFaces(BufferedImage image, List<FaceDto> faces){
 
         //Add face Panel to displayTo
 

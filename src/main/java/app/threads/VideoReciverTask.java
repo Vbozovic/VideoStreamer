@@ -114,7 +114,7 @@ public class VideoReciverTask implements Runnable, WindowListener {
                 ImageIO.write(image, "jpg", baos);
                 byte[] bytes = baos.toByteArray();
                 System.out.println("Sending FaceX");
-                FaceClient.postFaceDetect(this.client,new FaceAttributeCallback(),bytes);
+                FaceClient.postFaceDetect(this.client,new FaceAttributeCallback(iv.getFaceDisplay(),image),bytes);
             } catch (IOException e) {
                 e.printStackTrace();
             }
