@@ -2,7 +2,6 @@ package app.callback;
 
 import app.dto.FaceDto;
 import app.service.FaceDisplayService;
-import io.netty.util.internal.StringUtil;
 import okhttp3.Call;
 import okhttp3.Response;
 import org.apache.commons.lang3.StringUtils;
@@ -12,13 +11,12 @@ import org.json.JSONObject;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.LinkedList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class FaceAttributeCallback extends FaceXCallback {
 
     private FaceDisplayService service;
     private BufferedImage img;
+
 
     public FaceAttributeCallback(FaceDisplayService service, BufferedImage img) {
         this.service = service;
@@ -43,7 +41,7 @@ public class FaceAttributeCallback extends FaceXCallback {
             facesList.add(face);
         }
 
-        this.service.addFaces(this.img,facesList);
+        this.service.setFaces(this.img,facesList);
 
     }
 
@@ -51,7 +49,7 @@ public class FaceAttributeCallback extends FaceXCallback {
     private FaceDto fromJson(JSONObject dto){
         FaceDto face = new FaceDto();
 
-        face.setAge(dto.getInt("age"));
+        face.setAge(dto.getString("age"));
         face.setGender(dto.getString("gender"));
         face.setGender_confidence(dto.getFloat("gender_confidence"));
         JSONArray rectangleArray = dto.getJSONArray("face_rectangle");

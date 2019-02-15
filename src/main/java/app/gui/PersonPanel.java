@@ -31,8 +31,8 @@ public class PersonPanel extends JPanel {
 
     void setup(){
         facePart.setBorder(new TitledBorder("Person"));
-        infoPart.setBorder(new TitledBorder("Face info"));
-        this.add(infoPart);
+        //infoPart.setBorder(new TitledBorder("Face info"));
+        //this.add(infoPart);
         this.add(facePart);
     }
 

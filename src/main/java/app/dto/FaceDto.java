@@ -9,7 +9,7 @@ public class FaceDto {
     private static int LRX = 2;
     private static int LRY = 3;
 
-    private int age;
+    private String age;
     private int[] face_rectangle;
     private String gender;
     private float gender_confidence;
@@ -17,18 +17,19 @@ public class FaceDto {
     public FaceDto() {
     }
 
-    public FaceDto(int age, int[] face_rectangle, String gender, float gender_confidence) {
+    public FaceDto(String age, int[] face_rectangle, String gender, float gender_confidence) {
         this.age = age;
         this.face_rectangle = face_rectangle;
         this.gender = gender;
         this.gender_confidence = gender_confidence;
     }
 
-    public int getAge() {
+
+    public String getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(String age) {
         this.age = age;
     }
 
@@ -56,19 +57,19 @@ public class FaceDto {
         this.gender_confidence = gender_confidence;
     }
 
-    public int ULX(){
+    public int ULX() {
         return this.face_rectangle[ULX];
     }
 
-    public int ULY(){
+    public int ULY() {
         return this.face_rectangle[ULY];
     }
 
-    public int LRX(){
+    public int LRX() {
         return this.face_rectangle[LRX];
     }
 
-    public int LRY(){
+    public int LRY() {
         return this.face_rectangle[LRY];
     }
 

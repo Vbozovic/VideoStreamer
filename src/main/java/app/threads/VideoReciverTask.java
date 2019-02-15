@@ -63,6 +63,13 @@ public class VideoReciverTask implements Runnable, WindowListener {
         iv.setVisible(true);
     }
 
+    private BufferedImage deepCopy(BufferedImage bi) {
+        ColorModel cm = bi.getColorModel();
+        boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
+        WritableRaster raster = bi.copyData(null);
+        return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
+    }
+
     public void run() {
 
 
@@ -108,13 +115,13 @@ public class VideoReciverTask implements Runnable, WindowListener {
         if (this.faces.length != facesArray.length && facesArray.length != 0) {
             this.faces = facesArray;
             // new faces detected
-            System.out.println("Number of faces changed "+this.faces.length);
+            //System.out.println("Number of faces changed "+this.faces.length);
             try {
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 ImageIO.write(image, "jpg", baos);
                 byte[] bytes = baos.toByteArray();
                 System.out.println("Sending FaceX");
-                FaceClient.postFaceDetect(this.client,new FaceAttributeCallback(iv.getFaceDisplay(),image),bytes);
+                FaceClient.postFaceDetect(this.client,new FaceAttributeCallback(iv.getFaceDisplay(),deepCopy(image)),bytes);
             } catch (IOException e) {
                 e.printStackTrace();
             }
