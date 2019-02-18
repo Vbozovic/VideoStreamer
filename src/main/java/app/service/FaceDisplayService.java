@@ -32,8 +32,8 @@ public class FaceDisplayService {
             LX = faces.get(counter).LRX();
             LY = faces.get(counter).LRY();
 
-            ImagePanel imPan = new ImagePanel(image.getSubimage(UX,UY,LX-UX,LY-UY));
-            pan = new PersonPanel(imPan);
+            ImagePanel imPan = new ImagePanel(image.getSubimage(UX,UY,LX-UX,LY-UY),10,10);
+            pan = new PersonPanel(imPan,faces.get(counter));
             pan.repaint();
             counter++;
         }
@@ -45,8 +45,8 @@ public class FaceDisplayService {
             LX = faces.get(counter).LRX();
             LY = faces.get(counter).LRY();
 
-            ImagePanel imPan = new ImagePanel(image.getSubimage(UX,UY,LX-UX,LY-UY));
-            PersonPanel ppan = new PersonPanel(imPan);
+            ImagePanel imPan = new ImagePanel(image.getSubimage(UX,UY,LX-UX,LY-UY),10,10);
+            PersonPanel ppan = new PersonPanel(imPan,faces.get(counter));
             displayTo.add(ppan);
             ppan.repaint();
             imPan.repaint();

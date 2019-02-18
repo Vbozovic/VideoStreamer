@@ -1,5 +1,7 @@
 package app.gui;
 
+import app.dto.FaceDto;
+
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.TitledBorder;
@@ -11,13 +13,16 @@ public class PersonPanel extends JPanel {
     private BufferedImage face;
     private ImagePanel facePart;
     private JPanel infoPart;
+    private FaceDto faceInfo;
 
-
-    public PersonPanel(ImagePanel imgPan){
+    public PersonPanel(ImagePanel imgPan,FaceDto faceDto){
         this();
-        facePart = imgPan;
+        this.facePart = imgPan;
+        this.faceInfo = faceDto;
         setup();
     }
+
+
 
     public PersonPanel() {
         super();
@@ -31,8 +36,15 @@ public class PersonPanel extends JPanel {
 
     void setup(){
         facePart.setBorder(new TitledBorder("Person"));
-        //infoPart.setBorder(new TitledBorder("Face info"));
-        //this.add(infoPart);
+        infoPart.setBorder(new TitledBorder("Face info"));
+
+        infoPart.setLayout(new GridLayout(3,1));
+
+        infoPart.add(new JLabel("Age: "+this.faceInfo.getAge()));
+        infoPart.add(new JLabel("Gender: "+this.faceInfo.getGender()));
+        infoPart.add(new JLabel("Gender confidence: "+this.faceInfo.getConfidence()));
+
+        this.add(infoPart);
         this.add(facePart);
     }
 

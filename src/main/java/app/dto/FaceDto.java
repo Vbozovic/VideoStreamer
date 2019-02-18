@@ -49,7 +49,7 @@ public class FaceDto {
         this.gender = gender;
     }
 
-    public float getGender_confidence() {
+    public float getConfidence() {
         return gender_confidence;
     }
 
