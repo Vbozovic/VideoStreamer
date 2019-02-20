@@ -1,5 +1,6 @@
 package app.threads;
 
+import app.Utils;
 import app.callback.FaceAttributeCallback;
 import app.client.FaceClient;
 import app.gui.ImageViewer;
@@ -55,7 +56,7 @@ public class VideoReciverTask implements Runnable, WindowListener {
         setupView();
     }
 
-    private void setupView(){
+    private void setupView() {
         iv = new ImageViewer();
         iv.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         iv.setSize(660, 340);
@@ -96,7 +97,7 @@ public class VideoReciverTask implements Runnable, WindowListener {
 
     }
 
-    private void faceDetect(Mat img,BufferedImage image) {
+    private void faceDetect(Mat img, BufferedImage image) {
         Mat grayScale = new Mat(img.rows(), img.cols(), img.type());
         Imgproc.cvtColor(img, grayScale, Imgproc.COLOR_BGR2GRAY);
         Imgproc.equalizeHist(grayScale, grayScale);
@@ -116,16 +117,13 @@ public class VideoReciverTask implements Runnable, WindowListener {
             this.faces = facesArray;
             // new faces detected
             //System.out.println("Number of faces changed "+this.faces.length);
+            byte[] bytes = Utils.imgToBytes(image);
+            System.out.println("Sending FaceX");
             try {
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                ImageIO.write(image, "jpg", baos);
-                byte[] bytes = baos.toByteArray();
-                System.out.println("Sending FaceX");
-                FaceClient.postFaceDetect(this.client,new FaceAttributeCallback(iv.getFaceDisplay(),deepCopy(image)),bytes);
+                FaceClient.postFaceDetect(this.client, new FaceAttributeCallback(iv.getFaceDisplay(), deepCopy(image)), bytes);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
 
         }
 
@@ -142,7 +140,7 @@ public class VideoReciverTask implements Runnable, WindowListener {
         mat_pixels.put(0, 0, pixels);
 
         //transformation
-        faceDetect(mat_pixels,img);
+        faceDetect(mat_pixels, img);
 
         mat_pixels.get(0, 0, pixels);
         return createImageFromBytes(pixels, img.getWidth(), img.getHeight());

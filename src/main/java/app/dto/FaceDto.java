@@ -10,16 +10,16 @@ public class FaceDto {
     private static int LRY = 3;
 
     private String age;
-    private int[] face_rectangle;
+    private int[] faceRectangle;
     private String gender;
     private float gender_confidence;
 
     public FaceDto() {
     }
 
-    public FaceDto(String age, int[] face_rectangle, String gender, float gender_confidence) {
+    public FaceDto(String age, int[] faceRectangle, String gender, float gender_confidence) {
         this.age = age;
-        this.face_rectangle = face_rectangle;
+        this.faceRectangle = faceRectangle;
         this.gender = gender;
         this.gender_confidence = gender_confidence;
     }
@@ -33,12 +33,12 @@ public class FaceDto {
         this.age = age;
     }
 
-    public int[] getFace_rectangle() {
-        return face_rectangle;
+    public int[] getFaceRectangle() {
+        return faceRectangle;
     }
 
-    public void setFace_rectangle(int[] face_rectangle) {
-        this.face_rectangle = face_rectangle;
+    public void setFaceRectangle(int[] faceRectangle) {
+        this.faceRectangle = faceRectangle;
     }
 
     public String getGender() {
@@ -58,26 +58,26 @@ public class FaceDto {
     }
 
     public int ULX() {
-        return this.face_rectangle[ULX];
+        return this.faceRectangle[ULX];
     }
 
     public int ULY() {
-        return this.face_rectangle[ULY];
+        return this.faceRectangle[ULY];
     }
 
     public int LRX() {
-        return this.face_rectangle[LRX];
+        return this.faceRectangle[LRX];
     }
 
     public int LRY() {
-        return this.face_rectangle[LRY];
+        return this.faceRectangle[LRY];
     }
 
     @Override
     public String toString() {
         return "FaceDto{" +
                 "age=" + age +
-                ", face_rectangle=" + Arrays.toString(face_rectangle) +
+                ", faceRectangle=" + Arrays.toString(faceRectangle) +
                 ", gender='" + gender + '\'' +
                 ", gender_confidence=" + gender_confidence +
                 '}';

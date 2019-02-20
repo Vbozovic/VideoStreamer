@@ -1,8 +1,12 @@
 package app.callback;
 
+import app.Utils;
+import app.client.FaceClient;
 import app.dto.FaceDto;
 import app.service.FaceDisplayService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.Call;
+import okhttp3.OkHttpClient;
 import okhttp3.Response;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
@@ -15,12 +19,12 @@ import java.util.LinkedList;
 public class FaceAttributeCallback extends FaceXCallback {
 
     private FaceDisplayService service;
-    private BufferedImage img;
+
 
 
     public FaceAttributeCallback(FaceDisplayService service, BufferedImage img) {
+        super(img);
         this.service = service;
-        this.img = img;
     }
 
     @Override
@@ -41,10 +45,10 @@ public class FaceAttributeCallback extends FaceXCallback {
             facesList.add(face);
         }
 
+        FaceClient.postFaceVector(new OkHttpClient(),new FaceVectorCallback(img), Utils.imgToBytes(img));
+
         this.service.setFaces(this.img,facesList);
-
     }
-
 
     private FaceDto fromJson(JSONObject dto){
         FaceDto face = new FaceDto();
@@ -59,7 +63,7 @@ public class FaceAttributeCallback extends FaceXCallback {
             arr[i] = rectangleArray.getInt(i);
         }
 
-        face.setFace_rectangle(arr);
+        face.setFaceRectangle(arr);
         return face;
     }
 
