@@ -17,12 +17,8 @@ import java.util.LinkedList;
 
 public class FaceAttributeCallback extends FaceXCallback {
 
-    private FaceDisplayService service;
-
-
-
     public FaceAttributeCallback(FaceDisplayService service, BufferedImage img) {
-        super(img);
+        super(img,service);
         this.service = service;
     }
 
@@ -46,12 +42,9 @@ public class FaceAttributeCallback extends FaceXCallback {
 
         for (FaceDto face : facesList){
             //for every face we crop the image and send that to vector
-
-            FaceClient.postFaceVector(new OkHttpClient(),new FaceVectorCallback(img), Utils.imgToBytes(img));
+            FaceClient.postFaceVector(new OkHttpClient(),new FaceVectorCallback(this.img,this.service,face), Utils.imgToBytes(Utils.cropImageFaces(face,this.img)));
         }
 
-
-        this.service.setFaces(this.img,facesList);
     }
 
     private FaceDto fromJson(JSONObject dto){

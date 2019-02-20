@@ -27,7 +27,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
-public class VideoReciverTask implements Runnable, WindowListener {
+public class VideoReciverTask implements Runnable {
 
 
     static {
@@ -50,11 +50,7 @@ public class VideoReciverTask implements Runnable, WindowListener {
 
 
     public void run() {
-
-
         try {
-
-            int colorModel;
             int width, height;
 
             height = in.readInt();
@@ -74,46 +70,10 @@ public class VideoReciverTask implements Runnable, WindowListener {
                     detect.getIv().displayWebcamImage(img);
                 }
             }
-
             in.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-    }
-
-
-
-    public void stop() {
-        this.runnig = false;
-    }
-
-    public void windowOpened(WindowEvent e) {
-
-    }
-
-    public void windowClosing(WindowEvent e) {
-
-    }
-
-    public void windowClosed(WindowEvent e) {
-        //System.out.println("Closed");
-        this.stop();
-    }
-
-    public void windowIconified(WindowEvent e) {
-
-    }
-
-    public void windowDeiconified(WindowEvent e) {
-
-    }
-
-    public void windowActivated(WindowEvent e) {
-
-    }
-
-    public void windowDeactivated(WindowEvent e) {
 
     }
 }

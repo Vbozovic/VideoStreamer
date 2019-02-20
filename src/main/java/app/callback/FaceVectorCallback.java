@@ -1,6 +1,8 @@
 package app.callback;
 
+import app.dto.FaceDto;
 import app.dto.VectorDto;
+import app.service.FaceDisplayService;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,9 +14,15 @@ import java.io.IOException;
 
 public class FaceVectorCallback extends FaceXCallback {
 
+    private FaceDto face;
 
-    public FaceVectorCallback(BufferedImage img) {
-        super(img);
+    public FaceVectorCallback(BufferedImage img, FaceDisplayService service, FaceDto face) {
+        super(img, service);
+        this.face = face;
+    }
+
+    public FaceVectorCallback(BufferedImage img, FaceDisplayService disp) {
+        super(img,disp);
     }
 
     @Override
@@ -31,7 +39,9 @@ public class FaceVectorCallback extends FaceXCallback {
 
         try{
             VectorDto dto = objectMapper.readValue(body, VectorDto.class);
-            System.out.println(dto.toString());
+            face.setVector(dto);
+
+            this.service.addFace(this.img,face);
 
         }catch(IOException ie) {
             ie.printStackTrace();

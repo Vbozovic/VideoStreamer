@@ -32,6 +32,12 @@ public class FaceDisplayService {
         displayTo.repaint();
     }
 
+    public void addFace(BufferedImage image, FaceDto face){
+        ImagePanel imPan = panelCrop(image,face);
+        PersonPanel ppan = new PersonPanel(imPan,face);
+        displayTo.add(ppan);
+    }
+
     private ImagePanel panelCrop(BufferedImage image,FaceDto face){
         ImagePanel imPan = new ImagePanel(Utils.cropImageFaces(face,image),10,10);
         return imPan;
