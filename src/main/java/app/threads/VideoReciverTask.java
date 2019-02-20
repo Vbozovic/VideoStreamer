@@ -83,11 +83,15 @@ public class VideoReciverTask implements Runnable, WindowListener {
             width = in.readInt();
 
             byte[] pixels = new byte[height * width * 3];// 3 = broj bajtova po pikselu
+            int skipCounter = 0;
             while (runnig) {
                 //System.out.println("Read");
                 in.readFully(pixels);
                 BufferedImage img = createImageFromBytes(pixels, width, height);
-                iv.displayWebcamImage(faceStuff(img));
+                iv.displayWebcamImage(faceStuff(img,++skipCounter));
+                if(skipCounter >= 10){
+                    skipCounter = 0;
+                }
             }
 
             in.close();
@@ -127,20 +131,22 @@ public class VideoReciverTask implements Runnable, WindowListener {
 
         }
 
-
         for (int i = 0; i < facesArray.length; i++) {
             Imgproc.rectangle(img, facesArray[i].tl(), facesArray[i].br(), new Scalar(0, 255, 0, 2550), 3);
         }
     }
 
 
-    private BufferedImage faceStuff(BufferedImage img) {
+    private BufferedImage faceStuff(BufferedImage img,int skipCounter) {
         byte[] pixels = ((DataBufferByte) img.getRaster().getDataBuffer()).getData();
         Mat mat_pixels = new Mat(img.getHeight(), img.getWidth(), CvType.CV_8UC3);
         mat_pixels.put(0, 0, pixels);
 
         //transformation
-        faceDetect(mat_pixels, img);
+        if(skipCounter == 10){
+            faceDetect(mat_pixels, img);
+        }
+
 
         mat_pixels.get(0, 0, pixels);
         return createImageFromBytes(pixels, img.getWidth(), img.getHeight());

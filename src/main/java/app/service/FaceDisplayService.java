@@ -1,5 +1,6 @@
 package app.service;
 
+import app.Utils;
 import app.dto.FaceDto;
 import app.gui.ImagePanel;
 import app.gui.PersonPanel;
@@ -22,7 +23,7 @@ public class FaceDisplayService {
     public void setFaces(BufferedImage image, List<FaceDto> faces) {
         displayTo.removeAll(); //remove all components
         for (int counter = 0; counter < faces.size(); counter++) {
-            ImagePanel imPan = panelCrop(image,counter,faces);
+            ImagePanel imPan = panelCrop(image,faces.get(counter));
             PersonPanel ppan = new PersonPanel(imPan,faces.get(counter));
             displayTo.add(ppan);
             ppan.repaint();
@@ -31,13 +32,8 @@ public class FaceDisplayService {
         displayTo.repaint();
     }
 
-    private ImagePanel panelCrop(BufferedImage image,int counter,List<FaceDto> faces){
-        int UX,UY,LX,LY;
-        UX = faces.get(counter).ULX();
-        UY = faces.get(counter).ULY();
-        LX = faces.get(counter).LRX();
-        LY = faces.get(counter).LRY();
-        ImagePanel imPan = new ImagePanel(image.getSubimage(UX,UY,LX-UX,LY-UY),10,10);
+    private ImagePanel panelCrop(BufferedImage image,FaceDto face){
+        ImagePanel imPan = new ImagePanel(Utils.cropImageFaces(face,image),10,10);
         return imPan;
     }
 

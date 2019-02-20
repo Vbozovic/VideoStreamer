@@ -1,5 +1,7 @@
 package app.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Arrays;
 
 public class FaceDto {
@@ -12,18 +14,30 @@ public class FaceDto {
     private String age;
     private int[] faceRectangle;
     private String gender;
-    private float gender_confidence;
+    private float genderConfidence;
+
+    @JsonIgnore
+    private VectorDto vector;
+
+
 
     public FaceDto() {
     }
 
-    public FaceDto(String age, int[] faceRectangle, String gender, float gender_confidence) {
+    public FaceDto(String age, int[] faceRectangle, String gender, float genderConfidence) {
         this.age = age;
         this.faceRectangle = faceRectangle;
         this.gender = gender;
-        this.gender_confidence = gender_confidence;
+        this.genderConfidence = genderConfidence;
     }
 
+    public VectorDto getVector() {
+        return vector;
+    }
+
+    public void setVector(VectorDto vector) {
+        this.vector = vector;
+    }
 
     public String getAge() {
         return age;
@@ -50,11 +64,11 @@ public class FaceDto {
     }
 
     public float getConfidence() {
-        return gender_confidence;
+        return genderConfidence;
     }
 
-    public void setGender_confidence(float gender_confidence) {
-        this.gender_confidence = gender_confidence;
+    public void setGenderConfidence(float genderConfidence) {
+        this.genderConfidence = genderConfidence;
     }
 
     public int ULX() {
@@ -79,7 +93,7 @@ public class FaceDto {
                 "age=" + age +
                 ", faceRectangle=" + Arrays.toString(faceRectangle) +
                 ", gender='" + gender + '\'' +
-                ", gender_confidence=" + gender_confidence +
+                ", genderConfidence=" + genderConfidence +
                 '}';
     }
 }

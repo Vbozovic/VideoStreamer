@@ -4,7 +4,6 @@ import app.Utils;
 import app.client.FaceClient;
 import app.dto.FaceDto;
 import app.service.FaceDisplayService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
 import okhttp3.Response;
@@ -45,7 +44,12 @@ public class FaceAttributeCallback extends FaceXCallback {
             facesList.add(face);
         }
 
-        FaceClient.postFaceVector(new OkHttpClient(),new FaceVectorCallback(img), Utils.imgToBytes(img));
+        for (FaceDto face : facesList){
+            //for every face we crop the image and send that to vector
+
+            FaceClient.postFaceVector(new OkHttpClient(),new FaceVectorCallback(img), Utils.imgToBytes(img));
+        }
+
 
         this.service.setFaces(this.img,facesList);
     }
@@ -55,7 +59,7 @@ public class FaceAttributeCallback extends FaceXCallback {
 
         face.setAge(dto.getString("age"));
         face.setGender(dto.getString("gender"));
-        face.setGender_confidence(dto.getFloat("gender_confidence"));
+        face.setGenderConfidence(dto.getFloat("gender_confidence"));
         JSONArray rectangleArray = dto.getJSONArray("face_rectangle");
 
         int[] arr = new int[4];
