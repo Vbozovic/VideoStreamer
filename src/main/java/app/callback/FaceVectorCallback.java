@@ -1,6 +1,7 @@
 package app.callback;
 
 import app.dto.VectorDto;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.Call;
@@ -27,10 +28,14 @@ public class FaceVectorCallback extends FaceXCallback {
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.enable(DeserializationFeature.UNWRAP_ROOT_VALUE);
-        VectorDto dto = objectMapper.readValue(body, VectorDto.class);
 
-        System.out.println(dto.toString());
+        try{
+            VectorDto dto = objectMapper.readValue(body, VectorDto.class);
+            System.out.println(dto.toString());
 
+        }catch(IOException ie) {
+            ie.printStackTrace();
+        }
     }
 
 }

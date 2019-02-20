@@ -20,9 +20,7 @@ public class FaceDisplayService {
     }
 
     public void setFaces(BufferedImage image, List<FaceDto> faces) {
-
         displayTo.removeAll(); //remove all components
-
         for (int counter = 0; counter < faces.size(); counter++) {
             ImagePanel imPan = panelCrop(image,counter,faces);
             PersonPanel ppan = new PersonPanel(imPan,faces.get(counter));
@@ -30,7 +28,6 @@ public class FaceDisplayService {
             ppan.repaint();
             imPan.repaint();
         }
-
         displayTo.repaint();
     }
 
@@ -40,7 +37,6 @@ public class FaceDisplayService {
         UY = faces.get(counter).ULY();
         LX = faces.get(counter).LRX();
         LY = faces.get(counter).LRY();
-
         ImagePanel imPan = new ImagePanel(image.getSubimage(UX,UY,LX-UX,LY-UY),10,10);
         return imPan;
     }
