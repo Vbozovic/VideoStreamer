@@ -13,26 +13,17 @@ import java.util.List;
 public class FaceDisplayService {
 
     private JPanel displayTo;
-    private LinkedList<PersonPanel> panels;
 
     public FaceDisplayService(JPanel displayTo) {
         this.displayTo = displayTo;
-        this.panels = new LinkedList<>();
         displayTo.setLayout(new GridLayout(3,1));
     }
 
     public void setFaces(BufferedImage image, List<FaceDto> faces) {
 
-        int counter = 0;
-        //Add face Panel to displayTo
-        for (PersonPanel pan : panels) {
-            ImagePanel imPan = panelCrop(image,counter,faces);
-            pan = new PersonPanel(imPan,faces.get(counter));
-            pan.repaint();
-            counter++;
-        }
+        displayTo.removeAll(); //remove all components
 
-        for (; counter < faces.size(); counter++) {
+        for (int counter = 0; counter < faces.size(); counter++) {
             ImagePanel imPan = panelCrop(image,counter,faces);
             PersonPanel ppan = new PersonPanel(imPan,faces.get(counter));
             displayTo.add(ppan);
