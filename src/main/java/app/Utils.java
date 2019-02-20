@@ -5,7 +5,8 @@ import app.client.FaceClient;
 import app.dto.FaceDto;
 
 import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
+import java.awt.*;
+import java.awt.image.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
@@ -30,6 +31,19 @@ public class Utils {
         LX = face.LRX();
         LY = face.LRY();
         return image.getSubimage(UX,UY,LX-UX,LY-UY);
+    }
+
+    public static BufferedImage deepCopy(BufferedImage bi) {
+        ColorModel cm = bi.getColorModel();
+        boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
+        WritableRaster raster = bi.copyData(null);
+        return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
+    }
+
+    public static BufferedImage createImageFromBytes(byte[] pixels, int width, int height) {
+        BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
+        img.setData(Raster.createRaster(img.getSampleModel(), new DataBufferByte(pixels, pixels.length), new Point()));
+        return img;
     }
 
 }

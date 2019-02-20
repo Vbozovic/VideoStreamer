@@ -4,6 +4,7 @@ import app.Utils;
 import app.callback.FaceAttributeCallback;
 import app.client.FaceClient;
 import app.gui.ImageViewer;
+import app.service.FaceDetectService;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -16,6 +17,7 @@ import org.opencv.objdetect.CascadeClassifier;
 import org.opencv.objdetect.Objdetect;
 
 import javax.imageio.ImageIO;
+import javax.rmi.CORBA.Util;
 import javax.swing.*;
 import java.awt.Point;
 import java.awt.event.WindowEvent;
@@ -34,11 +36,7 @@ public class VideoReciverTask implements Runnable, WindowListener {
 
     private boolean runnig;
     private ObjectInputStream in;
-    private CascadeClassifier faceClas;
-    private Rect[] faces;
-    private ImageViewer iv;
-    private OkHttpClient client;
-
+    private FaceDetectService detect;
 
     public VideoReciverTask(ObjectInputStream in) {
         this();
@@ -46,30 +44,10 @@ public class VideoReciverTask implements Runnable, WindowListener {
     }
 
     public VideoReciverTask() {
-        this.client = new OkHttpClient();
         this.runnig = true;
-        this.faceClas = new CascadeClassifier("C:\\Users\\ybv\\Desktop\\VideoStreamer\\resources\\haarcascade_frontalcatface.xml");
-        this.faces = new Rect[0];
-
-        DefaultAsyncHttpClientConfig.Builder clientBuilder = Dsl.config()
-                .setConnectTimeout(5000);
-        setupView();
+        this.detect = new FaceDetectService();
     }
 
-    private void setupView() {
-        iv = new ImageViewer();
-        iv.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        iv.setSize(660, 340);
-        iv.addWindowListener(this);
-        iv.setVisible(true);
-    }
-
-    private BufferedImage deepCopy(BufferedImage bi) {
-        ColorModel cm = bi.getColorModel();
-        boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
-        WritableRaster raster = bi.copyData(null);
-        return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
-    }
 
     public void run() {
 
@@ -87,10 +65,13 @@ public class VideoReciverTask implements Runnable, WindowListener {
             while (runnig) {
                 //System.out.println("Read");
                 in.readFully(pixels);
-                BufferedImage img = createImageFromBytes(pixels, width, height);
-                iv.displayWebcamImage(faceStuff(img,++skipCounter));
-                if(skipCounter >= 10){
+                BufferedImage img = Utils.createImageFromBytes(pixels, width, height);
+
+                if(skipCounter++ >= 10){
                     skipCounter = 0;
+                    detect.getIv().displayWebcamImage(detect.faceStuff(img));
+                }else{
+                    detect.getIv().displayWebcamImage(img);
                 }
             }
 
@@ -101,62 +82,7 @@ public class VideoReciverTask implements Runnable, WindowListener {
 
     }
 
-    private void faceDetect(Mat img, BufferedImage image) {
-        Mat grayScale = new Mat(img.rows(), img.cols(), img.type());
-        Imgproc.cvtColor(img, grayScale, Imgproc.COLOR_BGR2GRAY);
-        Imgproc.equalizeHist(grayScale, grayScale);
-        int faceSize = 0;
-        if (Math.round(img.rows() * 0.2f) > 0) {
-            faceSize = Math.round(img.rows() * 0.2f);
-        }
 
-
-        MatOfRect faces = new MatOfRect();
-        faceClas.detectMultiScale(grayScale, faces, 1.095, 2, 0 | Objdetect.CASCADE_SCALE_IMAGE, new Size(faceSize, faceSize));
-
-        Rect[] facesArray; //detected faces
-        facesArray = faces.toArray();
-
-        if (this.faces.length != facesArray.length && facesArray.length != 0) {
-            this.faces = facesArray;
-            // new faces detected
-            //System.out.println("Number of faces changed "+this.faces.length);
-            byte[] bytes = Utils.imgToBytes(image);
-            System.out.println("Sending FaceX");
-            try {
-                FaceClient.postFaceDetect(this.client, new FaceAttributeCallback(iv.getFaceDisplay(), deepCopy(image)), bytes);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        }
-
-        for (int i = 0; i < facesArray.length; i++) {
-            Imgproc.rectangle(img, facesArray[i].tl(), facesArray[i].br(), new Scalar(0, 255, 0, 2550), 3);
-        }
-    }
-
-
-    private BufferedImage faceStuff(BufferedImage img,int skipCounter) {
-        byte[] pixels = ((DataBufferByte) img.getRaster().getDataBuffer()).getData();
-        Mat mat_pixels = new Mat(img.getHeight(), img.getWidth(), CvType.CV_8UC3);
-        mat_pixels.put(0, 0, pixels);
-
-        //transformation
-        if(skipCounter == 10){
-            faceDetect(mat_pixels, img);
-        }
-
-
-        mat_pixels.get(0, 0, pixels);
-        return createImageFromBytes(pixels, img.getWidth(), img.getHeight());
-    }
-
-    private BufferedImage createImageFromBytes(byte[] pixels, int width, int height) {
-        BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
-        img.setData(Raster.createRaster(img.getSampleModel(), new DataBufferByte(pixels, pixels.length), new Point()));
-        return img;
-    }
 
     public void stop() {
         this.runnig = false;
