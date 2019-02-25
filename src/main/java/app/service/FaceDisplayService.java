@@ -3,12 +3,12 @@ package app.service;
 import app.Utils;
 import app.dto.FaceDto;
 import app.gui.ImagePanel;
+import app.gui.ImageViewer;
 import app.gui.PersonPanel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.LinkedList;
 import java.util.List;
 
 public class FaceDisplayService {
@@ -30,6 +30,7 @@ public class FaceDisplayService {
             imPan.repaint();
         }
         displayTo.repaint();
+        ImageViewer.getInstance().repaint();
     }
 
     public void addFace(BufferedImage image, FaceDto face){

@@ -30,7 +30,7 @@ public class FaceDetectService {
     }
 
     private void setupView() {
-        iv = new ImageViewer();
+        iv =  ImageViewer.getInstance();
         iv.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         iv.setSize(660, 340);
         iv.setVisible(true);

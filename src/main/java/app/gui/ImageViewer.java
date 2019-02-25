@@ -14,12 +14,21 @@ public class ImageViewer extends JFrame {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
     }
 
+    private static ImageViewer instance = null;
+
     private JPanel facePan;
     private ImagePanel webcamPan;
     private FaceDisplayService faceDisplay;
 
+    public static ImageViewer getInstance(){
 
-    public ImageViewer(){
+        if(instance == null){
+            instance = new ImageViewer();
+        }
+        return instance;
+    }
+
+    private ImageViewer(){
         super();
         setup();
     }
@@ -50,5 +59,9 @@ public class ImageViewer extends JFrame {
 
     public void setFaceDisplay(FaceDisplayService faceDisplay) {
         this.faceDisplay = faceDisplay;
+    }
+
+    public JPanel getFacePan() {
+        return facePan;
     }
 }

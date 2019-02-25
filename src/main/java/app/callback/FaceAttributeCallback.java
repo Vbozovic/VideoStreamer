@@ -37,6 +37,9 @@ public class FaceAttributeCallback extends FaceXCallback {
         LinkedList<FaceDto> facesList = new LinkedList<>();
         for (int i = 0; i < faces; i++) {
             FaceDto face = fromJson(responseJson.getJSONObject("face_id_"+i));
+            System.out.println(face);
+            face.expandFaceBox(0.15f,this.img.getHeight(),this.img.getWidth());
+            System.out.println(face);
             facesList.add(face);
         }
 
@@ -45,7 +48,10 @@ public class FaceAttributeCallback extends FaceXCallback {
             FaceClient.postFaceVector(new OkHttpClient(),new FaceVectorCallback(this.img,this.service,face), Utils.imgToBytes(Utils.cropImageFaces(face,this.img)));
         }
 
+        //this.service.setFaces(this.img,facesList);
+
     }
+
 
     private FaceDto fromJson(JSONObject dto){
         FaceDto face = new FaceDto();

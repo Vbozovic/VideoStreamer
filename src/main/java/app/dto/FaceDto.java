@@ -19,8 +19,6 @@ public class FaceDto {
     @JsonIgnore
     private VectorDto vector;
 
-
-
     public FaceDto() {
     }
 
@@ -29,6 +27,23 @@ public class FaceDto {
         this.faceRectangle = faceRectangle;
         this.gender = gender;
         this.genderConfidence = genderConfidence;
+    }
+
+    public void expandFaceBox(float percent, int maxHeight, int maxWidth) {
+        this.faceRectangle[ULX] = clamp(faceRectangle[ULX] - (int) (faceRectangle[ULX] * percent), 0, maxWidth);
+        this.faceRectangle[ULY] = clamp(faceRectangle[ULY] - (int) (faceRectangle[ULY] * percent), 0, maxHeight);
+
+        this.faceRectangle[LRX] = clamp(faceRectangle[LRX] + (int)(faceRectangle[LRX] * percent),0,maxWidth);
+        this.faceRectangle[LRY] = clamp(faceRectangle[LRY]+ (int)(faceRectangle[LRY] * percent),0,maxHeight);
+    }
+
+    private int clamp(int value, int min, int max) {
+        if (value < min) {
+            return min;
+        } else if (value > max) {
+            return max;
+        }
+        return value;
     }
 
     public VectorDto getVector() {

@@ -10,20 +10,8 @@ import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Response;
 import org.asynchttpclient.DefaultAsyncHttpClientConfig;
-import org.asynchttpclient.Dsl;
 import org.opencv.core.*;
-import org.opencv.imgproc.Imgproc;
-import org.opencv.objdetect.CascadeClassifier;
-import org.opencv.objdetect.Objdetect;
-
-import javax.imageio.ImageIO;
-import javax.rmi.CORBA.Util;
-import javax.swing.*;
-import java.awt.Point;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.awt.image.*;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
@@ -63,12 +51,12 @@ public class VideoReciverTask implements Runnable {
                 in.readFully(pixels);
                 BufferedImage img = Utils.createImageFromBytes(pixels, width, height);
 
-                if(skipCounter++ >= 10){
-                    skipCounter = 0;
+                //if(skipCounter++ >= 10){
+                  //  skipCounter = 0;
                     detect.getIv().displayWebcamImage(detect.faceStuff(img));
-                }else{
-                    detect.getIv().displayWebcamImage(img);
-                }
+                //}else{
+                  //  detect.getIv().displayWebcamImage(img);
+                //}
             }
             in.close();
         } catch (IOException e) {
