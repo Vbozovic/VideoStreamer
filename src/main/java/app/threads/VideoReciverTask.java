@@ -51,12 +51,12 @@ public class VideoReciverTask implements Runnable {
                 in.readFully(pixels);
                 BufferedImage img = Utils.createImageFromBytes(pixels, width, height);
 
-                //if(skipCounter++ >= 10){
-                  //  skipCounter = 0;
+                if(skipCounter++ >= 10){
+                    skipCounter = 0;
                     detect.getIv().displayWebcamImage(detect.faceStuff(img));
-                //}else{
-                  //  detect.getIv().displayWebcamImage(img);
-                //}
+                }else{
+                    detect.getIv().displayWebcamImage(img);
+                }
             }
             in.close();
         } catch (IOException e) {

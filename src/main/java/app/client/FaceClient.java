@@ -14,6 +14,7 @@ public class FaceClient {
 
     private static String userId = "1076799ded45b143761a";
     private static String userKey = "203b802d44b5002bad28";
+    public static String endpoint = "http://facexapi.com";
     private static final MediaType MEDIA_TYPE_JPG = MediaType.parse("image/jpg");
 
 
@@ -46,7 +47,7 @@ public class FaceClient {
                 .build();
 
         Request request = new Request.Builder()
-                .url("http://106.51.58.118:5000/get_image_attr?face_det=1")
+                .url(endpoint+"/get_image_attr?face_det=1")
                 .header("user_id", userId)
                 .header("user_key", userKey)
                 .post(requestBody)
@@ -66,7 +67,7 @@ public class FaceClient {
                 .build();
 
         Request request = new Request.Builder()
-                .url("http://106.51.58.118:5000/get_face_vec?face_det=1")
+                .url(endpoint+"/get_face_vec?face_det=1")
                 .header("user_id", userId)
                 .header("user_key", userKey)
                 .post(requestBody)
@@ -87,7 +88,7 @@ public class FaceClient {
                 .build();
 
         Request request = new Request.Builder()
-                .url("http://106.51.58.118:5000/compare_face?face_det=1")
+                .url(endpoint+"/compare_face?face_det=1")
                 .header("user_id", userId)
                 .header("user_key", userKey)
                 .post(requestBody)
