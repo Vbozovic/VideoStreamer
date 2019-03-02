@@ -37,6 +37,10 @@ public class FaceDto {
         this.faceRectangle[LRY] = clamp(faceRectangle[LRY]+ (int)(faceRectangle[LRY] * percent),0,maxHeight);
     }
 
+    public boolean compare(FaceDto other){
+        return this.vector.euclidianDistance(other.vector) > 0.6;
+    }
+
     private int clamp(int value, int min, int max) {
         if (value < min) {
             return min;

@@ -1,8 +1,10 @@
 package app;
 
 import app.callback.FaceAttributeCallback;
+import app.callback.FaceVectorCallback;
 import app.client.FaceClient;
 import app.dto.FaceDto;
+import app.dto.VectorDto;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -32,6 +34,7 @@ public class Utils {
         LY = face.LRY();
         return image.getSubimage(UX,UY,LX-UX,LY-UY);
     }
+
 
     public static BufferedImage deepCopy(BufferedImage bi) {
         ColorModel cm = bi.getColorModel();
