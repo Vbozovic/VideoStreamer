@@ -10,6 +10,7 @@ import java.lang.Thread.UncaughtExceptionHandler;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
+import app.dto.ContactBook;
 import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamDiscoveryEvent;
 import com.github.sarxos.webcam.WebcamDiscoveryListener;

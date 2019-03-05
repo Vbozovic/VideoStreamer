@@ -1,5 +1,7 @@
 package app.gui;
 
+import app.dto.ContactBook;
+import app.service.Config;
 import app.service.FaceDisplayService;
 import org.opencv.core.Core;
 import org.opencv.core.Rect;
@@ -7,6 +9,9 @@ import org.opencv.core.Rect;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
 
 public class ImageViewer extends JFrame {
 
@@ -19,6 +24,7 @@ public class ImageViewer extends JFrame {
     private JPanel facePan;
     private ImagePanel webcamPan;
     private FaceDisplayService faceDisplay;
+    private ContactBook contacts;
 
     public static ImageViewer getInstance(){
 
@@ -51,6 +57,14 @@ public class ImageViewer extends JFrame {
 
         this.setContentPane(migPanel);
         this.pack();
+
+        try {
+            this.contacts = new ContactBook(Config.getInstance().contact_book);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     public FaceDisplayService getFaceDisplay() {
