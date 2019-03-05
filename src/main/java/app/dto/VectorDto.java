@@ -57,6 +57,21 @@ public class VectorDto {
         return Math.sqrt(sum);
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof VectorDto){
+            VectorDto vec = (VectorDto) obj;
+
+            for (int i = 0; i < vec.ndarray.size(); i++) {
+                if(vec.ndarray.get(i) != this.ndarray.get(i)){
+                    return false;
+                }
+            }
+            return true;
+        }else{
+            return false;
+        }
+    }
 
     @Override
     public String toString() {

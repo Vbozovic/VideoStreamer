@@ -5,18 +5,22 @@ import app.dto.FaceDto;
 import app.gui.ImagePanel;
 import app.gui.ImageViewer;
 import app.gui.PersonPanel;
+import org.apache.commons.lang3.tuple.Pair;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FaceDisplayService {
 
     private JPanel displayTo;
+    private ArrayList<FaceDto> presentFaces;
 
     public FaceDisplayService(JPanel displayTo) {
         this.displayTo = displayTo;
+        this.presentFaces = new ArrayList<>();
         displayTo.setLayout(new GridLayout(3,1));
     }
 
@@ -34,9 +38,19 @@ public class FaceDisplayService {
     }
 
     public void addFace(BufferedImage image, FaceDto face){
-        ImagePanel imPan = panelCrop(image,face);
-        PersonPanel ppan = new PersonPanel(imPan,face);
-        displayTo.add(ppan);
+
+        boolean present = false;
+        for (FaceDto pface: presentFaces){
+            if(pface.getVector().equals(face.getVector())){
+                present = true;
+                break;
+            }
+        }
+        if(!present){
+            ImagePanel imPan = panelCrop(image,face);
+            PersonPanel ppan = new PersonPanel(imPan,face);
+            displayTo.add(ppan);
+        }
     }
 
     private ImagePanel panelCrop(BufferedImage image,FaceDto face){
