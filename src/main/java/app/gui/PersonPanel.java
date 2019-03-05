@@ -1,14 +1,18 @@
 package app.gui;
 
+import app.dto.Contact;
 import app.dto.FaceDto;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 
-public class PersonPanel extends JPanel {
+public class PersonPanel extends JPanel implements MouseListener {
 
     private BufferedImage face;
     private ImagePanel facePart;
@@ -35,6 +39,7 @@ public class PersonPanel extends JPanel {
 
 
     void setup(){
+        this.addMouseListener(this);
         facePart.setBorder(new TitledBorder("Person"));
         infoPart.setBorder(new TitledBorder("Face info"));
 
@@ -48,4 +53,36 @@ public class PersonPanel extends JPanel {
         this.add(facePart);
     }
 
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        if (e.getClickCount() == 2){
+            String name = JOptionPane.showInputDialog("Unesite ime");
+            ImageViewer.getInstance().getContacts().addContact(new Contact(faceInfo.getVector(),name));
+            try {
+                ImageViewer.getInstance().getContacts().save();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
+    }
 }

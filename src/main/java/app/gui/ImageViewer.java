@@ -67,6 +67,14 @@ public class ImageViewer extends JFrame {
 
     }
 
+    public ContactBook getContacts() {
+        return contacts;
+    }
+
+    public void setContacts(ContactBook contacts) {
+        this.contacts = contacts;
+    }
+
     public FaceDisplayService getFaceDisplay() {
         return faceDisplay;
     }
