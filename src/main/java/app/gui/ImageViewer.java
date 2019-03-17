@@ -11,6 +11,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Properties;
 
 public class ImageViewer extends JFrame {
@@ -58,8 +59,10 @@ public class ImageViewer extends JFrame {
         this.setContentPane(migPanel);
         this.pack();
 
+        this.contacts = new ContactBook(Config.getInstance().contact_book);
         try {
-            this.contacts = new ContactBook(Config.getInstance().contact_book);
+            this.contacts.load();
+            System.out.println(this.contacts);
         } catch (IOException e) {
             e.printStackTrace();
         }

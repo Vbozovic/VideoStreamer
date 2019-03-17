@@ -1,5 +1,9 @@
 package app.client;
 
+import app.dto.CompareDto;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.ReferenceType;
 import okhttp3.*;
 import org.apache.commons.io.FileUtils;
 
@@ -78,7 +82,7 @@ public class FaceClient {
 
 
 
-    public static void postCompareVectors(OkHttpClient client,Callback handler,byte[] img1, byte[] img2) throws IOException {
+    public static CompareDto postCompareVectors(OkHttpClient client, byte[] img1, byte[] img2) throws IOException {
         final MediaType MEDIA_TYPE_JPG = MediaType.parse("image/jpg");
 
         RequestBody requestBody = new MultipartBody.Builder()
@@ -94,7 +98,9 @@ public class FaceClient {
                 .post(requestBody)
                 .build();
 
-        OkCall(client,handler,request);
+        Response resp = client.newCall(request).execute();
+        ObjectMapper obj = new ObjectMapper();
+        return obj.readValue(resp.body().string(),new TypeReference<CompareDto>(){});
     }
 
 }

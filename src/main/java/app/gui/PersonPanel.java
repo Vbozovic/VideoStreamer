@@ -1,5 +1,6 @@
 package app.gui;
 
+import app.Utils;
 import app.dto.Contact;
 import app.dto.FaceDto;
 
@@ -18,9 +19,11 @@ public class PersonPanel extends JPanel implements MouseListener {
     private ImagePanel facePart;
     private JPanel infoPart;
     private FaceDto faceInfo;
+    private String name;
 
-    public PersonPanel(ImagePanel imgPan,FaceDto faceDto){
-        this();
+    public PersonPanel(ImagePanel imgPan,FaceDto faceDto,String name){
+        this(name);
+        this.face = imgPan.img;
         this.facePart = imgPan;
         this.faceInfo = faceDto;
         setup();
@@ -28,8 +31,10 @@ public class PersonPanel extends JPanel implements MouseListener {
 
 
 
-    public PersonPanel() {
+    public PersonPanel(String name) {
         super();
+        this.name = name;
+        System.out.println(name);
         face = null;
         this.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
         this.setLayout(new GridLayout(1,2));
@@ -57,7 +62,7 @@ public class PersonPanel extends JPanel implements MouseListener {
     public void mouseClicked(MouseEvent e) {
         if (e.getClickCount() == 2){
             String name = JOptionPane.showInputDialog("Unesite ime");
-            ImageViewer.getInstance().getContacts().addContact(new Contact(faceInfo.getVector(),name));
+            ImageViewer.getInstance().getContacts().addContact(new Contact(faceInfo.getVector(),name, Utils.imgToBytes(face),face.getWidth(),face.getHeight()));
             try {
                 ImageViewer.getInstance().getContacts().save();
             } catch (IOException e1) {

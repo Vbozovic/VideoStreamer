@@ -40,8 +40,11 @@ public class FaceVectorCallback extends FaceXCallback {
         try{
             VectorDto dto = objectMapper.readValue(body, VectorDto.class);
             face.setVector(dto);
+            face.setFaceImage(img);
 
-            this.service.addFace(this.img,face);
+            synchronized (this.service){
+                this.service.addFace(this.img,face);
+            }
 
         }catch(IOException ie) {
             ie.printStackTrace();

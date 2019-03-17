@@ -1,10 +1,12 @@
 package app.service;
 
 import app.Utils;
+import app.dto.ContactBook;
 import app.dto.FaceDto;
 import app.gui.ImagePanel;
 import app.gui.ImageViewer;
 import app.gui.PersonPanel;
+import io.humble.video.awt.ImageFrame;
 import org.apache.commons.lang3.tuple.Pair;
 
 import javax.swing.*;
@@ -26,9 +28,10 @@ public class FaceDisplayService {
 
     public void setFaces(BufferedImage image, List<FaceDto> faces) {
         displayTo.removeAll(); //remove all components
+        ContactBook cb = ImageViewer.getInstance().getContacts();
         for (int counter = 0; counter < faces.size(); counter++) {
             ImagePanel imPan = panelCrop(image,faces.get(counter));
-            PersonPanel ppan = new PersonPanel(imPan,faces.get(counter));
+            PersonPanel ppan = new PersonPanel(imPan,faces.get(counter),cb.findContact(faces.get(counter)).name);
             displayTo.add(ppan);
             ppan.repaint();
             imPan.repaint();
@@ -39,6 +42,8 @@ public class FaceDisplayService {
 
     public void addFace(BufferedImage image, FaceDto face){
 
+        ContactBook cb = ImageViewer.getInstance().getContacts();
+
         boolean present = false;
         for (FaceDto pface: presentFaces){
             if(pface.getVector().equals(face.getVector())){
@@ -48,7 +53,7 @@ public class FaceDisplayService {
         }
         if(!present){
             ImagePanel imPan = panelCrop(image,face);
-            PersonPanel ppan = new PersonPanel(imPan,face);
+            PersonPanel ppan = new PersonPanel(imPan,face,cb.findContact(face).name);
             displayTo.add(ppan);
         }
     }

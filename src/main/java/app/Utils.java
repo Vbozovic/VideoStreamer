@@ -44,6 +44,7 @@ public class Utils {
     }
 
     public static BufferedImage createImageFromBytes(byte[] pixels, int width, int height) {
+        assert height*width*3 == pixels.length;
         BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
         img.setData(Raster.createRaster(img.getSampleModel(), new DataBufferByte(pixels, pixels.length), new Point()));
         return img;

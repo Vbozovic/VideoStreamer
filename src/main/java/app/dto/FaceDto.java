@@ -1,7 +1,13 @@
 package app.dto;
 
+import app.Utils;
+import app.client.FaceClient;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import okhttp3.OkHttpClient;
 
+import javax.rmi.CORBA.Util;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.Arrays;
 
 public class FaceDto {
@@ -18,6 +24,9 @@ public class FaceDto {
 
     @JsonIgnore
     private VectorDto vector;
+
+    @JsonIgnore
+    private BufferedImage faceImage;
 
     public FaceDto() {
     }
@@ -38,7 +47,20 @@ public class FaceDto {
     }
 
     public boolean compare(FaceDto other){
+        System.out.println("Compare "+this.vector.euclidianDistance(other.vector));
         return this.vector.euclidianDistance(other.vector) > 0.6;
+    }
+
+    public boolean compareApi(FaceDto other){
+        OkHttpClient client = new OkHttpClient();
+        try {
+            CompareDto result = FaceClient.postCompareVectors(client, Utils.imgToBytes(this.faceImage), Utils.imgToBytes(other.faceImage));
+            System.out.println("Compare API: "+result.getConfidence());
+            return result.getConfidence() > 0.4;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     private int clamp(int value, int min, int max) {
@@ -104,6 +126,10 @@ public class FaceDto {
 
     public int LRY() {
         return this.faceRectangle[LRY];
+    }
+
+    public void setFaceImage(BufferedImage faceImage) {
+        this.faceImage = faceImage;
     }
 
     @Override

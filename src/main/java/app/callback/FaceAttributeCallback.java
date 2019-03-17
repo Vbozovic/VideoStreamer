@@ -37,9 +37,7 @@ public class FaceAttributeCallback extends FaceXCallback {
         LinkedList<FaceDto> facesList = new LinkedList<>();
         for (int i = 0; i < faces; i++) {
             FaceDto face = fromJson(responseJson.getJSONObject("face_id_"+i));
-            System.out.println(face);
             face.expandFaceBox(0.15f,this.img.getHeight(),this.img.getWidth());
-            System.out.println(face);
             facesList.add(face);
         }
 

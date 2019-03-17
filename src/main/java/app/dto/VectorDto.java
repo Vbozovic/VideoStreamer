@@ -3,13 +3,14 @@ package app.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 @JsonRootName(value = "vector")
-public class VectorDto {
+public class VectorDto implements Serializable {
 
     @JsonProperty(value = "__ndarray__")
     public ArrayList<Double> ndarray = null;
