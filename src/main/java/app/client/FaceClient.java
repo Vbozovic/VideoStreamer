@@ -1,6 +1,7 @@
 package app.client;
 
 import app.dto.CompareDto;
+import app.dto.FaceXCompareDto;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.ReferenceType;
@@ -92,7 +93,7 @@ public class FaceClient {
                 .build();
 
         Request request = new Request.Builder()
-                .url(endpoint+"/compare_face?face_det=1")
+                .url(endpoint+"/compare_faces?face_det=1")
                 .header("user_id", userId)
                 .header("user_key", userKey)
                 .post(requestBody)
@@ -100,7 +101,8 @@ public class FaceClient {
 
         Response resp = client.newCall(request).execute();
         ObjectMapper obj = new ObjectMapper();
-        return obj.readValue(resp.body().string(),new TypeReference<CompareDto>(){});
+        FaceXCompareDto xcompare = obj.readValue(resp.body().string(),new TypeReference<FaceXCompareDto>(){});
+        return xcompare.into();
     }
 
 }

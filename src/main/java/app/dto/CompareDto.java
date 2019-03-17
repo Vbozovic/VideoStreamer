@@ -1,7 +1,8 @@
 package app.dto;
 
 public class CompareDto {
-    private double confidence;
+
+    private Double confidence;
 
     public CompareDto(double confidence) {
         this.confidence = confidence;

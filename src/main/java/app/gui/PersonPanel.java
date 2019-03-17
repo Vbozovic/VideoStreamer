@@ -62,7 +62,7 @@ public class PersonPanel extends JPanel implements MouseListener {
     public void mouseClicked(MouseEvent e) {
         if (e.getClickCount() == 2){
             String name = JOptionPane.showInputDialog("Unesite ime");
-            ImageViewer.getInstance().getContacts().addContact(new Contact(faceInfo.getVector(),name, Utils.imgToBytes(face),face.getWidth(),face.getHeight()));
+            ImageViewer.getInstance().getContacts().addContact(new Contact(faceInfo.getVector(),name, face,face.getWidth(),face.getHeight()));
             try {
                 ImageViewer.getInstance().getContacts().save();
             } catch (IOException e1) {

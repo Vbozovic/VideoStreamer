@@ -6,6 +6,8 @@ import org.apache.commons.io.FileUtils;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
 
@@ -26,26 +28,26 @@ public class ContactBook implements Serializable{
 
 
     public void load() throws IOException {
-        //load from a file
-        FileInputStream fin = new FileInputStream(this.path);
-        ObjectInputStream oin = new ObjectInputStream(fin);
-        try {
-            this.contacts = (ArrayList<Contact>) oin.readObject();
-            oin.close();
-            fin.close();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            this.contacts = new ArrayList<>();
+        ObjectMapper om = new ObjectMapper();
+        File input = new File(this.path);
+        this.contacts = om.readValue(input,new TypeReference<ArrayList<Contact>>(){});
+        for(Contact c: this.contacts){
+            File f = new File(this.path+"images/"+c.name+".jpg");
+            c.faceImage = ImageIO.read(f);
         }
     }
 
     public void save() throws IOException {
-        //save to a file
-        FileOutputStream fsout = new FileOutputStream(this.path);
-        ObjectOutputStream os = new ObjectOutputStream(fsout);
-        os.writeObject(this.contacts);
-        os.close();
-        fsout.close();
+        File f = new File(this.path);
+        FileOutputStream fout = new FileOutputStream(f);
+        ObjectMapper om = new ObjectMapper();
+        String json = om.writeValueAsString(this.contacts);
+        fout.write(json.getBytes());
+        fout.close();
+        for(Contact c : this.contacts){
+            File output = new File(this.path+"images/"+c.name+".jpg");
+            ImageIO.write(c.faceImage,"jpg",output);
+        }
     }
 
     public boolean addContact(Contact contact) {
@@ -58,12 +60,13 @@ public class ContactBook implements Serializable{
             Contact c = this.contacts.get(i);
             FaceDto mockFace = new FaceDto();
             mockFace.setVector(c.vector);
-            mockFace.setFaceImage(Utils.createImageFromBytes(c.faceImage,c.width,c.height));
+            mockFace.setFaceImage(c.faceImage);
             if(mockFace.compareApi(face)){
                 return c;
             }
         }
-        return new Contact(); //returning empty contact
+        System.out.println("No face found");
+        return new Contact(face.getVector(),"",face.getFaceImage()); //returning empty contact
     }
 
     @Override

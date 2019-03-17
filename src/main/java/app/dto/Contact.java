@@ -1,12 +1,17 @@
 package app.dto;
 
+import app.Utils;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.awt.image.BufferedImage;
 import java.io.Serializable;
 
 public class Contact implements Serializable {
 
     public VectorDto vector;
     public String name;
-    public byte[] faceImage;
+    @JsonIgnore
+    public BufferedImage faceImage;
     public int width;
     public int height;
 
@@ -15,7 +20,7 @@ public class Contact implements Serializable {
         this.name = name;
     }
 
-    public Contact(VectorDto vector, String name, byte[] faceImage, int width, int height) {
+    public Contact(VectorDto vector, String name, BufferedImage faceImage, int width, int height) {
         this.vector = vector;
         this.name = name;
         this.faceImage = faceImage;
@@ -23,10 +28,12 @@ public class Contact implements Serializable {
         this.height = height;
     }
 
-    public Contact(VectorDto vector, String name, byte[] faceImage) {
+    public Contact(VectorDto vector, String name, BufferedImage faceImage){
         this.vector = vector;
         this.name = name;
         this.faceImage = faceImage;
+        this.width = faceImage.getWidth();
+        this.height = faceImage.getHeight();
     }
 
     public Contact(){

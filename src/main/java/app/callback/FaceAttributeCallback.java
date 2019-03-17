@@ -24,7 +24,7 @@ public class FaceAttributeCallback extends FaceXCallback {
 
     @Override
     public void onFailure(Call call, IOException e) {
-        System.out.println("Fail");
+        System.err.println("Fail FaceAttributeCallback");
     }
 
 

@@ -132,6 +132,10 @@ public class FaceDto {
         this.faceImage = faceImage;
     }
 
+    public BufferedImage getFaceImage() {
+        return faceImage;
+    }
+
     @Override
     public String toString() {
         return "FaceDto{" +

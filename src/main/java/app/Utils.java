@@ -44,7 +44,11 @@ public class Utils {
     }
 
     public static BufferedImage createImageFromBytes(byte[] pixels, int width, int height) {
-        assert height*width*3 == pixels.length;
+
+        if(width*height*3 != pixels.length){
+            System.err.println("Array length erro. Expected: "+width*height*3+" got: "+pixels.length);
+        }
+
         BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
         img.setData(Raster.createRaster(img.getSampleModel(), new DataBufferByte(pixels, pixels.length), new Point()));
         return img;
