@@ -26,7 +26,7 @@ public class FaceDisplayService {
         displayTo.setLayout(new GridLayout(3,1));
     }
 
-    public void setFaces(BufferedImage image, List<FaceDto> faces) {
+    /*public void setFaces(BufferedImage image, List<FaceDto> faces) {
         displayTo.removeAll(); //remove all components
         ContactBook cb = ImageViewer.getInstance().getContacts();
         for (int counter = 0; counter < faces.size(); counter++) {
@@ -38,7 +38,7 @@ public class FaceDisplayService {
         }
         displayTo.repaint();
         ImageViewer.getInstance().repaint();
-    }
+    }*/
 
     public void addFace(BufferedImage image, FaceDto face){
 
@@ -56,7 +56,7 @@ public class FaceDisplayService {
             PersonPanel ppan = new PersonPanel(imPan,face,cb.findContact(face).name);
             displayTo.add(ppan);
         }
-        ImageViewer.getInstance().repaint();
+        ImageViewer.getInstance().getFacePan().repaint();
     }
 
     private ImagePanel panelCrop(BufferedImage image,FaceDto face){

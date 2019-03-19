@@ -43,12 +43,12 @@ public class ImageViewer extends JFrame {
     public void displayWebcamImage(BufferedImage img){
         webcamPan.img = img;
         webcamPan.repaint();
+        this.setSize(img.getWidth()*2,img.getHeight()+50);
     }
 
 
 
     private void setup(){
-        this.setSize(600,600);
         JPanel migPanel = new JPanel(new GridLayout(1,2));
         this.webcamPan = new ImagePanel((int)(this.getWidth()/2),(int)(this.getHeight()/2),0,0);
         this.facePan = new JPanel();
@@ -59,6 +59,9 @@ public class ImageViewer extends JFrame {
         this.setContentPane(migPanel);
         //this.pack();
 
+        this.setSize(600,400);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setVisible(true);
         this.contacts = new ContactBook(Config.getInstance().contact_book);
         try {
             this.contacts.load();

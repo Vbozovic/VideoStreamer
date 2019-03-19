@@ -11,6 +11,7 @@ import org.opencv.objdetect.CascadeClassifier;
 import org.opencv.objdetect.Objdetect;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.IOException;
@@ -26,15 +27,9 @@ public class FaceDetectService {
         this.faceClas = new CascadeClassifier("C:\\Users\\ybv\\Desktop\\VideoStreamer\\resources\\haarcascade_frontalcatface.xml");
         this.faces = new Rect[0];
         this.client = new OkHttpClient();
-        setupView();
+        this.iv = ImageViewer.getInstance();
     }
 
-    private void setupView() {
-        iv =  ImageViewer.getInstance();
-        iv.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        iv.setSize(660, 340);
-        iv.setVisible(true);
-    }
 
     public BufferedImage faceStuff(BufferedImage img) {
         byte[] pixels = ((DataBufferByte) img.getRaster().getDataBuffer()).getData();
