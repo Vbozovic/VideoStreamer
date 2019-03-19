@@ -50,14 +50,14 @@ public class ImageViewer extends JFrame {
     private void setup(){
         this.setSize(600,600);
         JPanel migPanel = new JPanel(new GridLayout(1,2));
-        this.webcamPan = new ImagePanel((int)(this.getWidth()/1.5),(int)(this.getHeight()/1.5),0,0);
+        this.webcamPan = new ImagePanel((int)(this.getWidth()/2),(int)(this.getHeight()/2),0,0);
         this.facePan = new JPanel();
         migPanel.add(webcamPan);
         migPanel.add(facePan);
         faceDisplay = new FaceDisplayService(facePan);
 
         this.setContentPane(migPanel);
-        this.pack();
+        //this.pack();
 
         this.contacts = new ContactBook(Config.getInstance().contact_book);
         try {

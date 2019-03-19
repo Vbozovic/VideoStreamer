@@ -34,7 +34,6 @@ public class PersonPanel extends JPanel implements MouseListener {
     public PersonPanel(String name) {
         super();
         this.name = name;
-        System.out.println(name);
         face = null;
         this.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
         this.setLayout(new GridLayout(1,2));

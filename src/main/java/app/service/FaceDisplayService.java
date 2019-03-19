@@ -56,6 +56,7 @@ public class FaceDisplayService {
             PersonPanel ppan = new PersonPanel(imPan,face,cb.findContact(face).name);
             displayTo.add(ppan);
         }
+        ImageViewer.getInstance().repaint();
     }
 
     private ImagePanel panelCrop(BufferedImage image,FaceDto face){

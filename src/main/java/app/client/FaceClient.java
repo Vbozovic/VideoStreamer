@@ -1,12 +1,12 @@
 package app.client;
 
 import app.dto.CompareDto;
-import app.dto.FaceXCompareDto;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.ReferenceType;
 import okhttp3.*;
 import org.apache.commons.io.FileUtils;
+import org.json.JSONObject;
 
 
 import java.io.*;
@@ -100,9 +100,8 @@ public class FaceClient {
                 .build();
 
         Response resp = client.newCall(request).execute();
-        ObjectMapper obj = new ObjectMapper();
-        FaceXCompareDto xcompare = obj.readValue(resp.body().string(),new TypeReference<FaceXCompareDto>(){});
-        return xcompare.into();
+        JSONObject obj  = new JSONObject(resp.body().string());
+        return new CompareDto(obj.getDouble("confidence"));
     }
 
 }

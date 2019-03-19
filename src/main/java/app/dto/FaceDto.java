@@ -55,7 +55,6 @@ public class FaceDto {
         OkHttpClient client = new OkHttpClient();
         try {
             CompareDto result = FaceClient.postCompareVectors(client, Utils.imgToBytes(this.faceImage), Utils.imgToBytes(other.faceImage));
-            System.out.println("Compare API: "+result.getConfidence());
             return result.getConfidence() > 0.4;
         } catch (IOException e) {
             e.printStackTrace();
