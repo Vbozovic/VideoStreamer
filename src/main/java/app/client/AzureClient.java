@@ -39,11 +39,7 @@ public class AzureClient{
         MediaType type = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(type, content);
 
-        Request req = new Request.Builder()
-                .url(httpUrlBuilder.build())
-                .header("Ocp-Apim-Subscription-Key",key)
-                .post(body)
-                .build();
+        Request req = buildRequest(httpUrlBuilder.build(),body,Method.POST);
         System.out.println(req.url().toString());
         return returnResponse(client,req,ctype);
     }
@@ -55,11 +51,7 @@ public class AzureClient{
         if(params != null) params.forEach(httpUrlBuilder::addQueryParameter);
 
         RequestBody body = RequestBody.create(MediaType.get("application/octet-stream"), binary);
-        Request req = new Request.Builder()
-                .url(httpUrlBuilder.build())
-                .header("Ocp-Apim-Subscription-Key",key)
-                .post(body)
-                .build();
+        Request req = buildRequest(httpUrlBuilder.build(),body,Method.POST);
         System.out.println(req.url().toString());
         return returnResponse(client,req,type);
     }
@@ -70,13 +62,30 @@ public class AzureClient{
         HttpUrl.Builder httpUrlBuilder = HttpUrl.parse(endpoint+route).newBuilder();
         if(params != null) params.forEach(httpUrlBuilder::addQueryParameter);
 
-        Request request = new Request.Builder()
-                .url(httpUrlBuilder.build())
-                .header("Ocp-Apim-Subscription-Key",key)
-                .get()
-                .build();
+        Request request = buildRequest(httpUrlBuilder.build(),null,Method.GET);
         System.out.println(request.url().toString());
         return returnResponse(client,request,type);
+    }
+
+    private static <T> Request buildRequest(HttpUrl url,RequestBody body, Method type){
+        Request.Builder req = new Request.Builder()
+                .url(url)
+                .header("Ocp-Apim-Subscription-Key",key);
+        switch (type){
+            case GET:
+                req = req.get();
+                break;
+            case POST:
+                req = req.post(body);
+                break;
+            case PUT:
+                req = req.put(body);
+                break;
+            case PATCH:
+                req = req.patch(body);
+                break;
+        }
+        return req.build();
     }
 
     private static <T> T returnResponse(OkHttpClient client, Request request, Class<T> type) throws AzureException {
@@ -92,4 +101,9 @@ public class AzureClient{
         }
         return null;
     }
+
+    private enum Method{
+        GET,POST,PUT,PATCH
+    }
+
 }
