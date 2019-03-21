@@ -23,11 +23,11 @@ public class FaceDetectService {
     private OkHttpClient client;
     private ImageViewer iv;
 
-    public FaceDetectService() {
+    public FaceDetectService(ImageViewer iv) {
         this.faceClas = new CascadeClassifier("C:\\Users\\ybv\\Desktop\\VideoStreamer\\resources\\haarcascade_frontalcatface.xml");
         this.faces = new Rect[0];
         this.client = new OkHttpClient();
-        this.iv = ImageViewer.getInstance();
+        this.iv = iv;
     }
 
 

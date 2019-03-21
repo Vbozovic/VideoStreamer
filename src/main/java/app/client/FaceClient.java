@@ -1,18 +1,10 @@
 package app.client;
 
 import app.dto.CompareDto;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.ReferenceType;
 import okhttp3.*;
 import org.apache.commons.io.FileUtils;
 import org.json.JSONObject;
-
-
 import java.io.*;
-import java.net.UnknownHostException;
-import java.util.Base64;
-import java.util.concurrent.TimeUnit;
 
 
 public class FaceClient {

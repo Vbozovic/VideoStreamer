@@ -1,4 +1,4 @@
-package app.service;
+package app.gui.service;
 
 import app.Utils;
 import app.dto.ContactBook;

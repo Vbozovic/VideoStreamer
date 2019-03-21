@@ -33,7 +33,7 @@ public class VideoReciverTask implements Runnable {
 
     public VideoReciverTask() {
         this.runnig = true;
-        this.detect = new FaceDetectService();
+        this.detect = new FaceDetectService(ImageViewer.getInstance());
     }
 
 
@@ -43,6 +43,8 @@ public class VideoReciverTask implements Runnable {
 
             height = in.readInt();
             width = in.readInt();
+
+            ImageViewer.getInstance().setSize(width*2,(int)(height*1.5));
 
             byte[] pixels = new byte[height * width * 3];// 3 = broj bajtova po pikselu
             int skipCounter = 0;

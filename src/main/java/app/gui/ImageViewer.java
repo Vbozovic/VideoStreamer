@@ -2,17 +2,13 @@ package app.gui;
 
 import app.dto.ContactBook;
 import app.service.Config;
-import app.service.FaceDisplayService;
+import app.gui.service.FaceDisplayService;
 import org.opencv.core.Core;
-import org.opencv.core.Rect;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Properties;
 
 public class ImageViewer extends JFrame {
 
@@ -43,7 +39,7 @@ public class ImageViewer extends JFrame {
     public void displayWebcamImage(BufferedImage img){
         webcamPan.img = img;
         webcamPan.repaint();
-        this.setSize(img.getWidth()*2,img.getHeight()+50);
+        //this.setSize(img.getWidth()*2,img.getHeight()+50);
     }
 
 
@@ -59,7 +55,6 @@ public class ImageViewer extends JFrame {
         this.setContentPane(migPanel);
         //this.pack();
 
-        this.setSize(600,400);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
         this.contacts = new ContactBook(Config.getInstance().contact_book);

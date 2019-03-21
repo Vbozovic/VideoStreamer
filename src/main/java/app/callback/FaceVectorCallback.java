@@ -2,8 +2,7 @@ package app.callback;
 
 import app.dto.FaceDto;
 import app.dto.VectorDto;
-import app.service.FaceDisplayService;
-import com.fasterxml.jackson.core.JsonParseException;
+import app.gui.service.FaceDisplayService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.Call;

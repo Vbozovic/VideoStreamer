@@ -1,0 +1,31 @@
+package app.service;
+
+import app.Utils;
+import app.client.AzureClient;
+import app.dto.azure.recive.detect.FaceDetectDto;
+import app.dto.azure.send.CreateListDto;
+import app.error_handling.AzureException;
+
+import java.awt.image.BufferedImage;
+import java.util.HashMap;
+
+public class AzureService {
+
+    public static FaceDetectDto[] detectFaces(BufferedImage img) throws AzureException {
+        HashMap<String,String> params = new HashMap<>();
+        params.put("returnFaceLandmarks","false");
+        params.put("returnFaceId","true");
+        params.put("returnFaceAttributes","age,gender");
+        return AzureClient.post_binary("/detect", Utils.imgToBytes(img),params,FaceDetectDto[].class);
+    }
+
+    public static void createList(String name, String listId, String userData) throws AzureException {
+
+        HashMap<String,String> params = new HashMap<>();
+        params.put("faceListId",listId);
+
+        CreateListDto dto = new CreateListDto(name,userData);
+        AzureClient.post("/facelists/"+listId,dto,params,CreateListDto.class);
+    }
+
+}

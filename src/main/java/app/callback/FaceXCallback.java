@@ -1,6 +1,6 @@
 package app.callback;
 
-import app.service.FaceDisplayService;
+import app.gui.service.FaceDisplayService;
 import okhttp3.Callback;
 
 import java.awt.image.BufferedImage;

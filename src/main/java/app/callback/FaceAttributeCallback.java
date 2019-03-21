@@ -3,7 +3,7 @@ package app.callback;
 import app.Utils;
 import app.client.FaceClient;
 import app.dto.FaceDto;
-import app.service.FaceDisplayService;
+import app.gui.service.FaceDisplayService;
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
 import okhttp3.Response;
