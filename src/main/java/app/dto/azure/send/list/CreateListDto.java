@@ -1,4 +1,4 @@
-package app.dto.azure.send;
+package app.dto.azure.send.list;
 
 public class CreateListDto {
     public String name;

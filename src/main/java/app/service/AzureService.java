@@ -2,11 +2,14 @@ package app.service;
 
 import app.Utils;
 import app.client.AzureClient;
+import app.dto.azure.recive.group.GetGroupDto;
+import app.dto.azure.recive.group.TrainStatusDto;
 import app.dto.azure.recive.list.AddFaceToListResponse;
 import app.dto.azure.recive.detect.FaceDetectDto;
 import app.dto.azure.recive.list.FaceListDto;
 import app.dto.azure.recive.list.ListsDto;
-import app.dto.azure.send.CreateListDto;
+import app.dto.azure.send.group.CreateGroupDto;
+import app.dto.azure.send.list.CreateListDto;
 import app.error_handling.AzureException;
 
 import java.awt.image.BufferedImage;
@@ -50,6 +53,31 @@ public class AzureService {
 
     public static void deleteFaceList(String faceListid) throws AzureException {
         AzureClient.delete("/facelists/"+faceListid,null,null,Void.class);
+    }
+
+    public static void createGroup(String name,String userData,String groupId) throws AzureException {
+        CreateGroupDto dto = new CreateGroupDto(name,userData);
+        AzureClient.post("/persongroups/"+groupId,dto,null,Void.class);
+    }
+
+    public static void deleteGroup(String groupId) throws AzureException {
+        AzureClient.delete("/persongroups/"+groupId,null,null,Void.class);
+    }
+
+    public GetGroupDto getGroup(String groupId) throws AzureException {
+       return AzureClient.get("/persongroups/"+groupId,null,GetGroupDto.class);
+    }
+
+    public static GetGroupDto[] listGroups() throws AzureException {
+        return AzureClient.get("/persongroups",null,GetGroupDto[].class);
+    }
+
+    public static void trainGroup(String groupId) throws AzureException {
+        AzureClient.post("/persongroups/"+groupId+"/train",null,null,Void.class);
+    }
+
+    public static TrainStatusDto getGroupTrainStatus(String groupId) throws AzureException {
+        return AzureClient.get("/persongroups/"+groupId+"/training",null,TrainStatusDto.class);
     }
 
 }

@@ -65,7 +65,7 @@ public class ContactBook implements Serializable{
                 return c;
             }
         }
-        System.out.println("No face found");
+        System.out.println("No group found");
         return new Contact(face.getVector(),"",face.getFaceImage()); //returning empty contact
     }
 

@@ -31,7 +31,7 @@ public class FaceAttributeCallback extends FaceXCallback {
     @Override
     public void onResponse(Call call, Response response) throws IOException {
         String body = response.body().string();
-        //For every unique face in the sent picture, there will be a Json OBJECT with name face_id_*
+        //For every unique group in the sent picture, there will be a Json OBJECT with name face_id_*
         int faces = StringUtils.countMatches(body,"face_id");
         JSONObject responseJson = new JSONObject(body);
         LinkedList<FaceDto> facesList = new LinkedList<>();
@@ -42,7 +42,7 @@ public class FaceAttributeCallback extends FaceXCallback {
         }
 
         for (FaceDto face : facesList){
-            //for every face we crop the image and send that to vector
+            //for every group we crop the image and send that to vector
             FaceClient.postFaceVector(new OkHttpClient(),new FaceVectorCallback(this.img,this.service,face), Utils.imgToBytes(Utils.cropImageFaces(face,this.img)));
         }
 

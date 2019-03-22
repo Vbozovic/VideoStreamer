@@ -14,7 +14,7 @@ import java.util.Map;
 public class AzureClient{
 
     private static String key = "d5db1512976c43668db4882691200a45";
-    private static String endpoint = "https://westeurope.api.cognitive.microsoft.com/face/v1.0";
+    private static String endpoint = "https://westeurope.api.cognitive.microsoft.com/group/v1.0";
 
     private RequestBuilder setupAuthentication(RequestBuilder request){
         request.setHeader("Ocp-Apim-Subscription-Key",key);
