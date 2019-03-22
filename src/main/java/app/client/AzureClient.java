@@ -21,6 +21,51 @@ public class AzureClient{
         return request;
     }
 
+    public static <P,T> T delete(String route, Map<String,String> params,P dto,Class<T> ctype) throws AzureException {
+        OkHttpClient client = new OkHttpClient();
+        ObjectMapper om = new ObjectMapper();
+
+        HttpUrl.Builder httpUrlBuilder = HttpUrl.parse(endpoint+route).newBuilder();
+        if(params != null) params.forEach(httpUrlBuilder::addQueryParameter);
+
+        String content = "";
+        try {
+            content = om.writeValueAsString(dto);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        MediaType type = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(type, content);
+
+        Request req = buildRequest(httpUrlBuilder.build(),body,Method.DELETE);
+        System.out.println(req.url().toString());
+        return returnResponse(client,req,ctype);
+    }
+
+    public static <T, P>  T put(String route, P dto,Map<String,String> params, Class<T> ctype) throws AzureException {
+        OkHttpClient client = new OkHttpClient();
+        ObjectMapper om = new ObjectMapper();
+
+        HttpUrl.Builder httpUrlBuilder = HttpUrl.parse(endpoint+route).newBuilder();
+        if(params != null){
+            params.forEach(httpUrlBuilder::addQueryParameter);
+        }
+
+        String content = "";
+        try {
+            content = om.writeValueAsString(dto);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        MediaType type = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(type, content);
+
+        Request req = buildRequest(httpUrlBuilder.build(),body,Method.PUT);
+        System.out.println(req.url().toString());
+        return returnResponse(client,req,ctype);
+    }
+
     public static <T, P>  T post(String route, P dto,Map<String,String> params, Class<T> ctype) throws AzureException {
         OkHttpClient client = new OkHttpClient();
         ObjectMapper om = new ObjectMapper();
@@ -30,7 +75,7 @@ public class AzureClient{
             params.forEach(httpUrlBuilder::addQueryParameter);
         }
 
-        String content = null;
+        String content = "";
         try {
             content = om.writeValueAsString(dto);
         } catch (JsonProcessingException e) {
@@ -84,6 +129,9 @@ public class AzureClient{
             case PATCH:
                 req = req.patch(body);
                 break;
+            case DELETE:
+                req = req.delete(body);
+                break;
         }
         return req.build();
     }
@@ -95,7 +143,12 @@ public class AzureClient{
             if (!resp.isSuccessful()){
                 throw new AzureException("Azure api error status code: "+resp.code(),resp.body().string(),resp.code());
             }
-            return mapper.readValue(resp.body().string(),type);
+
+            String body = resp.body().string();
+            if(!body.isEmpty()){
+                return mapper.readValue(body,type);
+            }
+            return null;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -103,7 +156,7 @@ public class AzureClient{
     }
 
     private enum Method{
-        GET,POST,PUT,PATCH
+        GET,POST,PUT,PATCH,DELETE
     }
 
 }

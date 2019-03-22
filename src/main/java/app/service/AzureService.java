@@ -5,6 +5,7 @@ import app.client.AzureClient;
 import app.dto.azure.recive.list.AddFaceToListResponse;
 import app.dto.azure.recive.detect.FaceDetectDto;
 import app.dto.azure.recive.list.FaceListDto;
+import app.dto.azure.recive.list.ListsDto;
 import app.dto.azure.send.CreateListDto;
 import app.error_handling.AzureException;
 
@@ -21,11 +22,10 @@ public class AzureService {
         return AzureClient.post_binary("/detect", Utils.imgToBytes(img),params,FaceDetectDto[].class);
     }
 
-    //TODO test
     public static void createList(String name, String listId, String userData) throws AzureException {
 
         CreateListDto dto = new CreateListDto(name,userData);
-        AzureClient.post("/facelists/"+listId,dto,null,CreateListDto.class);
+        AzureClient.put("/facelists/"+listId,dto,null,CreateListDto.class);
     }
 
     //TODO test
@@ -39,9 +39,17 @@ public class AzureService {
         return resp;
     }
 
-    //TODO Test
     public static FaceListDto getListOfFaces(String faceListid) throws AzureException {
         return AzureClient.get("/facelists/"+faceListid,null,FaceListDto.class);
+    }
+
+    public static ListsDto[] getLists() throws AzureException {
+        return AzureClient.get("/facelists",null, ListsDto[].class);
+    }
+
+
+    public static void deleteFaceList(String faceListid) throws AzureException {
+        AzureClient.delete("/facelists/"+faceListid,null,null,Void.class);
     }
 
 }

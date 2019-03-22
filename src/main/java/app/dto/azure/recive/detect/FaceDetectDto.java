@@ -8,6 +8,15 @@ public class FaceDetectDto {
     private FaceRectangle faceRectangle;
     private FaceAttributes faceAttributes;
 
+    public FaceDetectDto() {
+    }
+
+    public FaceDetectDto(String faceId, FaceRectangle faceRectangle, FaceAttributes faceAttributes) {
+        this.faceId = faceId;
+        this.faceRectangle = faceRectangle;
+        this.faceAttributes = faceAttributes;
+    }
+
     public String getFaceId() {
         return faceId;
     }

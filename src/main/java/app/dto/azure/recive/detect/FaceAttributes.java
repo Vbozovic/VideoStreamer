@@ -37,4 +37,11 @@ public class FaceAttributes {
         this.gender = gender;
     }
 
+    public FaceAttributes() {
+    }
+
+    public FaceAttributes(Float age, String gender) {
+        this.age = age;
+        this.gender = gender;
+    }
 }

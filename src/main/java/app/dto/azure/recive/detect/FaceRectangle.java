@@ -12,6 +12,16 @@ public class FaceRectangle {
     private Integer left;
     private Integer top;
 
+    public FaceRectangle() {
+    }
+
+    public FaceRectangle(Integer width, Integer height, Integer left, Integer top) {
+        this.width = width;
+        this.height = height;
+        this.left = left;
+        this.top = top;
+    }
+
     public Integer getWidth() {
         return width;
     }
