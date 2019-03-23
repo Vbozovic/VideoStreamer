@@ -1,17 +1,14 @@
 package app.service;
 
 import app.Utils;
-import app.callback.FaceAttributeCallback;
 import app.client.FaceClient;
-import app.gui.ImageViewer;
+import app.gui.VideoChat;
 import okhttp3.OkHttpClient;
 import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
 import org.opencv.objdetect.Objdetect;
 
-import javax.swing.*;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.IOException;
@@ -21,9 +18,9 @@ public class FaceDetectService {
     private CascadeClassifier faceClas;
     private Rect[] faces;
     private OkHttpClient client;
-    private ImageViewer iv;
+    private VideoChat iv;
 
-    public FaceDetectService(ImageViewer iv) {
+    public FaceDetectService(VideoChat iv) {
         this.faceClas = new CascadeClassifier("C:\\Users\\ybv\\Desktop\\VideoStreamer\\resources\\haarcascade_frontalcatface.xml");
         this.faces = new Rect[0];
         this.client = new OkHttpClient();
@@ -64,11 +61,11 @@ public class FaceDetectService {
             //System.out.println("Number of faces changed "+this.faces.length);
             byte[] bytes = Utils.imgToBytes(image);
             System.out.println("Sending FaceX");
-            try {
+            /*try {
                 FaceClient.postFaceDetect(this.client, new FaceAttributeCallback(iv.getFaceDisplay(), Utils.deepCopy(image)), bytes);
             } catch (IOException e) {
                 e.printStackTrace();
-            }
+            }*/
 
         }
 
@@ -77,7 +74,7 @@ public class FaceDetectService {
         }
     }
 
-    public ImageViewer getIv() {
+    public VideoChat getIv() {
         return iv;
     }
 }

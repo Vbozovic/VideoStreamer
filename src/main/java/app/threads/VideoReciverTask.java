@@ -1,15 +1,8 @@
 package app.threads;
 
 import app.Utils;
-import app.callback.FaceAttributeCallback;
-import app.client.FaceClient;
-import app.gui.ImageViewer;
+import app.gui.VideoChat;
 import app.service.FaceDetectService;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Response;
-import org.asynchttpclient.DefaultAsyncHttpClientConfig;
 import org.opencv.core.*;
 import java.awt.image.*;
 import java.io.IOException;
@@ -33,7 +26,6 @@ public class VideoReciverTask implements Runnable {
 
     public VideoReciverTask() {
         this.runnig = true;
-        this.detect = new FaceDetectService(ImageViewer.getInstance());
     }
 
 
@@ -44,7 +36,6 @@ public class VideoReciverTask implements Runnable {
             height = in.readInt();
             width = in.readInt();
 
-            ImageViewer.getInstance().setSize(width*2,(int)(height*1.5));
 
             byte[] pixels = new byte[height * width * 3];// 3 = broj bajtova po pikselu
             int skipCounter = 0;
@@ -55,9 +46,9 @@ public class VideoReciverTask implements Runnable {
 
                 if(skipCounter++ >= 10){
                     skipCounter = 0;
-                    detect.getIv().displayWebcamImage(detect.faceStuff(img));
+                    //detect.getIv().displayWebcamImage(detect.faceStuff(img));
                 }else{
-                    detect.getIv().displayWebcamImage(img);
+                    //detect.getIv().displayWebcamImage(img);
                 }
             }
             in.close();
