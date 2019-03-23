@@ -1,11 +1,10 @@
-package app.dto;
+package app.dto.facex;
 
 import app.Utils;
 import app.client.FaceClient;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import okhttp3.OkHttpClient;
 
-import javax.rmi.CORBA.Util;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Arrays;

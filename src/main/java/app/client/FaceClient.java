@@ -1,6 +1,6 @@
 package app.client;
 
-import app.dto.CompareDto;
+import app.dto.facex.CompareDto;
 import okhttp3.*;
 import org.apache.commons.io.FileUtils;
 import org.json.JSONObject;

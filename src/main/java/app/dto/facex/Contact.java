@@ -1,6 +1,5 @@
-package app.dto;
+package app.dto.facex;
 
-import app.Utils;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.awt.image.BufferedImage;

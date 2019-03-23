@@ -1,4 +1,4 @@
-package app.dto;
+package app.dto.facex;
 
 public class CompareDto {
 

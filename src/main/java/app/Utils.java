@@ -1,10 +1,6 @@
 package app;
 
-import app.callback.FaceAttributeCallback;
-import app.callback.FaceVectorCallback;
-import app.client.FaceClient;
-import app.dto.FaceDto;
-import app.dto.VectorDto;
+import app.dto.facex.FaceDto;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

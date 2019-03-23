@@ -1,8 +1,7 @@
 package app.gui;
 
-import app.Utils;
-import app.dto.Contact;
-import app.dto.FaceDto;
+import app.dto.facex.Contact;
+import app.dto.facex.FaceDto;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;

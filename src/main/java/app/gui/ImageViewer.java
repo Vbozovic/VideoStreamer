@@ -1,6 +1,6 @@
 package app.gui;
 
-import app.dto.ContactBook;
+import app.dto.facex.ContactBook;
 import app.service.Config;
 import app.gui.service.FaceDisplayService;
 import org.opencv.core.Core;

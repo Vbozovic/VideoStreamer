@@ -1,7 +1,9 @@
 package app.azure;
 
 import app.client.AzureClient;
+import app.dto.azure.recive.group.CreatedPersonDto;
 import app.dto.azure.recive.group.GetGroupDto;
+import app.dto.azure.recive.group.GetPersonDto;
 import app.dto.azure.recive.list.FaceListDto;
 import app.dto.azure.recive.list.ListsDto;
 import app.error_handling.AzureException;
@@ -66,5 +68,30 @@ public class AzureAPITests {
 
     }
 
+    @Test
+    public void testPersonGroup() throws AzureException {
+
+        AzureService.createGroup("Test group 1","For testing","gr1");
+        CreatedPersonDto dto1 = AzureService.createPerson("Vuk","Jebeni kurjak","gr1");
+        CreatedPersonDto dto2 = AzureService.createPerson("Marko","","gr1");
+
+        GetPersonDto[] list = AzureService.listPersons("gr1");
+        assert list.length == 2;
+        assert list[0].name.equals("Vuk") || list[0].name.equals("Marko");
+        assert list[1].name.equals("Vuk") || list[1].name.equals("Marko");
+
+        GetPersonDto dto3 = AzureService.getPerson(dto1.personId,"gr1");
+        assert dto3.name.equals("Vuk");
+        assert dto3.personId.equals(dto1.personId);
+
+        AzureService.deletePerson(dto1.personId,"gr1");
+        GetPersonDto[] list2 = AzureService.listPersons("gr1");
+
+        assert list2.length == 1;
+        assert list2[0].personId.equals(dto2.personId);
+        assert list2[0].name.equals("Marko");
+
+        AzureService.deleteGroup("gr1");
+    }
 
 }

@@ -89,11 +89,9 @@ public class AzureService {
     }
 
     //TODO test
-    public static CreatedPersonDto createPerson(String personName, String personData, String groupId,String userData) throws AzureException {
+    public static CreatedPersonDto createPerson(String personName, String personData, String groupId) throws AzureException {
         CreatePersonDto dto = new CreatePersonDto(personName,personData);
-        HashMap<String,String> params = new HashMap<>();
-        params.put("userData",userData);
-        return AzureClient.post("/persongroups/"+groupId+"/persons",dto,params,CreatedPersonDto.class);
+        return AzureClient.post("/persongroups/"+groupId+"/persons",dto,null,CreatedPersonDto.class);
     }
 
     //TODO test

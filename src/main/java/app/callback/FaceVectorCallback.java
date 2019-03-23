@@ -1,7 +1,7 @@
 package app.callback;
 
-import app.dto.FaceDto;
-import app.dto.VectorDto;
+import app.dto.facex.FaceDto;
+import app.dto.facex.VectorDto;
 import app.gui.service.FaceDisplayService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;

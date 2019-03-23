@@ -2,7 +2,7 @@ package app.callback;
 
 import app.Utils;
 import app.client.FaceClient;
-import app.dto.FaceDto;
+import app.dto.facex.FaceDto;
 import app.gui.service.FaceDisplayService;
 import okhttp3.Call;
 import okhttp3.OkHttpClient;

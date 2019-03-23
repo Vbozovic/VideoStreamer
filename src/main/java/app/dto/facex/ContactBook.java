@@ -1,13 +1,10 @@
-package app.dto;
+package app.dto.facex;
 
-import app.Utils;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.io.FileUtils;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 
 import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
 

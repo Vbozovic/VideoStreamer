@@ -1,19 +1,16 @@
 package app.gui.service;
 
 import app.Utils;
-import app.dto.ContactBook;
-import app.dto.FaceDto;
+import app.dto.facex.ContactBook;
+import app.dto.facex.FaceDto;
 import app.gui.ImagePanel;
 import app.gui.ImageViewer;
 import app.gui.PersonPanel;
-import io.humble.video.awt.ImageFrame;
-import org.apache.commons.lang3.tuple.Pair;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.List;
 
 public class FaceDisplayService {
 
