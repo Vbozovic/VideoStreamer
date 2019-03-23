@@ -57,14 +57,14 @@ public class AzureService {
 
     public static void createGroup(String name,String userData,String groupId) throws AzureException {
         CreateGroupDto dto = new CreateGroupDto(name,userData);
-        AzureClient.post("/persongroups/"+groupId,dto,null,Void.class);
+        AzureClient.put("/persongroups/"+groupId,dto,null,Void.class);
     }
 
     public static void deleteGroup(String groupId) throws AzureException {
         AzureClient.delete("/persongroups/"+groupId,null,null,Void.class);
     }
 
-    public GetGroupDto getGroup(String groupId) throws AzureException {
+    public static GetGroupDto getGroup(String groupId) throws AzureException {
        return AzureClient.get("/persongroups/"+groupId,null,GetGroupDto.class);
     }
 
