@@ -8,8 +8,7 @@ public class Config{
 
     private static Config instance = null;
 
-    public String contact_book;
-
+    public String group_id;
 
     public static Config getInstance(){
         if(instance == null){
@@ -23,7 +22,7 @@ public class Config{
         Properties p = new Properties();
         try {
             p.load( new FileReader("resources/config.properties"));
-            contact_book = p.getProperty("contact_book");
+            group_id = p.getProperty("group_id");
         } catch (IOException e) {
             e.printStackTrace();
         }

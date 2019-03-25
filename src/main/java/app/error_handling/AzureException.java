@@ -2,8 +2,8 @@ package app.error_handling;
 
 public class AzureException extends Exception {
 
-    private String responseBody;
-    private int statusCode;
+    public String responseBody;
+    public int statusCode;
 
     public AzureException(String message, String responseBody, int statusCode) {
         super(message);

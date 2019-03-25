@@ -17,6 +17,9 @@ public class VideoChat extends Application{
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
     }
 
+    private Stage mainStage;
+    private Scene mainScreenScene;
+
 
     public VideoChat(){
         super();
@@ -36,8 +39,9 @@ public class VideoChat extends Application{
 
         Parent root = FXMLLoader.load(url);
         primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 300, 275));
-        primaryStage.show();
+        this.mainScreenScene = new Scene(root,300,300);
+        primaryStage.setScene(this.mainScreenScene);
+        primaryStage.show();;
 
     }
 

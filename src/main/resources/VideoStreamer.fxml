@@ -12,7 +12,7 @@
   <items>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
          <children>
-            <ListView layoutY="28.0" prefHeight="376.0" prefWidth="174.0" />
+            <ListView fx:id="contactList" layoutY="28.0" prefHeight="376.0" prefWidth="174.0" />
             <Label layoutY="4.0" prefHeight="19.0" prefWidth="174.0" text="Contacts" />
          </children></AnchorPane>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
@@ -21,7 +21,7 @@
               <menus>
                 <Menu mnemonicParsing="false" text="Operations">
                   <items>
-                    <MenuItem fx:id="addContactMenu" mnemonicParsing="false" onAction="#adisplayAdContact" text="Add contact" />
+                    <MenuItem fx:id="addContactMenu" mnemonicParsing="false" onAction="#displayAdContact" text="Add contact" />
                         <MenuItem fx:id="addFaceMenu" mnemonicParsing="false" onAction="#displayAddFace" text="Add face" />
                         <MenuItem fx:id="trainingStatusMenu" mnemonicParsing="false" onAction="#displayTrainingStatus" text="Training status" />
                         <MenuItem fx:id="trainMenu" mnemonicParsing="false" onAction="#train" text="Train" />
