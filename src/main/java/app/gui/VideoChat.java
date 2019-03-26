@@ -39,7 +39,7 @@ public class VideoChat extends Application{
 
         Parent root = FXMLLoader.load(url);
         primaryStage.setTitle("Hello World");
-        this.mainScreenScene = new Scene(root,300,300);
+        this.mainScreenScene = new Scene(root,750,300);
         primaryStage.setScene(this.mainScreenScene);
         primaryStage.show();;
 
