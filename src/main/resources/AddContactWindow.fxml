@@ -7,10 +7,10 @@
 <AnchorPane fx:id="addContactWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="277.0" prefWidth="336.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controller.AddContactController">
    <children>
       <Label layoutX="14.0" layoutY="53.0" text="Contact name:" />
-      <TextField layoutX="118.0" layoutY="48.0" />
-      <TextField layoutX="118.0" layoutY="115.0" prefHeight="74.0" prefWidth="187.0" />
+      <TextField fx:id="contactNameField" layoutX="118.0" layoutY="48.0" />
+      <TextField fx:id="userDataField" layoutX="118.0" layoutY="115.0" prefHeight="74.0" prefWidth="187.0" />
       <Label layoutX="14.0" layoutY="142.0" prefHeight="21.0" prefWidth="87.0" text="Contact info:" />
       <Button fx:id="addContactButton" layoutX="91.0" layoutY="223.0" mnemonicParsing="false" onAction="#addContact" text="Add" />
-      <Button fx:id="cancelButton" layoutX="212.0" layoutY="223.0" mnemonicParsing="false" text="Cancel" />
+      <Button fx:id="cancelButton" layoutX="212.0" layoutY="223.0" mnemonicParsing="false" text="Cancel" onAction="#closeWindow"/>
    </children>
 </AnchorPane>
