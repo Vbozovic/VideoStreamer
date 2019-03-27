@@ -18,4 +18,9 @@ public class GetPersonDto {
         this.name = name;
         this.userData = userData;
     }
+
+    @Override
+    public String toString() {
+        return this.name;
+    }
 }

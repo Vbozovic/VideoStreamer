@@ -15,6 +15,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SplitPane;
+import javafx.scene.control.TreeView;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -25,7 +26,7 @@ public class MainScreenController implements Initializable {
 
 
     public SplitPane beginScreen;
-    public ListView<GetPersonDto> contactList;
+    public TreeView<GetPersonDto> contactTree;
 
 
     public void displayAdContact(ActionEvent actionEvent) {
@@ -45,6 +46,7 @@ public class MainScreenController implements Initializable {
 
         try {
             this.model = new MainScreenModel();
+            this.model.fillTree(this.contactTree);
         }catch (GetGroupException gge){
             if(gge.statusCode == 404){
                 //create new group
@@ -58,6 +60,7 @@ public class MainScreenController implements Initializable {
         } catch (AzureException le){
             le.printStackTrace();
         }
+
 
 
     }
