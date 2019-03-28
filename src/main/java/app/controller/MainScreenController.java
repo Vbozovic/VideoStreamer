@@ -1,5 +1,6 @@
 package app.controller;
 
+import app.Utils;
 import app.dto.azure.recive.group.GetGroupDto;
 import app.dto.azure.recive.group.GetPersonDto;
 import app.error_handling.AzureException;
@@ -39,16 +40,11 @@ public class MainScreenController implements Initializable {
 
     public void displayAdContact(ActionEvent actionEvent) {
         try {
-            URL url = new File("src/main/resources/AddContactWindow.fxml").toURL();
-            FXMLLoader loader = new FXMLLoader(url);
-            Parent root = loader.load();
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root,400,300));
 
-            AddContactController controller = loader.<AddContactController>getController();
-            controller.model = this.model;
+            Utils.loadAndWaitWindow("src/main/resources/AddContactWindow.fxml",400,300,(AddContactController controller)->{
+                controller.model = this.model;
+            });
 
-            stage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();
         }

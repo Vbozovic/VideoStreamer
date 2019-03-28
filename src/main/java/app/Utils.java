@@ -1,12 +1,20 @@
 package app;
 
+import app.controller.AddContactController;
 import app.dto.facex.FaceDto;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.*;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class Utils {
 
@@ -48,6 +56,19 @@ public class Utils {
         BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
         img.setData(Raster.createRaster(img.getSampleModel(), new DataBufferByte(pixels, pixels.length), new Point()));
         return img;
+    }
+
+    public static <Controller> void loadAndWaitWindow(String urlPath,int width,int height,Lambda<Controller> setup) throws IOException {
+        URL url = new File(urlPath).toURL();
+        FXMLLoader loader = new FXMLLoader(url);
+        Parent root = loader.load();
+
+        Controller cont = loader.<Controller>getController();
+        setup.lambda(cont);
+
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root,width,height));
+        stage.showAndWait();
     }
 
 }
