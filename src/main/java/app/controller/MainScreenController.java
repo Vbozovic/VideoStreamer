@@ -55,6 +55,15 @@ public class MainScreenController implements Initializable {
     }
 
     public void displayAddFace(ActionEvent actionEvent) {
+        if(!this.contactTree.getSelectionModel().getSelectedItems().isEmpty()){
+            System.out.println(this.contactTree.getSelectionModel().getSelectedItems().get(0).getValue());
+        }else{
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setHeaderText("Adding a face");
+            alert.setContentText("You must have a contact selected in order to add a face");
+
+            alert.showAndWait();
+        }
     }
 
     public void displayTrainingStatus(ActionEvent actionEvent) {
@@ -73,13 +82,6 @@ public class MainScreenController implements Initializable {
                 @Override
                 public TreeCell<GetPersonDto> call(TreeView<GetPersonDto> param) {
                     return new ContactTreeCellFactory();
-                }
-            });
-
-            this.contactTree.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<TreeItem<GetPersonDto>>() {
-                @Override
-                public void changed(ObservableValue<? extends TreeItem<GetPersonDto>> observable, TreeItem<GetPersonDto> oldValue, TreeItem<GetPersonDto> newValue) {
-                    System.out.println(newValue.getValue());
                 }
             });
         }catch (GetGroupException gge){
