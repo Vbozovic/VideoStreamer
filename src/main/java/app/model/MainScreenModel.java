@@ -45,7 +45,6 @@ public class MainScreenModel{
     public boolean addPerson(GetPersonDto person){
         people.add(person);
         this.tree.getRoot().getChildren().add(new TreeItem<GetPersonDto>(person));
-        this.tree.refresh();
         return true;
     }
 

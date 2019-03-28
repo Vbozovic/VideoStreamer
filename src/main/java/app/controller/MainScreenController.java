@@ -20,6 +20,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Callback;
 
 import java.io.File;
@@ -40,12 +41,12 @@ public class MainScreenController implements Initializable {
         try {
             URL url = new File("src/main/resources/AddContactWindow.fxml").toURL();
             FXMLLoader loader = new FXMLLoader(url);
-            Parent root = loader.load(url);
+            Parent root = loader.load();
             Stage stage = new Stage();
             stage.setScene(new Scene(root,400,300));
 
-            AddContactController controller = (AddContactController)loader.getController();
-
+            AddContactController controller = loader.<AddContactController>getController();
+            controller.model = this.model;
 
             stage.showAndWait();
         } catch (IOException e) {

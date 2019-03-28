@@ -8,6 +8,7 @@ import app.model.MainScreenModel;
 import app.service.AzureService;
 import app.service.Config;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -24,6 +25,7 @@ public class AddContactController implements Initializable {
     public TextField contactNameField;
     public TextField userDataField;
 
+    @FXML
     public MainScreenModel model;
 
     @Override
@@ -35,6 +37,7 @@ public class AddContactController implements Initializable {
         try {
             CreatedPersonDto result = AzureService.createPerson(contactNameField.getText(), userDataField.getText(), Config.getInstance().group_id);
             GetPersonDto person = AzureService.getPerson(result.personId,Config.getInstance().group_id);
+            model.addPerson(person);
         } catch (AzureException e) {
             e.printStackTrace();
         }
