@@ -48,7 +48,6 @@ public class MainScreenController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     public void displayAddFace(ActionEvent actionEvent) {
@@ -74,7 +73,6 @@ public class MainScreenController implements Initializable {
 
         try {
             this.model = new MainScreenModel(this.contactTree);
-            this.model.fillTree();
             this.contactTree.setCellFactory(new Callback<TreeView<GetPersonDto>, TreeCell<GetPersonDto>>() {
                 @Override
                 public TreeCell<GetPersonDto> call(TreeView<GetPersonDto> param) {

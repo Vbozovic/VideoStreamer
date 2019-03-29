@@ -20,17 +20,17 @@ public class MainScreenModel{
 
     public TreeView<GetPersonDto> tree;
     public String groupId;
-    public ArrayList<GetPersonDto> people;
 
 
     public MainScreenModel(TreeView<GetPersonDto> tree) throws ListPersonsException, GetGroupException {
         GetGroupDto myGroup = AzureService.getGroup(Config.getInstance().group_id);
-        people = new ArrayList<>(Arrays.asList(AzureService.listPersons(myGroup.personGroupId)));
         groupId = myGroup.personGroupId;
         this.tree = tree;
+        ArrayList<GetPersonDto>people = new ArrayList<>(Arrays.asList(AzureService.listPersons(myGroup.personGroupId)));
+        fillTree(people);
     }
 
-    public void fillTree(){
+    private void fillTree(ArrayList<GetPersonDto> people){
         TreeItem<GetPersonDto> root = new TreeItem<>();
         root.setExpanded(true);
         tree.setRoot(root);
@@ -43,9 +43,10 @@ public class MainScreenModel{
     }
 
     public boolean addPerson(GetPersonDto person){
-        people.add(person);
         this.tree.getRoot().getChildren().add(new TreeItem<GetPersonDto>(person));
         return true;
     }
+
+
 
 }
