@@ -1,6 +1,6 @@
 package app;
 
-import app.controller.AddContactController;
+import app.dto.azure.recive.detect.FaceDetectDto;
 import app.dto.facex.FaceDto;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,7 +13,6 @@ import java.awt.image.*;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 public class Utils {
@@ -30,13 +29,11 @@ public class Utils {
         return null;
     }
 
-    public static BufferedImage cropImageFaces(FaceDto face,BufferedImage image){
-        int UX,UY,LX,LY;
-        UX = face.ULX();
-        UY = face.ULY();
-        LX = face.LRX();
-        LY = face.LRY();
-        return image.getSubimage(UX,UY,LX-UX,LY-UY);
+    public static BufferedImage cropImageFaces(FaceDetectDto face, BufferedImage image){
+        return image.getSubimage(face.getFaceRectangle().getLeft(),
+                face.getFaceRectangle().getTop(),
+                face.getFaceRectangle().getWidth()
+                ,face.getFaceRectangle().getHeight());
     }
 
 

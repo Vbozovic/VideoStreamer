@@ -2,7 +2,6 @@ package app.controller;
 
 import app.dto.azure.recive.group.CreatedPersonDto;
 import app.dto.azure.recive.group.GetPersonDto;
-import app.dto.azure.send.group.CreatePersonDto;
 import app.error_handling.AzureException;
 import app.model.MainScreenModel;
 import app.service.AzureService;
@@ -10,10 +9,8 @@ import app.service.Config;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.net.URL;

@@ -4,7 +4,9 @@ import app.dto.facex.CompareDto;
 import okhttp3.*;
 import org.apache.commons.io.FileUtils;
 import org.json.JSONObject;
-import java.io.*;
+
+import java.io.File;
+import java.io.IOException;
 
 
 public class FaceClient {

@@ -7,14 +7,11 @@ import app.error_handling.GetGroupException;
 import app.error_handling.ListPersonsException;
 import app.service.AzureService;
 import app.service.Config;
-import javafx.fxml.FXML;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Observable;
-import java.util.Observer;
 
 public class MainScreenModel{
 

@@ -1,7 +1,6 @@
 package app.service;
 
 import app.Utils;
-import app.client.FaceClient;
 import app.gui.VideoChat;
 import okhttp3.OkHttpClient;
 import org.opencv.core.*;
@@ -11,7 +10,6 @@ import org.opencv.objdetect.Objdetect;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
-import java.io.IOException;
 
 public class FaceDetectService {
 

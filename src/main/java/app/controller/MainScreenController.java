@@ -1,36 +1,29 @@
 package app.controller;
 
 import app.Utils;
-import app.dto.azure.recive.group.GetGroupDto;
 import app.dto.azure.recive.group.GetPersonDto;
 import app.error_handling.AzureException;
 import app.error_handling.CreateGroupException;
 import app.error_handling.GetGroupException;
-import app.error_handling.ListPersonsException;
 import app.gui.ContactTreeCellFactory;
 import app.model.MainScreenModel;
 import app.service.AzureService;
 import app.service.Config;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
+import javafx.scene.control.Alert;
+import javafx.scene.control.SplitPane;
+import javafx.scene.control.TreeCell;
+import javafx.scene.control.TreeView;
 import javafx.util.Callback;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class MainScreenController implements Initializable {
+
+    public static String database = "resources/contacts.ser";
 
     private MainScreenModel model;
 

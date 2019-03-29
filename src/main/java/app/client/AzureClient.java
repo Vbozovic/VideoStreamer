@@ -4,9 +4,7 @@ import app.error_handling.AzureException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.*;
-import okhttp3.HttpUrl.Builder;
 import org.asynchttpclient.RequestBuilder;
-import com.fasterxml.jackson.core.type.TypeReference;
 
 import java.io.IOException;
 import java.util.Map;

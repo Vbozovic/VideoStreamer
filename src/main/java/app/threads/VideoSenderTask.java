@@ -1,6 +1,7 @@
 package app.threads;
 
 import com.github.sarxos.webcam.Webcam;
+
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.IOException;

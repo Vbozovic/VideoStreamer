@@ -2,9 +2,9 @@ package app.service;
 
 import app.Utils;
 import app.client.AzureClient;
+import app.dto.azure.recive.detect.FaceDetectDto;
 import app.dto.azure.recive.group.*;
 import app.dto.azure.recive.list.AddFaceToListResponse;
-import app.dto.azure.recive.detect.FaceDetectDto;
 import app.dto.azure.recive.list.FaceListDto;
 import app.dto.azure.recive.list.ListsDto;
 import app.dto.azure.send.group.CreateGroupDto;

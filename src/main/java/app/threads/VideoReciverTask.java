@@ -1,10 +1,10 @@
 package app.threads;
 
 import app.Utils;
-import app.gui.VideoChat;
 import app.service.FaceDetectService;
-import org.opencv.core.*;
-import java.awt.image.*;
+import org.opencv.core.Core;
+
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 

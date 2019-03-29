@@ -1,13 +1,20 @@
 package app.gui;
 
 import app.dto.azure.recive.group.GetPersonDto;
+import app.dto.azure.recive.group.PersistedFaceDto;
 import app.error_handling.AzureException;
 import app.service.AzureService;
 import app.service.Config;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.*;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Optional;
 
 public class ContactTreeCellFactory extends TreeCell<GetPersonDto> {
@@ -22,7 +29,21 @@ public class ContactTreeCellFactory extends TreeCell<GetPersonDto> {
         addMenuItem.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                System.out.println("Faca");
+                Stage stage = (Stage)getTreeView().getScene().getWindow();
+                File f = new FileChooser().showOpenDialog(stage);
+                System.out.println(f.getAbsolutePath());
+                try {
+                    BufferedImage image = ImageIO.read(f);
+                    GetPersonDto person = getTreeView().getSelectionModel().getSelectedItems().get(0).getValue();
+
+                    PersistedFaceDto face = AzureService.addFaceToPerson(image,person.personId,Config.getInstance().group_id);
+                    person.persistedFaceIds.add(face.persistedFaceId); //Add persisted face id to faceDto
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (AzureException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
