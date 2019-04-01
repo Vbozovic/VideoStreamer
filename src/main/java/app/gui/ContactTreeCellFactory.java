@@ -1,19 +1,25 @@
 package app.gui;
 
+import app.Utils;
+import app.controller.FaceDialogController;
 import app.dto.azure.recive.group.GetPersonDto;
 import app.dto.azure.recive.group.PersistedFaceDto;
 import app.error_handling.AzureException;
 import app.service.AzureService;
 import app.service.Config;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -30,18 +36,35 @@ public class ContactTreeCellFactory extends TreeCell<GetPersonDto> {
             @Override
             public void handle(ActionEvent event) {
                 Stage stage = (Stage)getTreeView().getScene().getWindow();
-                File f = new FileChooser().showOpenDialog(stage);
+                FileChooser fc = new FileChooser();
+                fc.getExtensionFilters().addAll(
+                        new FileChooser.ExtensionFilter("JPG","*.jpg"),
+                        new FileChooser.ExtensionFilter("PNG","*.png")
+                );
+                File f = fc.showOpenDialog(stage);
+                if(f == null || f.isDirectory()){
+                    return;
+                }
                 System.out.println(f.getAbsolutePath());
                 try {
-                    BufferedImage image = ImageIO.read(f);
+
                     GetPersonDto person = getTreeView().getSelectionModel().getSelectedItems().get(0).getValue();
 
-                    PersistedFaceDto face = AzureService.addFaceToPerson(image,person.personId,Config.getInstance().group_id);
-                    person.persistedFaceIds.add(face.persistedFaceId); //Add persisted face id to faceDto
+                    Utils.loadAndWaitWindow("src/main/resources/AddFaceDialog.fxml",500,350,(FaceDialogController controller)->{
+                        controller.personToParse = person;
+                        try {
+                            BufferedImage bufferedImage;
+                            controller.imageWithFaces = SwingFXUtils.toFXImage(Utils.getBufferedImage(f.getAbsolutePath()), null);
+                            controller.originalIMagePane.setImage(controller.imageWithFaces);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    });
+
+                    //PersistedFaceDto face = AzureService.addFaceToPerson(image,person.personId,Config.getInstance().group_id);
+                    //person.persistedFaceIds.add(face.persistedFaceId); //Add persisted face id to faceDto
 
                 } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (AzureException e) {
                     e.printStackTrace();
                 }
             }

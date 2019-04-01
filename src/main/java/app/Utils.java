@@ -13,6 +13,7 @@ import java.awt.image.*;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URL;
 
 public class Utils {
@@ -56,8 +57,8 @@ public class Utils {
     }
 
     public static <Controller> void loadAndWaitWindow(String urlPath,int width,int height,Lambda<Controller> setup) throws IOException {
-        URL url = new File(urlPath).toURL();
-        FXMLLoader loader = new FXMLLoader(url);
+        URI uri = new File(urlPath).toURI();
+        FXMLLoader loader = new FXMLLoader(uri.toURL());
         Parent root = loader.load();
 
         Controller cont = loader.<Controller>getController();
@@ -66,6 +67,21 @@ public class Utils {
         Stage stage = new Stage();
         stage.setScene(new Scene(root,width,height));
         stage.showAndWait();
+    }
+
+    public static BufferedImage getBufferedImage(String path) throws InterruptedException {
+        final java.awt.Image image = Toolkit.getDefaultToolkit().createImage(path);
+
+        final int[] RGB_MASKS = {0xFF0000, 0xFF00, 0xFF};
+        final ColorModel RGB_OPAQUE =
+                new DirectColorModel(32, RGB_MASKS[0], RGB_MASKS[1], RGB_MASKS[2]);
+
+        PixelGrabber pg = new PixelGrabber(image, 0, 0, -1, -1, true);
+        pg.grabPixels();
+        int width = pg.getWidth(), height = pg.getHeight();
+        DataBuffer buffer = new DataBufferInt((int[]) pg.getPixels(), pg.getWidth() * pg.getHeight());
+        WritableRaster raster = Raster.createPackedRaster(buffer, width, height, width, RGB_MASKS, null);
+        return new BufferedImage(RGB_OPAQUE, raster, false, null);
     }
 
 }
