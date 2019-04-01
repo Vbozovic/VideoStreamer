@@ -1,7 +1,6 @@
 package app;
 
 import app.dto.azure.recive.detect.FaceDetectDto;
-import app.dto.facex.FaceDto;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -14,7 +13,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-import java.net.URL;
 
 public class Utils {
 
@@ -82,6 +80,15 @@ public class Utils {
         DataBuffer buffer = new DataBufferInt((int[]) pg.getPixels(), pg.getWidth() * pg.getHeight());
         WritableRaster raster = Raster.createPackedRaster(buffer, width, height, width, RGB_MASKS, null);
         return new BufferedImage(RGB_OPAQUE, raster, false, null);
+    }
+
+    public static <Controller,T> T loadComponent(String path,Lambda<Controller> setup) throws IOException {
+        URI uri = new File(path).toURI();
+        FXMLLoader loader = new FXMLLoader(uri.toURL());
+        T root = (T)loader.load();
+        Controller cont = loader.<Controller>getController();
+        setup.lambda(cont);
+        return root;
     }
 
 }

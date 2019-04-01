@@ -3,7 +3,6 @@ package app.gui;
 import app.Utils;
 import app.controller.FaceDialogController;
 import app.dto.azure.recive.group.GetPersonDto;
-import app.dto.azure.recive.group.PersistedFaceDto;
 import app.error_handling.AzureException;
 import app.service.AzureService;
 import app.service.Config;
@@ -11,15 +10,11 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -56,6 +51,7 @@ public class ContactTreeCellFactory extends TreeCell<GetPersonDto> {
                             BufferedImage bufferedImage;
                             controller.imageWithFaces = SwingFXUtils.toFXImage(Utils.getBufferedImage(f.getAbsolutePath()), null);
                             controller.originalIMagePane.setImage(controller.imageWithFaces);
+                            controller.scan();//detect faces
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
