@@ -1,6 +1,6 @@
 package app.service;
 
-import app.Utils;
+import app.utils.Utils;
 import app.dto.azure.recive.detect.FaceAttributes;
 import app.dto.azure.recive.detect.FaceDetectDto;
 import app.error_handling.AzureException;

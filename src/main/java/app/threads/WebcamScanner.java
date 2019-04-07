@@ -1,5 +1,7 @@
 package app.threads;
 
+import app.image.ImageDisplayer;
+import app.image.ImageHandler;
 import com.github.sarxos.webcam.Webcam;
 
 import java.awt.image.BufferedImage;
@@ -8,45 +10,34 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-public class VideoSenderTask implements Runnable{
+public class WebcamScanner implements Runnable{
 
     private Socket client;
     private boolean running;
-    private ObjectOutputStream out;
+    private ImageHandler out;
+    private Webcam cam;
 
-
-    public VideoSenderTask(ObjectOutputStream out) {
+    public WebcamScanner(ImageDisplayer out,Webcam cam) {
         this.out = out;
         running = true;
+        this.cam = cam;
     }
 
     public void run() {
 
 
         try {
-            Webcam cam = Webcam.getDefault();
+
             cam.open();
-            //ObjectOutputStream out = new ObjectOutputStream(client.getOutputStream());
 
             BufferedImage img = cam.getImage();
-
-
-            out.writeInt(img.getHeight()); //saljemo visinu
-            out.writeInt(img.getWidth()); //saljemo sirinu
-
-            System.out.println(img.getHeight()+" "+img.getWidth());
+            //out.writeInt(img.getHeight()); //saljemo visinu
+            //out.writeInt(img.getWidth()); //saljemo sirinu
 
             while(running){
-                //System.out.println("Send");
-                byte[] pixels = ((DataBufferByte) img.getRaster().getDataBuffer()).getData();
-
-                out.write(pixels);
-                out.flush();
-
+                out.sendImage(img);
                 img = cam.getImage();
             }
-
-            out.close();
             cam.close();
             client.close();
         } catch (IOException e) {

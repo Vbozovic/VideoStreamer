@@ -1,4 +1,4 @@
-package app;
+package app.utils;
 
 import app.dto.azure.recive.detect.FaceDetectDto;
 import javafx.fxml.FXMLLoader;
@@ -59,11 +59,11 @@ public class Utils {
         FXMLLoader loader = new FXMLLoader(uri.toURL());
         Parent root = loader.load();
 
-        Controller cont = loader.<Controller>getController();
-        setup.lambda(cont);
-
         Stage stage = new Stage();
         stage.setScene(new Scene(root,width,height));
+
+        Controller cont = loader.<Controller>getController();
+        setup.lambda(cont);
         stage.showAndWait();
     }
 

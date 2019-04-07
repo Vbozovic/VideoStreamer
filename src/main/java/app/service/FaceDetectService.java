@@ -1,6 +1,6 @@
 package app.service;
 
-import app.Utils;
+import app.utils.Utils;
 import app.gui.VideoChat;
 import okhttp3.OkHttpClient;
 import org.opencv.core.*;

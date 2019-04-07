@@ -1,6 +1,6 @@
 package app.controller;
 
-import app.Utils;
+import app.utils.Utils;
 import app.dto.azure.recive.group.GetPersonDto;
 import app.error_handling.AzureException;
 import app.error_handling.CreateGroupException;

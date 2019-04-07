@@ -1,12 +1,11 @@
 package app.controller;
 
-import app.Utils;
+import app.utils.Utils;
 import app.dto.azure.recive.detect.FaceDetectDto;
 import app.dto.azure.recive.group.GetPersonDto;
 import app.error_handling.AzureException;
 import app.service.AzureService;
 import javafx.embed.swing.SwingFXUtils;
-import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;

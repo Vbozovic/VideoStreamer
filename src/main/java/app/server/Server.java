@@ -1,7 +1,7 @@
 package app.server;
 
 import app.threads.VideoReciverTask;
-import app.threads.VideoSenderTask;
+import app.threads.WebcamScanner;
 
 import javax.swing.*;
 import java.awt.*;
@@ -59,11 +59,11 @@ public class Server extends JFrame implements Runnable, ActionListener {
             ObjectOutputStream out = new ObjectOutputStream(sock.getOutputStream());
             ObjectInputStream in = new ObjectInputStream(sock.getInputStream());
 
-            VideoSenderTask st = new VideoSenderTask(out);
+            //WebcamScanner st = new WebcamScanner(out);
             VideoReciverTask rt = new VideoReciverTask(in);
 
             synchronized (clientProcessingPool) {
-                clientProcessingPool.execute(st);
+//                clientProcessingPool.execute(st);
                 clientProcessingPool.execute(rt);
             }
         } catch (IOException e) {
@@ -83,7 +83,7 @@ public class Server extends JFrame implements Runnable, ActionListener {
                 ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream());
 
                 clientProcessingPool.execute(new VideoReciverTask(in));
-                clientProcessingPool.execute(new VideoSenderTask(out));
+                //clientProcessingPool.execute(new WebcamScanner(out));
             }
 
         } catch (IOException e) {

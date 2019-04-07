@@ -1,6 +1,6 @@
 package app.service;
 
-import app.Utils;
+import app.utils.Utils;
 import app.client.AzureClient;
 import app.dto.azure.recive.detect.FaceDetectDto;
 import app.dto.azure.recive.group.*;

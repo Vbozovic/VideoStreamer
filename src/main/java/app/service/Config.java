@@ -9,6 +9,7 @@ public class Config{
     private static Config instance = null;
 
     public String group_id;
+    public String faces_folder;
 
     public static Config getInstance(){
         if(instance == null){
@@ -23,6 +24,7 @@ public class Config{
         try {
             p.load( new FileReader("resources/config.properties"));
             group_id = p.getProperty("group_id");
+            faces_folder = p.getProperty("faces_folder");
         } catch (IOException e) {
             e.printStackTrace();
         }

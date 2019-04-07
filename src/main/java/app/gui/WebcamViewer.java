@@ -45,7 +45,7 @@ public class WebcamViewer extends JFrame implements Runnable, WebcamListener, Wi
             System.exit(1);
         }
 
-        webcam.setViewSize(WebcamResolution.VGA.getSize());
+        webcam.setViewSize(WebcamResolution.FHD.getSize());
         webcam.addWebcamListener(WebcamViewer.this);
 
         panel = new WebcamPanel(webcam, false);

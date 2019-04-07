@@ -1,6 +1,6 @@
 package app.threads;
 
-import app.Utils;
+import app.utils.Utils;
 import app.service.FaceDetectService;
 import org.opencv.core.Core;
 

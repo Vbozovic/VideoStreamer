@@ -1,6 +1,6 @@
 package app.dto.facex;
 
-import app.Utils;
+import app.utils.Utils;
 import app.client.FaceClient;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import okhttp3.OkHttpClient;

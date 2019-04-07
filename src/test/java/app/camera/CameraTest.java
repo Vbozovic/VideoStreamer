@@ -1,17 +1,14 @@
 package app.camera;
 
 import app.threads.VideoReciverTask;
-import app.threads.VideoSenderTask;
-import org.apache.commons.io.IOUtils;
+import app.threads.WebcamScanner;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.logging.SocketHandler;
 
 public class CameraTest {
 
@@ -38,11 +35,11 @@ public class CameraTest {
 
         Socket sok = new Socket("localhost",8080);
 
-        VideoSenderTask vs = new VideoSenderTask(new ObjectOutputStream(sok.getOutputStream()));
-        Thread th = new Thread(vs);
-        th.start();
+        //WebcamScanner vs = new WebcamScanner(new ObjectOutputStream(sok.getOutputStream()));
+        //Thread th = new Thread(vs);
+//        th.start();
 
-        th.join();
+//        th.join();
     }
 
 }
