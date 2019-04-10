@@ -1,8 +1,6 @@
 package app.threads;
 
 import app.utils.Utils;
-import app.service.FaceDetectService;
-import org.opencv.core.Core;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -11,13 +9,9 @@ import java.io.ObjectInputStream;
 public class VideoReciverTask implements Runnable {
 
 
-    static {
-        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-    }
 
     private boolean runnig;
     private ObjectInputStream in;
-    private FaceDetectService detect;
 
     public VideoReciverTask(ObjectInputStream in) {
         this();

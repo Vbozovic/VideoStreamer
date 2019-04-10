@@ -12,7 +12,6 @@ import java.net.Socket;
 
 public class WebcamScanner implements Runnable{
 
-    private Socket client;
     private boolean running;
     private ImageHandler out;
     private Webcam cam;
@@ -24,28 +23,16 @@ public class WebcamScanner implements Runnable{
     }
 
     public void run() {
+        cam.open();
+        BufferedImage img = cam.getImage();
+        //out.writeInt(img.getHeight()); //saljemo visinu
+        //out.writeInt(img.getWidth()); //saljemo sirinu
 
-
-        try {
-
-            cam.open();
-
-            BufferedImage img = cam.getImage();
-            //out.writeInt(img.getHeight()); //saljemo visinu
-            //out.writeInt(img.getWidth()); //saljemo sirinu
-
-            while(running){
-                out.sendImage(img);
-                img = cam.getImage();
-            }
-            cam.close();
-            client.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        while(running){
+            out.sendImage(img);
+            img = cam.getImage();
         }
-
-
-
+        cam.close();
     }
 
     public void stop(){

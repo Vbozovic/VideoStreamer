@@ -102,7 +102,9 @@ public class ContactTreeCellFactory extends TreeCell<GetPersonDto> {
                     controller.webcamView.getScene().getWindow().setOnCloseRequest(event1 -> {
                         //kada zatvarmao prozor zubijamo i tred pul
                         controller.executor.shutdown();
-                        cam.close();
+                        if(cam != null){
+                            cam.close();
+                        }
                     });
                 });
             } catch (IOException e) {
