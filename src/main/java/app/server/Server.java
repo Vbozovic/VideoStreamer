@@ -20,6 +20,7 @@ public class Server implements Runnable {
     private String host;
     private ExecutorService clientProcessingPool;
     private ImageView display;
+    private boolean running;
 
     private WebcamScanner outSender;
     private VideoReciverTask reciver;
@@ -52,19 +53,20 @@ public class Server implements Runnable {
 
     public void run() {
         try {
-            ServerSocket ssocket = new ServerSocket(port);
+            while(running){
+                ServerSocket ssocket = new ServerSocket(port);
 
-            Socket clientSocket = ssocket.accept();
+                Socket clientSocket = ssocket.accept();
 
-            ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
-            ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream());
+                ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
+                ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream());
 
-            this.reciver = new VideoReciverTask(in, display);
-            this.outSender = new WebcamScanner(new ImageSender(out),Webcam.getDefault());
+                this.reciver = new VideoReciverTask(in, display);
+                this.outSender = new WebcamScanner(new ImageSender(out),Webcam.getDefault());
 
-            clientProcessingPool.execute(this.reciver);
-            clientProcessingPool.execute(this.outSender);
-
+                clientProcessingPool.execute(this.reciver);
+                clientProcessingPool.execute(this.outSender);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
