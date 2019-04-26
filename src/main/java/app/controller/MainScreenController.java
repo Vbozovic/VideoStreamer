@@ -38,7 +38,6 @@ public class MainScreenController implements Initializable {
 
     private Server callServer = null;
     private ExecutorService pool;
-    private WebcamScanner currentCall;
 
     public void displayAdContact(ActionEvent actionEvent) {
         try {
@@ -95,7 +94,7 @@ public class MainScreenController implements Initializable {
     }
 
     public void initiateCall(ActionEvent actionEvent) {
-        this.currentCall = callServer.establish_async(this.ipAddrField.getText());
+        callServer.establish_async(this.ipAddrField.getText());
     }
 
     public void displayChatoptions(ContextMenuEvent contextMenuEvent) {
@@ -109,10 +108,7 @@ public class MainScreenController implements Initializable {
 
         endCall.setOnAction(value -> {
             //Zavrsavanje poziva
-            if(this.currentCall != null){
-                this.currentCall.stop();
-                this.currentCall = null;
-            }
+            this.callServer.endCall();
         });
 
         idFace.setOnAction(value -> {
