@@ -1,6 +1,8 @@
 package app.controller;
 
+import app.client.AzureClient;
 import app.dto.azure.recive.group.GetPersonDto;
+import app.dto.azure.recive.group.TrainStatusDto;
 import app.error_handling.AzureException;
 import app.error_handling.CreateGroupException;
 import app.error_handling.GetGroupException;
@@ -20,6 +22,10 @@ import javafx.util.Callback;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -62,9 +68,34 @@ public class MainScreenController implements Initializable {
     }
 
     public void displayTrainingStatus(ActionEvent actionEvent) {
+        try {
+            TrainStatusDto dto = AzureService.getGroupTrainStatus(Config.getInstance().group_id);
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Training status");
+            alert.setHeaderText("Training progress:");
+
+            dto.createdDateTime = dto.createdDateTime.substring(0,dto.createdDateTime.lastIndexOf("."));
+            alert.setContentText("Status: "+dto.status+"\nCreated: "+dto.createdDateTime);
+            Optional<ButtonType> result = alert.showAndWait();
+        } catch (AzureException e) {
+            e.printStackTrace();
+        }
     }
 
     public void train(ActionEvent actionEvent) {
+        try {
+            AzureService.trainGroup(Config.getInstance().group_id);
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Training");
+            alert.setHeaderText("The training has begun");
+            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+            Date d = new Date();
+            alert.setContentText(dateFormat.format(d));
+            Optional<ButtonType> result = alert.showAndWait();
+
+        } catch (AzureException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
