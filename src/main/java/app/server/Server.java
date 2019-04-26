@@ -31,6 +31,7 @@ public class Server implements Runnable {
         this.clientProcessingPool = pool;
         this.display = display;
         this.snapshot = Webcam.getDefault();
+        this.running = true;
     }
 
 
