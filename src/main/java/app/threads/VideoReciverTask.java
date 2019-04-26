@@ -31,13 +31,14 @@ public class VideoReciverTask implements Runnable {
         try {
             int width, height;
 
-            height = in.readInt();
-            width = in.readInt();
+            String mdata = in.readUTF();
+            String[] datas = mdata.split(",");
 
+            height = Integer.parseInt(datas[0]);
+            width = Integer.parseInt(datas[1]);
             System.out.println("recived meta data "+height+" "+width);
 
             byte[] pixels = new byte[height * width * 3];// 3 = broj bajtova po pikselu
-            int skipCounter = 0;
             while (runnig) {
                 //System.out.println("Read");
                 in.readFully(pixels);
