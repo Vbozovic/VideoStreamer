@@ -33,7 +33,10 @@ public class Server implements Runnable {
         try {
             sock = new Socket(ip, port);
             ObjectOutputStream out = new ObjectOutputStream(sock.getOutputStream());
+            ObjectInputStream in = new ObjectInputStream(sock.getInputStream());
             st = new WebcamScanner(new ImageSender(out), Webcam.getDefault());
+            VideoReciverTask rt = new VideoReciverTask(in,this.display);
+            this.clientProcessingPool.execute(rt);
             this.clientProcessingPool.execute(st);
         } catch (IOException e) {
             e.printStackTrace();

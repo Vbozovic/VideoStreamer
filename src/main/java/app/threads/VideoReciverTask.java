@@ -18,6 +18,7 @@ public class VideoReciverTask implements Runnable {
     public VideoReciverTask(ObjectInputStream in, ImageView display) {
         this();
         this.in = in;
+        this.display = display;
     }
 
     public VideoReciverTask() {
