@@ -54,9 +54,8 @@ public class Server implements Runnable {
 
     public void run() {
         try {
+            ServerSocket ssocket = new ServerSocket(port);
             while(running){
-                ServerSocket ssocket = new ServerSocket(port);
-
                 Socket clientSocket = ssocket.accept();
 
                 ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
