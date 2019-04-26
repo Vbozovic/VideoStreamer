@@ -5,6 +5,7 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.ImageView;
 
 import java.awt.image.BufferedImage;
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
@@ -12,12 +13,12 @@ public class VideoReciverTask implements Runnable {
 
 
     private boolean runnig;
-    private ObjectInputStream in;
+    private DataInputStream in;
     private ImageView display;
 
     public VideoReciverTask(ObjectInputStream in, ImageView display) {
         this();
-        this.in = in;
+        this.in = new DataInputStream(in);
         this.display = display;
     }
 

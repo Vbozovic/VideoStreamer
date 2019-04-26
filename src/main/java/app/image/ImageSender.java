@@ -2,17 +2,18 @@ package app.image;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 public class ImageSender implements ImageHandler {
 
-    private ObjectOutputStream output;
     private boolean sentMetaData = false;
+    private DataOutputStream output;
 
     public ImageSender(ObjectOutputStream output) {
-        this.output = output;
+        this.output = new DataOutputStream(output);
     }
 
     @Override
