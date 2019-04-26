@@ -33,7 +33,7 @@ public class VideoReciverTask implements Runnable {
             height = in.readInt();
             width = in.readInt();
 
-            System.out.println("recived meta data");
+            System.out.println("recived meta data "+height+" "+width);
 
             byte[] pixels = new byte[height * width * 3];// 3 = broj bajtova po pikselu
             int skipCounter = 0;
@@ -41,7 +41,7 @@ public class VideoReciverTask implements Runnable {
                 //System.out.println("Read");
                 in.readFully(pixels);
                 BufferedImage img = Utils.createImageFromBytes(pixels, width, height);
-
+                System.out.println("Image recived");
                 synchronized (this.display){
                     this.display.setImage(SwingFXUtils.toFXImage(img,null));
                 }
