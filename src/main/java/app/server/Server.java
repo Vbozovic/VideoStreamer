@@ -1,5 +1,6 @@
 package app.server;
 
+import app.image.ImageDisplayer;
 import app.image.ImageSender;
 import app.threads.VideoReciverTask;
 import app.threads.WebcamScanner;
@@ -56,7 +57,7 @@ public class Server implements Runnable {
             ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream());
 
             clientProcessingPool.execute(new VideoReciverTask(in, display));
-            //clientProcessingPool.execute(new WebcamScanner(out));
+            clientProcessingPool.execute(new WebcamScanner(new ImageSender(out),Webcam.getDefault()));
 
         } catch (IOException e) {
             e.printStackTrace();
