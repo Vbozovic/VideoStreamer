@@ -5,10 +5,6 @@ import app.image.ImageHandler;
 import com.github.sarxos.webcam.Webcam;
 
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
 
 public class WebcamScanner implements Runnable{
 
@@ -16,7 +12,7 @@ public class WebcamScanner implements Runnable{
     private ImageHandler out;
     private Webcam cam;
 
-    public WebcamScanner(ImageDisplayer out,Webcam cam) {
+    public WebcamScanner(ImageHandler out,Webcam cam) {
         this.out = out;
         running = true;
         this.cam = cam;
@@ -25,8 +21,6 @@ public class WebcamScanner implements Runnable{
     public void run() {
         cam.open();
         BufferedImage img = cam.getImage();
-        //out.writeInt(img.getHeight()); //saljemo visinu
-        //out.writeInt(img.getWidth()); //saljemo sirinu
 
         while(running){
             out.sendImage(img);

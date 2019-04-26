@@ -1,6 +1,8 @@
 package app.threads;
 
 import app.utils.Utils;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.ImageView;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -9,11 +11,11 @@ import java.io.ObjectInputStream;
 public class VideoReciverTask implements Runnable {
 
 
-
     private boolean runnig;
     private ObjectInputStream in;
+    private ImageView display;
 
-    public VideoReciverTask(ObjectInputStream in) {
+    public VideoReciverTask(ObjectInputStream in, ImageView display) {
         this();
         this.in = in;
     }
@@ -38,11 +40,8 @@ public class VideoReciverTask implements Runnable {
                 in.readFully(pixels);
                 BufferedImage img = Utils.createImageFromBytes(pixels, width, height);
 
-                if(skipCounter++ >= 10){
-                    skipCounter = 0;
-                    //detect.getIv().displayWebcamImage(detect.faceStuff(img));
-                }else{
-                    //detect.getIv().displayWebcamImage(img);
+                synchronized (this.display){
+                    this.display.setImage(SwingFXUtils.toFXImage(img,null));
                 }
             }
             in.close();

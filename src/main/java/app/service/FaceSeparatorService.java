@@ -1,9 +1,9 @@
 package app.service;
 
-import app.utils.Utils;
 import app.dto.azure.recive.detect.FaceAttributes;
 import app.dto.azure.recive.detect.FaceDetectDto;
 import app.error_handling.AzureException;
+import app.utils.Utils;
 import javafx.util.Pair;
 
 import java.awt.image.BufferedImage;

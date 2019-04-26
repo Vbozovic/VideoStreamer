@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
@@ -8,8 +13,9 @@
 <?import javafx.scene.control.TreeView?>
 <?import javafx.scene.effect.Blend?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 
-<SplitPane fx:id="beginScreen" dividerPositions="0.18937875751503006" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controller.MainScreenController">
+<SplitPane fx:id="beginScreen" dividerPositions="0.18937875751503006" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controller.MainScreenController">
   <items>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
          <children>
@@ -20,9 +26,9 @@
             </TreeView>
             <Label layoutY="4.0" prefHeight="19.0" prefWidth="174.0" text="Contacts" />
          </children></AnchorPane>
-    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-         <children>
-            <MenuBar layoutY="-2.0" prefHeight="32.0" prefWidth="416.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+      <BorderPane prefHeight="200.0" prefWidth="200.0">
+         <top>
+            <MenuBar prefHeight="32.0" prefWidth="416.0" BorderPane.alignment="CENTER">
               <menus>
                 <Menu mnemonicParsing="false" text="Operations">
                   <items>
@@ -33,6 +39,18 @@
                 </Menu>
               </menus>
             </MenuBar>
-         </children></AnchorPane>
+         </top>
+         <center>
+            <ImageView fx:id="chatImageView" fitHeight="203.0" fitWidth="338.0" onContextMenuRequested="#displayChatoptions" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
+         </center>
+         <bottom>
+            <AnchorPane prefHeight="67.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Button fx:id="callButton" layoutX="118.0" layoutY="14.0" mnemonicParsing="false" onAction="#initiateCall" prefWidth="101.0" text="Call" />
+                  <TextField fx:id="ipAddrField" layoutX="373.0" layoutY="14.0" />
+               </children>
+            </AnchorPane>
+         </bottom>
+      </BorderPane>
   </items>
 </SplitPane>

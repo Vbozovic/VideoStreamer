@@ -1,22 +1,19 @@
 package app.gui;
 
-import app.image.ImageDisplayer;
-import app.threads.WebcamScanner;
-import app.utils.Utils;
 import app.controller.FaceDialogController;
 import app.controller.WebcamDisplayDontroller;
 import app.dto.azure.recive.group.GetPersonDto;
 import app.error_handling.AzureException;
+import app.image.ImageDisplayer;
 import app.service.AzureService;
 import app.service.Config;
+import app.threads.WebcamScanner;
+import app.utils.Utils;
 import com.github.sarxos.webcam.Webcam;
 import javafx.embed.swing.SwingFXUtils;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -98,13 +95,12 @@ public class ContactTreeCellFactory extends TreeCell<GetPersonDto> {
                     controller.person = getTreeView().getSelectionModel().getSelectedItems().get(0).getValue();
                     controller.executor = Executors.newSingleThreadExecutor();
                     Webcam cam = Webcam.getDefault();
-                    controller.executor.submit(new WebcamScanner(new ImageDisplayer(controller.webcamView),cam));
+                    WebcamScanner sc = new WebcamScanner(new ImageDisplayer(controller.webcamView),cam);
+                    controller.executor.submit(sc);
                     controller.webcamView.getScene().getWindow().setOnCloseRequest(event1 -> {
                         //kada zatvarmao prozor zubijamo i tred pul
                         controller.executor.shutdown();
-                        if(cam != null){
-                            cam.close();
-                        }
+                        sc.stop();
                     });
                 });
             } catch (IOException e) {

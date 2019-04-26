@@ -11,16 +11,17 @@ import java.util.concurrent.Executors;
 
 public class LoadControllers {
 
-    public static void setupWebcamDisplay(WebcamDisplayDontroller controller){
+    public static void setupWebcamDisplay(WebcamDisplayDontroller controller) {
         controller.executor = Executors.newSingleThreadExecutor();
         Webcam cam = Webcam.getDefault();
-        controller.executor.submit(new WebcamScanner(new ImageDisplayer(controller.webcamView),cam));
+        WebcamScanner sc = new WebcamScanner(new ImageDisplayer(controller.webcamView), cam);
+        controller.executor.submit(sc);
         controller.webcamView.getScene().getWindow().setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent event) {
                 //kada zatvarmao prozor zubijamo i tred pul
                 controller.executor.shutdown();
-                cam.close();
+                sc.stop();
             }
         });
     }

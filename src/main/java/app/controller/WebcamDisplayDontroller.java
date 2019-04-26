@@ -2,7 +2,6 @@ package app.controller;
 
 import app.dto.azure.recive.group.GetPersonDto;
 import app.utils.Utils;
-import com.github.sarxos.webcam.WebcamPicker;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;

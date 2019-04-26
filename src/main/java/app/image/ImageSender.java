@@ -7,11 +7,9 @@ import java.net.Socket;
 public class ImageSender implements ImageHandler {
 
     private ObjectOutputStream output;
-    private String address;
-    private Socket other;
 
-    public ImageSender(String address) {
-        this.address = address;
+    public ImageSender(ObjectOutputStream output) {
+        this.output = output;
     }
 
     @Override

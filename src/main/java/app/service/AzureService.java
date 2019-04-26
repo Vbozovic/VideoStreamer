@@ -1,6 +1,5 @@
 package app.service;
 
-import app.utils.Utils;
 import app.client.AzureClient;
 import app.dto.azure.recive.detect.FaceDetectDto;
 import app.dto.azure.recive.group.*;
@@ -14,6 +13,7 @@ import app.error_handling.AzureException;
 import app.error_handling.CreateGroupException;
 import app.error_handling.GetGroupException;
 import app.error_handling.ListPersonsException;
+import app.utils.Utils;
 
 import java.awt.image.BufferedImage;
 import java.util.HashMap;

@@ -1,99 +1,64 @@
 package app.server;
 
+import app.image.ImageSender;
 import app.threads.VideoReciverTask;
 import app.threads.WebcamScanner;
+import com.github.sarxos.webcam.Webcam;
+import javafx.scene.image.ImageView;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
-public class Server extends JFrame implements Runnable, ActionListener {
+public class Server implements Runnable {
 
     public int port;
     private String host;
     private ExecutorService clientProcessingPool;
+    private ImageView display;
 
-    private JTextField input;
-
-    public Server(int port, String host) {
+    public Server(int port, ExecutorService pool, ImageView display) {
         this.port = port;
-        this.host = host;
-        this.clientProcessingPool = Executors.newFixedThreadPool(20);
-        setup();
+        this.clientProcessingPool = pool;
+        this.display = display;
     }
 
-    private void setup(){
-        input = new JTextField(15);
-        this.setSize(300,300);
 
-        JPanel pan = new JPanel();
-        JLabel lab = new JLabel("IP:");
-        JButton ok = new JButton("Connect");
-
-        pan.setLayout(new FlowLayout());
-        pan.add(lab);
-        pan.add(input);
-        pan.add(ok);
-
-        ok.addActionListener(this);
-
-        this.add(pan);
-
-        this.setVisible(true);
-        this.pack();
-    }
-
-    public void establish(String ip, int port) {
-
+    public WebcamScanner establish_async(String ip) {
+        Socket sock = null;
+        WebcamScanner st = null;
         try {
-            Socket sock = new Socket(ip, port);
-
+            sock = new Socket(ip, port);
             ObjectOutputStream out = new ObjectOutputStream(sock.getOutputStream());
-            ObjectInputStream in = new ObjectInputStream(sock.getInputStream());
-
-            //WebcamScanner st = new WebcamScanner(out);
-            VideoReciverTask rt = new VideoReciverTask(in);
-
-            synchronized (clientProcessingPool) {
-//                clientProcessingPool.execute(st);
-                clientProcessingPool.execute(rt);
-            }
+            st = new WebcamScanner(new ImageSender(out), Webcam.getDefault());
+            this.clientProcessingPool.execute(st);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+
+        return st;
     }
 
     public void run() {
         try {
             ServerSocket ssocket = new ServerSocket(port);
 
-            while (true) {
-                Socket clientSocket = ssocket.accept();
+            Socket clientSocket = ssocket.accept();
 
-                ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
-                ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream());
+            ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
+            ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream());
 
-                clientProcessingPool.execute(new VideoReciverTask(in));
-                //clientProcessingPool.execute(new WebcamScanner(out));
-            }
+            clientProcessingPool.execute(new VideoReciverTask(in, display));
+            //clientProcessingPool.execute(new WebcamScanner(out));
 
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-    }
-
-    public void actionPerformed(ActionEvent e) {
-        establish(input.getText(),this.port);
     }
 }
 
