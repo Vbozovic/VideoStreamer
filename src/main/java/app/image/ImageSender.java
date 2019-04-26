@@ -19,7 +19,8 @@ public class ImageSender implements ImageHandler {
     @Override
     public void sendImage(BufferedImage img) throws Exception {
         if (!sentMetaData) {
-            output.writeChars(img.getHeight()+","+img.getWidth());
+            output.writeUTF(img.getHeight()+","+img.getWidth()+",");
+            output.flush();
             System.out.println("Sent meta data "+img.getHeight()+" "+img.getWidth());
             sentMetaData = true;
         }
