@@ -74,6 +74,7 @@ public class MainScreenController implements Initializable {
         try {
             this.pool = Executors.newCachedThreadPool();
             this.callServer = new Server(8080, this.pool, this.chatImageView);
+            this.pool.execute(this.callServer); //pokrecemo jedno slusanje za konekciju
             this.model = new MainScreenModel(this.contactTree);
             this.contactTree.setCellFactory(param -> new ContactTreeCellFactory());
         } catch (GetGroupException gge) {

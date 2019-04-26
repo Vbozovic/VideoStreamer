@@ -32,6 +32,7 @@ public class VideoReciverTask implements Runnable {
             height = in.readInt();
             width = in.readInt();
 
+            System.out.println("recived meta data");
 
             byte[] pixels = new byte[height * width * 3];// 3 = broj bajtova po pikselu
             int skipCounter = 0;

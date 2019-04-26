@@ -23,7 +23,12 @@ public class WebcamScanner implements Runnable{
         BufferedImage img = cam.getImage();
 
         while(running){
-            out.sendImage(img);
+            try {
+                out.sendImage(img);
+            } catch (Exception e) {
+                e.printStackTrace();
+                this.stop();
+            }
             img = cam.getImage();
         }
         cam.close();

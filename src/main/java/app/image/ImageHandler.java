@@ -4,6 +4,6 @@ import java.awt.image.BufferedImage;
 
 public interface ImageHandler {
 
-    void sendImage(BufferedImage img);
+    void sendImage(BufferedImage img) throws Exception;
 
 }
