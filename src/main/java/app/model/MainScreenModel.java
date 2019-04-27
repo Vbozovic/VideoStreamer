@@ -12,6 +12,7 @@ import javafx.scene.control.TreeView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Optional;
 
 public class MainScreenModel{
 
@@ -44,6 +45,8 @@ public class MainScreenModel{
         return true;
     }
 
-
+    public String getPersonById(String id){
+        return this.tree.getRoot().getChildren().stream().filter(node -> node.getValue().personId.equals(id)).findFirst().map(getPersonDtoTreeItem -> getPersonDtoTreeItem.getValue().name).orElse(null);
+    }
 
 }

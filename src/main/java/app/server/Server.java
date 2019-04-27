@@ -84,7 +84,11 @@ public class Server implements Runnable {
 
     public BufferedImage getCamImg(){
         synchronized (this.snapshot){
-            return this.snapshot.getImage();
+            if(this.snapshot.isOpen()){
+                return this.snapshot.getImage();
+            }else{
+                return null;
+            }
         }
     }
 

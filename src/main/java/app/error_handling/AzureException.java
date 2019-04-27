@@ -15,4 +15,9 @@ public class AzureException extends Exception {
         super(message);
         this.statusCode = statusCode;
     }
+
+    @Override
+    public String toString() {
+        return super.toString() + "\n "+responseBody;
+    }
 }

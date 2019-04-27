@@ -11,6 +11,7 @@ import app.model.MainScreenModel;
 import app.server.Server;
 import app.service.AzureService;
 import app.service.Config;
+import app.threads.FaceIdentifierTask;
 import app.threads.WebcamScanner;
 import app.utils.Utils;
 import javafx.event.ActionEvent;
@@ -20,6 +21,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.util.Callback;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 import java.text.DateFormat;
@@ -144,6 +146,9 @@ public class MainScreenController implements Initializable {
 
         idFace.setOnAction(value -> {
             //Identifikovanje lica
+            BufferedImage img = this.callServer.getCamImg();
+
+            this.pool.execute(new FaceIdentifierTask(this.model,img));
         });
 
 

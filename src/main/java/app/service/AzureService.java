@@ -3,11 +3,13 @@ package app.service;
 import app.client.AzureClient;
 import app.dto.azure.recive.detect.FaceDetectDto;
 import app.dto.azure.recive.group.*;
+import app.dto.azure.recive.identify.IdentifyFaceDto;
 import app.dto.azure.recive.list.AddFaceToListResponse;
 import app.dto.azure.recive.list.FaceListDto;
 import app.dto.azure.recive.list.ListsDto;
 import app.dto.azure.send.group.CreateGroupDto;
 import app.dto.azure.send.group.CreatePersonDto;
+import app.dto.azure.send.identify.IdentifyDto;
 import app.dto.azure.send.list.CreateListDto;
 import app.error_handling.AzureException;
 import app.error_handling.CreateGroupException;
@@ -19,6 +21,11 @@ import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
 public class AzureService {
+
+    public static IdentifyFaceDto[] identifyFace(String group,String[] faceIds) throws AzureException {
+        IdentifyDto dto = new IdentifyDto(faceIds,group,1);
+        return AzureClient.post("/identify",dto,null, IdentifyFaceDto[].class);
+    }
 
     public static FaceDetectDto[] detectFaces(BufferedImage img) throws AzureException {
         HashMap<String,String> params = new HashMap<>();
