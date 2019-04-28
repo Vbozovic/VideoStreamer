@@ -46,6 +46,9 @@ public class VideoReciverTask implements Runnable {
                     //in.readFully(pixels);
                     //BufferedImage img = Utils.createImageFromBytes(pixels, width, height);
                     BufferedImage img = ImageIO.read(in);
+                    if (img == null){
+                        continue;
+                    }
                     synchronized (this.display){
                         this.display.setImage(SwingFXUtils.toFXImage(img,null));
                     }

@@ -27,7 +27,7 @@ public class ImageSender implements ImageHandler {
         }
 
 
-        byte[] pixels = ((DataBufferByte) img.getRaster().getDataBuffer()).getData();
+//        byte[] pixels = ((DataBufferByte) img.getRaster().getDataBuffer()).getData();
         ImageIO.write(img,"PNG",output);
 //        output.write(pixels);
 //        output.flush();
