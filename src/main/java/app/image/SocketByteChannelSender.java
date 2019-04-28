@@ -53,7 +53,6 @@ public class SocketByteChannelSender implements SeekableByteChannel {
 
     @Override
     public int write(ByteBuffer src) throws IOException {
-        System.out.println("Write "+src.array().length);
         this.position+= src.position() + src.array().length;
         this.out.write(src.array(),0,src.array().length);
         return src.array().length;

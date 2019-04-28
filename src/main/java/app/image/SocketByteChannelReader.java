@@ -11,6 +11,7 @@ public class SocketByteChannelReader implements SeekableByteChannel {
     private DataInputStream in;
     private long position;
     private boolean open;
+    private boolean mdata = true;
 
     public SocketByteChannelReader(DataInputStream in) {
         this.in = in;
@@ -45,8 +46,14 @@ public class SocketByteChannelReader implements SeekableByteChannel {
 
     @Override
     public int read(ByteBuffer dst) throws IOException {
-        System.out.println("2. Read");
-        return 0;
+        //moramo da cekamo i procitamo tacno kolko se trazi
+        int toRead = dst.remaining();
+        int start = dst.position();
+        byte[] arr = new byte[toRead];
+        in.readFully(arr, 0, toRead);
+        dst.put(arr);
+        this.position = start + toRead;
+        return (int) this.position;
     }
 
     @Override
