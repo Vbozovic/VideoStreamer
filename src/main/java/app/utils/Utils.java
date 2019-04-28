@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.*;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -43,14 +44,16 @@ public class Utils {
         return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
     }
 
-    public static BufferedImage createImageFromBytes(byte[] pixels, int width, int height) {
+    public static BufferedImage createImageFromBytes(byte[] pixels, int width, int height) throws IOException {
 
         if(width*height*3 != pixels.length){
             System.err.println("Array length erro. Expected: "+width*height*3+" got: "+pixels.length);
         }
 
-        BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
-        img.setData(Raster.createRaster(img.getSampleModel(), new DataBufferByte(pixels, pixels.length), new Point()));
+        ByteArrayInputStream bin = new ByteArrayInputStream(pixels);
+
+        BufferedImage img = ImageIO.read(bin);
+        //img.setData(Raster.createRaster(img.getSampleModel(), new DataBufferByte(pixels, pixels.length), new Point()));
         return img;
     }
 

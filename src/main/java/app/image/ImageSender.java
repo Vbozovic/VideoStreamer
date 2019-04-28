@@ -1,5 +1,6 @@
 package app.image;
 
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.DataOutputStream;
@@ -25,8 +26,10 @@ public class ImageSender implements ImageHandler {
             sentMetaData = true;
         }
 
+
         byte[] pixels = ((DataBufferByte) img.getRaster().getDataBuffer()).getData();
-        output.write(pixels);
-        output.flush();
+        ImageIO.write(img,"PNG",output);
+//        output.write(pixels);
+//        output.flush();
     }
 }

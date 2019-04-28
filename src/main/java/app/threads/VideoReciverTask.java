@@ -4,6 +4,7 @@ import app.utils.Utils;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.ImageView;
 
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -41,10 +42,15 @@ public class VideoReciverTask implements Runnable {
             byte[] pixels = new byte[height * width * 3];// 3 = broj bajtova po pikselu
             while (running) {
                 //System.out.println("Read");
-                in.readFully(pixels);
-                BufferedImage img = Utils.createImageFromBytes(pixels, width, height);
-                synchronized (this.display){
-                    this.display.setImage(SwingFXUtils.toFXImage(img,null));
+                try{
+                    //in.readFully(pixels);
+                    //BufferedImage img = Utils.createImageFromBytes(pixels, width, height);
+                    BufferedImage img = ImageIO.read(in);
+                    synchronized (this.display){
+                        this.display.setImage(SwingFXUtils.toFXImage(img,null));
+                    }
+                }catch (IOException e){
+                    e.printStackTrace();
                 }
             }
             in.close();
