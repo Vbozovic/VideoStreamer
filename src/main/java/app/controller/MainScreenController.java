@@ -14,6 +14,7 @@ import app.service.Config;
 import app.threads.FaceIdentifierTask;
 import app.threads.WebcamScanner;
 import app.utils.Utils;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -147,10 +148,9 @@ public class MainScreenController implements Initializable {
         idFace.setOnAction(value -> {
             //Identifikovanje lica
             BufferedImage img = this.callServer.getCamImg();
-
-            this.pool.execute(new FaceIdentifierTask(this.model,img));
+            Platform.runLater(new FaceIdentifierTask(this.model,img));
+//            this.pool.execute(new FaceIdentifierTask(this.model,img));
         });
-
 
         menu.show(this.chatImageView, contextMenuEvent.getScreenX(), contextMenuEvent.getScreenY());
     }

@@ -8,6 +8,7 @@ import app.error_handling.AzureException;
 import app.model.MainScreenModel;
 import app.service.AzureService;
 import app.service.Config;
+import javafx.scene.control.Alert;
 
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
@@ -32,15 +33,40 @@ public class FaceIdentifierTask implements Runnable {
             IdentifyFaceDto[] persons = AzureService.identifyFace(Config.getInstance().group_id,ids.toArray(new String[ids.size()]));
 
             Arrays.stream(persons).map(pdto->pdto.candidates).forEach(cand->{
+                if (cand.length == 0){
+                    noPersonFound();
+                    return;
+                }
                 String person = this.faces.getPersonById(cand[0].personId);
                 if (person!= null){
-                    System.out.println("Person found: "+person+" confidence: "+cand[0].confidence);
+                    foundPerson(person,cand[0].confidence);
+                }else{
+                    Alert al = new Alert(Alert.AlertType.INFORMATION);
+                    al.setTitle("Identified person");
+                    al.setContentText("No persons identified");
+                    al.showAndWait();
                 }
             });
 
 
         } catch (AzureException e) {
             e.printStackTrace();
+            noPersonFound();
         }
     }
+
+    private void foundPerson(String person,float confidence){
+        Alert al = new Alert(Alert.AlertType.INFORMATION);
+        al.setTitle("Identified person");
+        al.setContentText("Talking with: "+person+" confidence: "+confidence);
+        al.showAndWait();
+    }
+
+    private void noPersonFound(){
+        Alert al = new Alert(Alert.AlertType.INFORMATION);
+        al.setTitle("Identified person");
+        al.setContentText("No persons identified");
+        al.showAndWait();
+    }
+
 }
