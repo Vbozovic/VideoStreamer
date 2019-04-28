@@ -1,6 +1,7 @@
 package app.threads;
 
 import app.utils.Utils;
+import com.sun.xml.internal.messaging.saaj.util.ByteInputStream;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.ImageView;
 
@@ -42,10 +43,11 @@ public class VideoReciverTask implements Runnable {
             byte[] pixels = new byte[height * width * 3];// 3 = broj bajtova po pikselu
             while (running) {
                 //System.out.println("Read");
+                in.readFully(pixels);
                 try{
-                    //in.readFully(pixels);
                     //BufferedImage img = Utils.createImageFromBytes(pixels, width, height);
-                    BufferedImage img = ImageIO.read(in);
+                    ByteInputStream bin = new ByteInputStream(pixels,pixels.length);
+                    BufferedImage img = ImageIO.read(bin);
                     if (img == null){
                         continue;
                     }
