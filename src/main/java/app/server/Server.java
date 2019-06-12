@@ -41,7 +41,7 @@ public class Server implements Runnable {
             sock = new Socket(ip, port);
             ObjectOutputStream out = new ObjectOutputStream(sock.getOutputStream());
             ObjectInputStream in = new ObjectInputStream(sock.getInputStream());
-            this.outSender = new WebcamScanner(new ImageSender(out), snapshot);
+            this.outSender = new WebcamScanner(new ImageSender(out,snapshot.getFPS()), snapshot);
             this.reciver = new VideoReciverTask(in,this.display);
             this.clientProcessingPool.execute(this.outSender);
             this.clientProcessingPool.execute(this.reciver);
@@ -62,7 +62,7 @@ public class Server implements Runnable {
                 ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream());
 
                 this.reciver = new VideoReciverTask(in, display);
-                this.outSender = new WebcamScanner(new ImageSender(out),Webcam.getDefault());
+                this.outSender = new WebcamScanner(new ImageSender(out,snapshot.getFPS()),Webcam.getDefault());
 
                 clientProcessingPool.execute(this.reciver);
                 clientProcessingPool.execute(this.outSender);

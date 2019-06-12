@@ -2,22 +2,20 @@ package app.image;
 
 import org.jcodec.common.io.SeekableByteChannel;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.nio.ByteBuffer;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
-public class SocketByteChannelSender implements SeekableByteChannel {
+public class ArrayByteChannel implements SeekableByteChannel {
 
-
-    private DataOutputStream out;
+    private ByteArrayOutputStream out;
     private boolean open;
     private long position;
-    private int sendInterval = 500; // milisekunde
-    private long lastTime=0;
 
-    public SocketByteChannelSender(DataOutputStream out) {
-        this.out = out;
+    public ArrayByteChannel() {
+        this.out = new ByteArrayOutputStream();
         this.open = true;
         this.position = 0;
         //this.sent = new ByteBuffer();
@@ -71,5 +69,9 @@ public class SocketByteChannelSender implements SeekableByteChannel {
     public void close() throws IOException {
         this.open = false;
         System.out.println("close");
+    }
+
+    public ByteArrayOutputStream getOut() {
+        return out;
     }
 }
