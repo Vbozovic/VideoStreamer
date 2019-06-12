@@ -47,13 +47,12 @@ public class SocketByteChannelReader implements SeekableByteChannel {
     @Override
     public int read(ByteBuffer dst) throws IOException {
         //moramo da cekamo i procitamo tacno kolko se trazi
-        int toRead = dst.remaining();
-        int start = dst.position();
-        byte[] arr = new byte[toRead];
-        in.readFully(arr, 0, toRead);
-        dst.put(arr);
-        this.position = start + toRead;
-        return (int) this.position;
+        int available = this.in.available();
+        System.out.println("Read "+available);
+        byte[] arr = new byte[available];
+        this.in.readFully(arr,0,available);
+        this.position = dst.position()+arr.length;
+        return available;
     }
 
     @Override

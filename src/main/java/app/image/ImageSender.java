@@ -19,13 +19,12 @@ public class ImageSender implements ImageHandler {
     private AWTSequenceEncoder encoder;
 
     public ImageSender(ObjectOutputStream output) throws IOException {
-        this.encoder = new AWTSequenceEncoder(new SocketByteChannelSender(new DataOutputStream(output)), Rational.R(30,1));
         this.output = new DataOutputStream(output);
+        this.encoder = new AWTSequenceEncoder(new SocketByteChannelSender(this.output), Rational.R(30,1));
     }
 
     @Override
     public void sendImage(BufferedImage img) throws Exception {
-
         this.encoder.encodeImage(img);
     }
 }

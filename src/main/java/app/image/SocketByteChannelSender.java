@@ -13,6 +13,8 @@ public class SocketByteChannelSender implements SeekableByteChannel {
     private DataOutputStream out;
     private boolean open;
     private long position;
+    private int sendInterval = 500; // milisekunde
+    private long lastTime=0;
 
     public SocketByteChannelSender(DataOutputStream out) {
         this.out = out;
@@ -53,6 +55,7 @@ public class SocketByteChannelSender implements SeekableByteChannel {
 
     @Override
     public int write(ByteBuffer src) throws IOException {
+        System.out.println("Send "+src.array().length);
         this.position+= src.position() + src.array().length;
         this.out.write(src.array(),0,src.array().length);
         return src.array().length;
