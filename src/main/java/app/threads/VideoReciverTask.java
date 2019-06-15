@@ -1,7 +1,7 @@
 package app.threads;
 
-import app.image.ArrayByteChannelReceiver;
 import app.image.ImageHandler;
+import app.image.SeekableInMemoryByteChannel;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.ImageView;
 import org.jcodec.api.FrameGrab;
@@ -41,7 +41,8 @@ public class VideoReciverTask implements Runnable {
                 byte[] video = new byte[length];
                 in.readFully(video);
 
-                FrameGrab fg = FrameGrab.createFrameGrab(new ArrayByteChannelReceiver(video));
+
+                FrameGrab fg = FrameGrab.createFrameGrab(new SeekableInMemoryByteChannel(video));
                 long timeout = (long) (1000 / frames);
                 long last = System.currentTimeMillis();
 
