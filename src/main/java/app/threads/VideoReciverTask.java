@@ -36,14 +36,15 @@ public class VideoReciverTask implements Runnable {
 
             while (running) {
                 int length = this.in.readInt();
-                double fps = this.in.readDouble();
+                int frames = this.in.readInt();
+                System.out.println("Received video frames: "+frames+" length "+length);
                 byte[] video = new byte[length];
                 in.readFully(video);
 
                 FrameGrab fg = FrameGrab.createFrameGrab(new ArrayByteChannelReceiver(video));
-                long timeout = (long) (1000 / fps);
+                long timeout = (long) (1000 / frames);
                 long last = System.currentTimeMillis();
-                System.out.println("Received video fps: "+fps+" length "+length);
+
                 while (true){
                     if (last - System.currentTimeMillis() >= timeout) {
                         //display picutre

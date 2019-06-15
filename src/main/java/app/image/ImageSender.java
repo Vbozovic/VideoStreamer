@@ -16,15 +16,17 @@ public class ImageSender implements ImageHandler {
     private ObjectOutputStream output;
     private AWTSequenceEncoder encoder;
     private long time = 500;
-    private long last = Long.MAX_VALUE;
+    private long last;
     private ArrayByteChannelSender channel;
     private double fps;
+    private int currentFrames = 0;
 
     public ImageSender(ObjectOutputStream output, double fps) throws IOException {
         this.output = output;
         this.channel = new ArrayByteChannelSender();
         this.encoder = new AWTSequenceEncoder(this.channel, Rational.R((int) this.fps, 1));
         this.fps = fps;
+        this.last = System.currentTimeMillis();
     }
 
     @Override
@@ -33,19 +35,25 @@ public class ImageSender implements ImageHandler {
         try{
             if (last - current >= time) {
                 //posalji sliku kroz stream
-                System.out.println("Sent video");
+                System.out.println("Sending video");
                 last = current;
                 encoder.finish();
                 byte[] video = channel.getOut().toByteArray();
+                System.out.println("Video len "+video.length);
                 output.writeInt(video.length);
-                output.writeDouble(this.fps);
+                output.writeInt(this.currentFrames);
                 output.writeObject(video);
 
                 NIOUtils.closeQuietly(this.channel);
                 this.channel = new ArrayByteChannelSender();
                 this.encoder = new AWTSequenceEncoder(this.channel, Rational.R((int) this.fps, 1));
+
+                this.currentFrames = 0; //reset broj frejmova
+                output.flush();
             } else {
                 //baferuj sliku
+                System.out.println("!");
+                this.currentFrames++;
                 encoder.encodeImage(img);
             }
         }catch(IOException e){
