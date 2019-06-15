@@ -33,6 +33,7 @@ public class ImageSender implements ImageHandler {
         try{
             if (last - current >= time) {
                 //posalji sliku kroz stream
+                System.out.println("Sent video");
                 last = current;
                 encoder.finish();
                 byte[] video = channel.getOut().toByteArray();

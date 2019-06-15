@@ -69,6 +69,8 @@ public class ArrayByteChannelReceiver implements SeekableByteChannel {
 
     @Override
     public void close() throws IOException {
+        System.out.println("[R]Close");
         this.open = false;
+        in.close();
     }
 }

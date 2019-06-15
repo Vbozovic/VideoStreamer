@@ -43,7 +43,7 @@ public class VideoReciverTask implements Runnable {
                 FrameGrab fg = FrameGrab.createFrameGrab(new ArrayByteChannelReceiver(video));
                 long timeout = (long) (1000 / fps);
                 long last = System.currentTimeMillis();
-
+                System.out.println("Received video fps: "+fps+" length "+length);
                 while (true){
                     if (last - System.currentTimeMillis() >= timeout) {
                         //display picutre
