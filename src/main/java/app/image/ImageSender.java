@@ -33,7 +33,7 @@ public class ImageSender implements ImageHandler {
     public void sendImage(BufferedImage img) {
         long current = System.currentTimeMillis();
         try{
-            if (last - current >= time) {
+            if (current - last >= time) {
                 //posalji sliku kroz stream
                 System.out.println("Sending video");
                 last = current;
@@ -52,7 +52,7 @@ public class ImageSender implements ImageHandler {
                 output.flush();
             } else {
                 //baferuj sliku
-                System.out.println("!");
+                System.out.print("!");
                 this.currentFrames++;
                 encoder.encodeImage(img);
             }
