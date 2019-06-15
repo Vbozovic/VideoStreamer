@@ -20,17 +20,22 @@ public class ImageSender implements ImageHandler {
     private double fps;
     private int currentFrames = 0;
     private SeekableInMemoryByteChannel channel;
+    private boolean started = false;
 
     public ImageSender(ObjectOutputStream output, double fps) throws IOException {
         this.output = output;
         this.channel = new SeekableInMemoryByteChannel();
         this.encoder = new AWTSequenceEncoder(this.channel, Rational.R(15, 1));
         this.fps = fps;
-        this.last = System.currentTimeMillis();
     }
 
     @Override
     public void sendImage(BufferedImage img) {
+        if(!started){
+            this.last = System.currentTimeMillis();
+            started = true;
+        }
+
         long current = System.currentTimeMillis();
         try{
             if (current - last >= time) {
