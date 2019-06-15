@@ -33,6 +33,7 @@ public class WebcamScanner implements Runnable{
             }
             img = cam.getImage();
         }
+        System.out.println("Scanner stopped");
         cam.close();
     }
 
