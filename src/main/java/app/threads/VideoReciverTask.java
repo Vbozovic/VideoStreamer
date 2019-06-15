@@ -39,7 +39,7 @@ public class VideoReciverTask implements Runnable {
                 int frames = this.in.readInt();
                 System.out.println("Received video frames: "+frames+" length "+length);
                 byte[] video = new byte[length];
-                in.readFully(video);
+                in.read(video,0,length);
 
 
                 FrameGrab fg = FrameGrab.createFrameGrab(new SeekableInMemoryByteChannel(video));
