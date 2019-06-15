@@ -24,7 +24,7 @@ public class ImageSender implements ImageHandler {
     public ImageSender(ObjectOutputStream output, double fps) throws IOException {
         this.output = output;
         this.channel = new SeekableInMemoryByteChannel();
-        this.encoder = new AWTSequenceEncoder(this.channel, Rational.R((int) this.fps, 1));
+        this.encoder = new AWTSequenceEncoder(this.channel, Rational.R(15, 1));
         this.fps = fps;
         this.last = System.currentTimeMillis();
     }
@@ -47,7 +47,7 @@ public class ImageSender implements ImageHandler {
 
                 NIOUtils.closeQuietly(this.channel);
                 this.channel = new SeekableInMemoryByteChannel();
-                this.encoder = new AWTSequenceEncoder(this.channel, Rational.R((int) this.fps, 1));
+                this.encoder = new AWTSequenceEncoder(this.channel, Rational.R((int) currentFrames, 1));
 
                 this.currentFrames = 0; //reset broj frejmova
             } else {
