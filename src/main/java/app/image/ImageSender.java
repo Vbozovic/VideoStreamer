@@ -35,7 +35,7 @@ public class ImageSender implements ImageHandler {
         try{
             if (current - last >= time) {
                 //posalji sliku kroz stream
-                System.out.println("Sending video");
+                System.out.println("Sending video frames "+currentFrames);
                 last = current;
                 encoder.finish();
                 byte[] video = channel.getOut().toByteArray();
@@ -43,13 +43,13 @@ public class ImageSender implements ImageHandler {
                 output.writeInt(video.length);
                 output.writeInt(this.currentFrames);
                 output.writeObject(video);
+                output.flush();
 
                 NIOUtils.closeQuietly(this.channel);
                 this.channel = new ArrayByteChannelSender();
                 this.encoder = new AWTSequenceEncoder(this.channel, Rational.R((int) this.fps, 1));
 
                 this.currentFrames = 0; //reset broj frejmova
-                output.flush();
             } else {
                 //baferuj sliku
                 System.out.print("!");
