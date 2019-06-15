@@ -1,5 +1,6 @@
 package app.server;
 
+import app.image.ImageDisplayer;
 import app.image.ImageSender;
 import app.threads.VideoReciverTask;
 import app.threads.WebcamScanner;
@@ -42,7 +43,7 @@ public class Server implements Runnable {
             ObjectOutputStream out = new ObjectOutputStream(sock.getOutputStream());
             ObjectInputStream in = new ObjectInputStream(sock.getInputStream());
             this.outSender = new WebcamScanner(new ImageSender(out,snapshot.getFPS()), snapshot);
-            this.reciver = new VideoReciverTask(in,this.display);
+            this.reciver = new VideoReciverTask(in,new ImageDisplayer(this.display));
             this.clientProcessingPool.execute(this.outSender);
             this.clientProcessingPool.execute(this.reciver);
         } catch (IOException e) {
@@ -61,7 +62,7 @@ public class Server implements Runnable {
                 ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
                 ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream());
 
-                this.reciver = new VideoReciverTask(in, display);
+                this.reciver = new VideoReciverTask(in, new ImageDisplayer(display));
                 this.outSender = new WebcamScanner(new ImageSender(out,snapshot.getFPS()),Webcam.getDefault());
 
                 clientProcessingPool.execute(this.reciver);

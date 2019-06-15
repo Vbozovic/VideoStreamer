@@ -17,31 +17,41 @@ public class ImageSender implements ImageHandler {
     private AWTSequenceEncoder encoder;
     private long time = 500;
     private long last = Long.MAX_VALUE;
-    private ArrayByteChannel channel;
+    private ArrayByteChannelSender channel;
     private double fps;
 
     public ImageSender(ObjectOutputStream output, double fps) throws IOException {
         this.output = output;
-        this.channel = new ArrayByteChannel();
+        this.channel = new ArrayByteChannelSender();
         this.encoder = new AWTSequenceEncoder(this.channel, Rational.R((int) this.fps, 1));
+        this.fps = fps;
     }
 
     @Override
-    public void sendImage(BufferedImage img) throws Exception {
+    public void sendImage(BufferedImage img) {
         long current = System.currentTimeMillis();
-        if (last - current >= time) {
-            //posalji sliku kroz stream
-            last = current;
-            encoder.finish();
-            byte[] video = channel.getOut().toByteArray();
-            output.writeObject(video);
+        try{
+            if (last - current >= time) {
+                //posalji sliku kroz stream
+                last = current;
+                encoder.finish();
+                byte[] video = channel.getOut().toByteArray();
+                output.writeInt(video.length);
+                output.writeDouble(this.fps);
+                output.writeObject(video);
 
-            NIOUtils.closeQuietly(this.channel);
-            this.channel = new ArrayByteChannel();
-            this.encoder = new AWTSequenceEncoder(this.channel, Rational.R((int) this.fps, 1));
-        } else {
-            //baferuj sliku
-            encoder.encodeImage(img);
+                NIOUtils.closeQuietly(this.channel);
+                this.channel = new ArrayByteChannelSender();
+                this.encoder = new AWTSequenceEncoder(this.channel, Rational.R((int) this.fps, 1));
+            } else {
+                //baferuj sliku
+                encoder.encodeImage(img);
+            }
+        }catch(IOException e){
+            System.err.println("Image sender error ");
+            e.printStackTrace();
         }
+
+
     }
 }

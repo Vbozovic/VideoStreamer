@@ -8,13 +8,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class ArrayByteChannel implements SeekableByteChannel {
+public class ArrayByteChannelSender implements SeekableByteChannel {
 
     private ByteArrayOutputStream out;
     private boolean open;
     private long position;
 
-    public ArrayByteChannel() {
+    public ArrayByteChannelSender() {
         this.out = new ByteArrayOutputStream();
         this.open = true;
         this.position = 0;

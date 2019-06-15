@@ -1,17 +1,15 @@
 package app.threads;
 
-import app.image.SocketByteChannelReader;
-import app.utils.Utils;
+import app.image.ArrayByteChannelReceiver;
+import app.image.ImageHandler;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.ImageView;
 import org.jcodec.api.FrameGrab;
 import org.jcodec.api.JCodecException;
-import org.jcodec.common.io.NIOUtils;
 import org.jcodec.common.model.Picture;
 import org.jcodec.scale.AWTUtil;
 
 import java.awt.image.BufferedImage;
-import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
@@ -19,12 +17,12 @@ public class VideoReciverTask implements Runnable {
 
 
     private boolean running;
-    private SocketByteChannelReader in;
-    private ImageView display;
+    private ObjectInputStream in;
+    private ImageHandler display;
 
-    public VideoReciverTask(ObjectInputStream in, ImageView display) {
+    public VideoReciverTask(ObjectInputStream in, ImageHandler display) {
         this();
-        this.in = new SocketByteChannelReader(new DataInputStream(in));
+        this.in = in;
         this.display = display;
     }
 
@@ -35,24 +33,42 @@ public class VideoReciverTask implements Runnable {
 
     public void run() {
         try {
-            FrameGrab grab = FrameGrab.createFrameGrab(this.in);
-            Picture pic;
+
             while (running) {
-                //System.out.println("Read");
-                pic = grab.getNativeFrame();
-                BufferedImage img = AWTUtil.toBufferedImage(pic);
-                synchronized (this.display){
-                    this.display.setImage(SwingFXUtils.toFXImage(img,null));
+                int length = this.in.readInt();
+                double fps = this.in.readDouble();
+                byte[] video = new byte[length];
+                in.readFully(video);
+
+                FrameGrab fg = FrameGrab.createFrameGrab(new ArrayByteChannelReceiver(video));
+                long timeout = (long) (1000 / fps);
+                long last = System.currentTimeMillis();
+
+                while (true){
+                    if (last - System.currentTimeMillis() >= timeout) {
+                        //display picutre
+                        Picture pic = fg.getNativeFrame();
+                        if (pic == null){
+                            break;
+                        }
+                        System.out.print(".");
+                        BufferedImage frame = AWTUtil.toBufferedImage(pic);
+                        this.display.sendImage(frame);
+                        last = System.currentTimeMillis();
+                    }else{
+                        Thread.sleep(0);
+                    }
                 }
+
             }
             in.close();
-        } catch (IOException | JCodecException e) {
+        } catch (IOException | JCodecException | InterruptedException e) {
             e.printStackTrace();
         }
 
     }
 
-    public void stop(){
+    public void stop() {
         this.running = false;
     }
 }
