@@ -14,6 +14,7 @@ import org.jcodec.containers.mp4.demuxer.MP4Demuxer;
 import org.jcodec.scale.AWTUtil;
 
 import java.awt.image.BufferedImage;
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.nio.file.Files;
@@ -23,10 +24,10 @@ public class VideoReciverTask implements Runnable {
 
 
     private boolean running;
-    private ObjectInputStream in;
+    private DataInputStream in;
     private ImageHandler display;
 
-    public VideoReciverTask(ObjectInputStream in, ImageHandler display) {
+    public VideoReciverTask(DataInputStream in, ImageHandler display) {
         this();
         this.in = in;
         this.display = display;
@@ -45,11 +46,14 @@ public class VideoReciverTask implements Runnable {
                 int frames = this.in.readInt();
                 System.out.println("Received video frames: "+frames+" length "+length);
                 byte[] video = new byte[length];
-                in.read(video,0,length);
+                int read = in.read(video,0,length);
+                System.out.println("Stream read "+read);
 
-                Files.write(Paths.get("resources\\tmp.mp4"),video);
+                for (int i = 0; i < 20; i++) {
+                    System.out.print(video[i]);
+                }
 
-                FrameGrab fg = FrameGrab.createFrameGrab(NIOUtils.readableFileChannel("resources\\tmp.mp4"));
+                FrameGrab fg = FrameGrab.createFrameGrab(new SeekableInMemoryByteChannel(video));
                 long timeout = (long) (1000 / frames);
                 long last = System.currentTimeMillis();
 
@@ -68,8 +72,6 @@ public class VideoReciverTask implements Runnable {
                         Thread.sleep(0);
                     }
                 }
-
-                Files.delete(Paths.get("resources\\tmp.mp4"));
 
             }
             in.close();
