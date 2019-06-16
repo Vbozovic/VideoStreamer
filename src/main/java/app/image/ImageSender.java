@@ -7,6 +7,9 @@ import org.jcodec.common.model.Rational;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 
 public class ImageSender implements ImageHandler {
 
@@ -21,6 +24,7 @@ public class ImageSender implements ImageHandler {
     private int currentFrames = 0;
     private SeekableInMemoryByteChannel channel;
     private boolean started = false;
+    private int fileConuter = 1;
 
     public ImageSender(ObjectOutputStream output, double fps) throws IOException {
         this.output = output;
@@ -37,13 +41,18 @@ public class ImageSender implements ImageHandler {
         }
 
         long current = System.currentTimeMillis();
+
         try{
             if (current - last >= time) {
+                String path = "resources\\tmp"+ fileConuter++ +".mp4";
                 encoder.encodeImage(img);
+                encoder.finish();
                 System.out.println("Sending video frames "+currentFrames);
                 last = current;
-                encoder.finish();
                 byte[] video = channel.getContents();
+
+                Files.write(Paths.get(path),video,StandardOpenOption.CREATE);
+
                 System.out.println("Video len "+video.length);
                 output.writeInt(video.length);
                 output.writeInt(this.currentFrames);

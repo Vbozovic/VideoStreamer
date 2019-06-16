@@ -6,12 +6,18 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.ImageView;
 import org.jcodec.api.FrameGrab;
 import org.jcodec.api.JCodecException;
+import org.jcodec.api.specific.AVCMP4Adaptor;
+import org.jcodec.common.SeekableDemuxerTrack;
+import org.jcodec.common.io.NIOUtils;
 import org.jcodec.common.model.Picture;
+import org.jcodec.containers.mp4.demuxer.MP4Demuxer;
 import org.jcodec.scale.AWTUtil;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class VideoReciverTask implements Runnable {
 
@@ -41,8 +47,9 @@ public class VideoReciverTask implements Runnable {
                 byte[] video = new byte[length];
                 in.read(video,0,length);
 
+                Files.write(Paths.get("resources\\tmp.mp4"),video);
 
-                FrameGrab fg = FrameGrab.createFrameGrab(new SeekableInMemoryByteChannel(video));
+                FrameGrab fg = FrameGrab.createFrameGrab(NIOUtils.readableFileChannel("resources\\tmp.mp4"));
                 long timeout = (long) (1000 / frames);
                 long last = System.currentTimeMillis();
 
@@ -61,6 +68,8 @@ public class VideoReciverTask implements Runnable {
                         Thread.sleep(0);
                     }
                 }
+
+                Files.delete(Paths.get("resources\\tmp.mp4"));
 
             }
             in.close();
