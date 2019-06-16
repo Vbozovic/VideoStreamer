@@ -8,9 +8,7 @@ import com.github.sarxos.webcam.Webcam;
 import javafx.scene.image.ImageView;
 
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
@@ -41,7 +39,7 @@ public class Server implements Runnable {
         try {
             sock = new Socket(ip, port);
             ObjectOutputStream out = new ObjectOutputStream(sock.getOutputStream());
-            ObjectInputStream in = new ObjectInputStream(sock.getInputStream());
+            DataInputStream in = new DataInputStream(sock.getInputStream());
             this.outSender = new WebcamScanner(new ImageSender(out,snapshot.getFPS()), snapshot);
             this.reciver = new VideoReciverTask(in,new ImageDisplayer(this.display));
             this.clientProcessingPool.execute(this.outSender);
@@ -60,7 +58,7 @@ public class Server implements Runnable {
                 Socket clientSocket = ssocket.accept();
 
                 ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
-                ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream());
+                DataInputStream in = new DataInputStream(clientSocket.getInputStream());
 
                 this.reciver = new VideoReciverTask(in, new ImageDisplayer(display));
                 this.outSender = new WebcamScanner(new ImageSender(out,snapshot.getFPS()),Webcam.getDefault());
