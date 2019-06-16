@@ -24,7 +24,6 @@ public class ImageSender implements ImageHandler {
     private int currentFrames = 0;
     private SeekableInMemoryByteChannel channel;
     private boolean started = false;
-    private int fileConuter = 1;
 
     public ImageSender(ObjectOutputStream output, double fps) throws IOException {
         this.output = output;
@@ -44,14 +43,12 @@ public class ImageSender implements ImageHandler {
 
         try{
             if (current - last >= time) {
-                String path = "resources\\tmp"+ fileConuter++ +".mp4";
                 encoder.encodeImage(img);
                 encoder.finish();
                 System.out.println("Sending video frames "+currentFrames);
                 last = current;
                 byte[] video = channel.getContents();
 
-                Files.write(Paths.get(path),video,StandardOpenOption.CREATE);
 
                 System.out.println("Video len "+video.length);
                 output.writeInt(video.length);
