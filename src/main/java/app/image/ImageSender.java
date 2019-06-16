@@ -5,6 +5,7 @@ import org.jcodec.common.io.NIOUtils;
 import org.jcodec.common.model.Rational;
 
 import java.awt.image.BufferedImage;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.nio.file.Files;
@@ -16,7 +17,7 @@ public class ImageSender implements ImageHandler {
     private static long segLength = 500; //milisekunde
 
     private boolean sentMetaData = false;
-    private ObjectOutputStream output;
+    private DataOutputStream output;
     private AWTSequenceEncoder encoder;
     private long time = 500;
     private long last;
@@ -25,7 +26,7 @@ public class ImageSender implements ImageHandler {
     private SeekableInMemoryByteChannel channel;
     private boolean started = false;
 
-    public ImageSender(ObjectOutputStream output, double fps) throws IOException {
+    public ImageSender(DataOutputStream output, double fps) throws IOException {
         this.output = output;
         this.channel = new SeekableInMemoryByteChannel();
         this.encoder = new AWTSequenceEncoder(this.channel, Rational.R(15, 1));
@@ -53,7 +54,7 @@ public class ImageSender implements ImageHandler {
                 System.out.println("Video len "+video.length);
                 output.writeInt(video.length);
                 output.writeInt(this.currentFrames);
-                output.writeObject(video);
+                output.write(video);
                 output.flush();
 
                 NIOUtils.closeQuietly(this.channel);

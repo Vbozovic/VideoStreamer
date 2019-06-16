@@ -38,7 +38,7 @@ public class Server implements Runnable {
         Socket sock = null;
         try {
             sock = new Socket(ip, port);
-            ObjectOutputStream out = new ObjectOutputStream(sock.getOutputStream());
+            DataOutputStream out = new DataOutputStream(sock.getOutputStream());
             DataInputStream in = new DataInputStream(sock.getInputStream());
             this.outSender = new WebcamScanner(new ImageSender(out,snapshot.getFPS()), snapshot);
             this.reciver = new VideoReciverTask(in,new ImageDisplayer(this.display));
@@ -57,7 +57,7 @@ public class Server implements Runnable {
             while(running){
                 Socket clientSocket = ssocket.accept();
 
-                ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
+                DataOutputStream out = new DataOutputStream(clientSocket.getOutputStream());
                 DataInputStream in = new DataInputStream(clientSocket.getInputStream());
 
                 this.reciver = new VideoReciverTask(in, new ImageDisplayer(display));
