@@ -4,6 +4,7 @@ import app.image.ImageHandler;
 import app.image.SeekableInMemoryByteChannel;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.ImageView;
+import org.apache.commons.codec.binary.Base64;
 import org.jcodec.api.FrameGrab;
 import org.jcodec.api.JCodecException;
 import org.jcodec.api.specific.AVCMP4Adaptor;
@@ -44,31 +45,29 @@ public class VideoReciverTask implements Runnable {
             while (running) {
                 int length = this.in.readInt();
                 int frames = this.in.readInt();
-                System.out.println("Received video frames: "+frames+" length "+length);
-                byte[] video = new byte[length];
-                int read = in.read(video,0,length);
-                System.out.println("Stream read "+read);
+                System.out.println("Received video frames: " + frames + " length " + length);
 
-                for (int i = 0; i < 20; i++) {
-                    System.out.print(video[i]);
-                }
+                String videoString = in.readUTF();
+                System.out.println("Stream read "+videoString.length());
+
+                byte[] video = Base64.decodeBase64(videoString);
 
                 FrameGrab fg = FrameGrab.createFrameGrab(new SeekableInMemoryByteChannel(video));
                 long timeout = (long) (1000 / frames);
                 long last = System.currentTimeMillis();
 
-                while (true){
+                while (true) {
                     if (last - System.currentTimeMillis() >= timeout) {
                         //display picutre
                         Picture pic = fg.getNativeFrame();
-                        if (pic == null){
+                        if (pic == null) {
                             break;
                         }
                         System.out.print(".");
                         BufferedImage frame = AWTUtil.toBufferedImage(pic);
                         this.display.sendImage(frame);
                         last = System.currentTimeMillis();
-                    }else{
+                    } else {
                         Thread.sleep(0);
                     }
                 }

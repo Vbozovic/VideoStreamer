@@ -1,11 +1,13 @@
 package app.image;
 
+import org.apache.commons.codec.binary.Base64;
 import org.jcodec.api.awt.AWTSequenceEncoder;
 import org.jcodec.common.io.NIOUtils;
 import org.jcodec.common.model.Rational;
 
 import java.awt.image.BufferedImage;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.nio.file.Files;
@@ -50,12 +52,14 @@ public class ImageSender implements ImageHandler {
                 last = current;
                 byte[] video = channel.getContents();
 
+                String videoString = Base64.encodeBase64String(video);
 
                 System.out.println("Video len "+video.length);
                 output.writeInt(video.length);
                 output.writeInt(this.currentFrames);
-                output.write(video);
+                output.writeUTF(videoString);
                 output.flush();
+
 
                 NIOUtils.closeQuietly(this.channel);
                 this.channel = new SeekableInMemoryByteChannel();
