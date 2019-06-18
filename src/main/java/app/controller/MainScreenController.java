@@ -126,7 +126,6 @@ public class MainScreenController implements Initializable {
     }
 
     public void initiateCall(ActionEvent actionEvent) {
-        //TODO: napravi video poziv
         String ip = this.ipAddrField.getText();
         try {
             this.scanner = new WebcamScanner(new ImageSender(new URI(String.format("http://%s:8080/video",ip))), Webcam.getDefault());
@@ -146,9 +145,10 @@ public class MainScreenController implements Initializable {
 
         endCall.setOnAction(value -> {
             //Zavrsavanje poziva
-            //TODO: zavrsi poziv
-            this.scanner.stop();
-            this.scanner = null;
+            if(this.scanner != null){
+                this.scanner.stop();
+                this.scanner = null;
+            }
         });
 
         idFace.setOnAction(value -> {

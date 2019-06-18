@@ -14,18 +14,15 @@ import java.util.concurrent.CopyOnWriteArraySet;
 public class Server {
 
     private Session session;
-    private static Set<Server> chatEndpoints
-            = new CopyOnWriteArraySet<>();
-    private static HashMap<String, String> users = new HashMap<>();
+    private static Set<Server> chatEndpoints = new CopyOnWriteArraySet<>();
 
     @OnOpen
     public void onOpen(
             Session session,
             @PathParam("username") String username) throws IOException {
-
+        System.out.println("Connection opened");
         this.session = session;
         chatEndpoints.add(this);
-        users.put(session.getId(), username);
 
 //        Message message = new Message();
 //        message.setFrom(username);
@@ -43,7 +40,7 @@ public class Server {
 
     @OnClose
     public void onClose(Session session) throws IOException {
-
+        System.out.println("Connection closed");
         chatEndpoints.remove(this);
 //        Message message = new Message();
 //        message.setFrom(users.get(session.getId()));
@@ -55,9 +52,6 @@ public class Server {
     public void onError(Session session, Throwable throwable) {
         // Do error handling here
     }
-
-
-
 
 
 }
