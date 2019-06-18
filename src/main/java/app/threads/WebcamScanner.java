@@ -35,6 +35,7 @@ public class WebcamScanner implements Runnable{
         }
         System.out.println("Scanner stopped");
         cam.close();
+        out.stop();
     }
 
     public void stop(){

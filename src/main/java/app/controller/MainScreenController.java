@@ -1,29 +1,30 @@
 package app.controller;
 
-import app.client.AzureClient;
 import app.dto.azure.recive.group.GetPersonDto;
 import app.dto.azure.recive.group.TrainStatusDto;
 import app.error_handling.AzureException;
 import app.error_handling.CreateGroupException;
 import app.error_handling.GetGroupException;
 import app.gui.ContactTreeCellFactory;
+import app.image.ImageSender;
 import app.model.MainScreenModel;
-import app.server.Server;
 import app.service.AzureService;
 import app.service.Config;
 import app.threads.FaceIdentifierTask;
 import app.threads.WebcamScanner;
 import app.utils.Utils;
+import com.github.sarxos.webcam.Webcam;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ContextMenuEvent;
-import javafx.util.Callback;
 
-import java.awt.image.BufferedImage;
+import javax.websocket.DeploymentException;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -41,11 +42,10 @@ public class MainScreenController implements Initializable {
     public ImageView chatImageView;
 
     private MainScreenModel model;
-
+    private WebcamScanner scanner = null;
     public SplitPane beginScreen;
     public TreeView<GetPersonDto> contactTree;
 
-    private Server callServer = null;
     private ExecutorService pool;
 
     public void displayAdContact(ActionEvent actionEvent) {
@@ -106,8 +106,6 @@ public class MainScreenController implements Initializable {
 
         try {
             this.pool = Executors.newCachedThreadPool();
-            this.callServer = new Server(8080, this.pool, this.chatImageView);
-            this.pool.execute(this.callServer); //pokrecemo jedno slusanje za konekciju
             this.model = new MainScreenModel(this.contactTree);
             this.contactTree.setCellFactory(param -> new ContactTreeCellFactory());
         } catch (GetGroupException gge) {
@@ -128,7 +126,13 @@ public class MainScreenController implements Initializable {
     }
 
     public void initiateCall(ActionEvent actionEvent) {
-        callServer.establish_async(this.ipAddrField.getText());
+        //TODO: napravi video poziv
+        String ip = this.ipAddrField.getText();
+        try {
+            this.scanner = new WebcamScanner(new ImageSender(new URI(String.format("http://%s:8080/video",ip))), Webcam.getDefault());
+        } catch (IOException | DeploymentException | URISyntaxException e) {
+            e.printStackTrace();
+        }
     }
 
     public void displayChatoptions(ContextMenuEvent contextMenuEvent) {
@@ -142,13 +146,15 @@ public class MainScreenController implements Initializable {
 
         endCall.setOnAction(value -> {
             //Zavrsavanje poziva
-            this.callServer.endCall();
+            //TODO: zavrsi poziv
+            this.scanner.stop();
+            this.scanner = null;
         });
 
         idFace.setOnAction(value -> {
             //Identifikovanje lica
-            BufferedImage img = this.callServer.getCamImg();
-            Platform.runLater(new FaceIdentifierTask(this.model,img));
+//            BufferedImage img = this.callServer.getCamImg();
+            Platform.runLater(new FaceIdentifierTask(this.model,null));
 //            this.pool.execute(new FaceIdentifierTask(this.model,img));
         });
 

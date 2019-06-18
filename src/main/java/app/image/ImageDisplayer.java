@@ -19,4 +19,9 @@ public class ImageDisplayer implements ImageHandler {
             toDisplay.setImage(SwingFXUtils.toFXImage(img,null));
         }
     }
+
+    @Override
+    public void stop() {
+
+    }
 }

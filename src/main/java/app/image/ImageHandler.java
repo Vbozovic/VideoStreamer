@@ -5,5 +5,5 @@ import java.awt.image.BufferedImage;
 public interface ImageHandler {
 
     void sendImage(BufferedImage img);
-
+    void stop();
 }
