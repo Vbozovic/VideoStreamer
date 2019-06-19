@@ -32,6 +32,7 @@ public class ImageSender implements ImageHandler {
     private boolean started = false;
 
     public ImageSender(URI address) throws IOException, DeploymentException {
+        System.out.println("Web socket on "+address.toString());
         WebSocketContainer container = ContainerProvider.getWebSocketContainer();
         container.connectToServer(this,address);
         this.channel = new SeekableInMemoryByteChannel();

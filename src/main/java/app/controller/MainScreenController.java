@@ -135,7 +135,8 @@ public class MainScreenController implements Initializable {
     public void initiateCall(ActionEvent actionEvent) {
         String ip = this.ipAddrField.getText();
         try {
-            this.scanner = new WebcamScanner(new ImageSender(new URI(String.format("ws://%s:8080/websocket/video",ip))), Webcam.getDefault());
+            this.scanner = new WebcamScanner(new ImageSender(new URI(String.format("ws://%s:8025/websocket/video",ip))), Webcam.getDefault());
+            this.pool.submit(scanner);
         } catch (IOException | DeploymentException | URISyntaxException e) {
             e.printStackTrace();
         }

@@ -17,14 +17,12 @@ public class ServerEndpoint {
     private static Set<ServerEndpoint> chatEndpoints = new CopyOnWriteArraySet<>();
 
     public ServerEndpoint(){
-
         System.out.println("ServerEndpoint started");
-
     }
 
     @OnOpen
     public void onOpen(Session session) throws IOException {
-        System.out.println("Connection opened");
+        System.out.println("Connection opened "+session.getRequestURI());
         this.session = session;
         chatEndpoints.add(this);
 
