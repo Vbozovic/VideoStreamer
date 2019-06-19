@@ -26,18 +26,13 @@ public class ServerEndpoint {
         this.session = session;
         chatEndpoints.add(this);
 
-//        Message message = new Message();
-//        message.setFrom(username);
-//        message.setContent("Connected!");
-//        broadcast(message);
     }
 
     @OnMessage
     public void onMessage(Session session, SegmentMessage msg)
             throws IOException {
         System.out.println("Got segment");
-//        message.setFrom(users.get(session.getId()));
-//        broadcast(message);
+
     }
 
     @OnClose
