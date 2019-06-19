@@ -23,9 +23,7 @@ public class ServerEndpoint {
     }
 
     @OnOpen
-    public void onOpen(
-            Session session,
-            @PathParam("username") String username) throws IOException {
+    public void onOpen(Session session) throws IOException {
         System.out.println("Connection opened");
         this.session = session;
         chatEndpoints.add(this);
@@ -39,7 +37,7 @@ public class ServerEndpoint {
     @OnMessage
     public void onMessage(Session session, SegmentMessage msg)
             throws IOException {
-
+        System.out.println("Got segment");
 //        message.setFrom(users.get(session.getId()));
 //        broadcast(message);
     }
