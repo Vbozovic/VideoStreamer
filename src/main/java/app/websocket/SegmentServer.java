@@ -24,7 +24,7 @@ public class SegmentServer {
                     SERVER_PORT,
                     SERVER_CONTEXT_PATH,
                     null,
-                    ServerEndpoint.class
+                    SegmentEndpoint.class
             );
 
             server.start();

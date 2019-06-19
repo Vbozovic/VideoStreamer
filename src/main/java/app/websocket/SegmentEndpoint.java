@@ -3,21 +3,21 @@ package app.websocket;
 import app.websocket.message.SegmentMessage;
 
 import javax.websocket.*;
-import javax.websocket.server.PathParam;
 import java.io.IOException;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
+import javax.websocket.server.ServerEndpoint;
 
-@javax.websocket.server.ServerEndpoint(value = "/video",
+@ServerEndpoint(value = "/video",
         decoders = VideoSegnemtDecoder.class,
         encoders = VideoSegmentEncoder.class)
-public class ServerEndpoint {
+public class SegmentEndpoint {
 
     private Session session = null;
-    private static Set<ServerEndpoint> chatEndpoints = new CopyOnWriteArraySet<>();
+    private static Set<SegmentEndpoint> chatEndpoints = new CopyOnWriteArraySet<>();
 
-    public ServerEndpoint(){
-        System.out.println("ServerEndpoint started");
+    public SegmentEndpoint(){
+        System.out.println("SegmentEndpoint started");
     }
 
     @OnOpen

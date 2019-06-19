@@ -10,7 +10,6 @@ import java.nio.ByteBuffer;
 public class VideoSegnemtDecoder implements Decoder.Binary<SegmentMessage> {
     @Override
     public SegmentMessage decode(ByteBuffer byteBuffer) throws DecodeException {
-        System.out.println("Decode segment");
         int frames = byteBuffer.getInt();
         int length = byteBuffer.getInt();
         byte[] video = new byte[length];
