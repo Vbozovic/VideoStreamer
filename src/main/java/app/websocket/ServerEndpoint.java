@@ -1,20 +1,26 @@
 package app.websocket;
 
+import app.websocket.message.SegmentMessage;
+
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
-import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
-@ServerEndpoint(value = "/video",
+@javax.websocket.server.ServerEndpoint(value = "/video",
         decoders = VideoSegnemtDecoder.class,
         encoders = VideoSegmentEncoder.class)
-public class Server {
+public class ServerEndpoint {
 
-    private Session session;
-    private static Set<Server> chatEndpoints = new CopyOnWriteArraySet<>();
+    private Session session = null;
+    private static Set<ServerEndpoint> chatEndpoints = new CopyOnWriteArraySet<>();
+
+    public ServerEndpoint(){
+
+        System.out.println("ServerEndpoint started");
+
+    }
 
     @OnOpen
     public void onOpen(
@@ -31,7 +37,7 @@ public class Server {
     }
 
     @OnMessage
-    public void onMessage(Session session)
+    public void onMessage(Session session, SegmentMessage msg)
             throws IOException {
 
 //        message.setFrom(users.get(session.getId()));

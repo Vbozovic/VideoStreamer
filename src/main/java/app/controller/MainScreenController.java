@@ -13,6 +13,7 @@ import app.service.Config;
 import app.threads.FaceIdentifierTask;
 import app.threads.WebcamScanner;
 import app.utils.Utils;
+import app.websocket.SegmentServer;
 import com.github.sarxos.webcam.Webcam;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -45,6 +46,8 @@ public class MainScreenController implements Initializable {
     private WebcamScanner scanner = null;
     public SplitPane beginScreen;
     public TreeView<GetPersonDto> contactTree;
+
+    private SegmentServer segmentWebSocket;
 
     private ExecutorService pool;
 
@@ -85,6 +88,8 @@ public class MainScreenController implements Initializable {
         }
     }
 
+
+
     public void train(ActionEvent actionEvent) {
         try {
             AzureService.trainGroup(Config.getInstance().group_id);
@@ -108,6 +113,8 @@ public class MainScreenController implements Initializable {
             this.pool = Executors.newCachedThreadPool();
             this.model = new MainScreenModel(this.contactTree);
             this.contactTree.setCellFactory(param -> new ContactTreeCellFactory());
+            this.segmentWebSocket = new SegmentServer();
+            this.segmentWebSocket.start();
         } catch (GetGroupException gge) {
             if (gge.statusCode == 404) {
                 //create new group
@@ -118,7 +125,7 @@ public class MainScreenController implements Initializable {
                     System.exit(-1);
                 }
             }
-        } catch (AzureException le) {
+        } catch (AzureException | DeploymentException le) {
             le.printStackTrace();
         }
 
@@ -128,7 +135,7 @@ public class MainScreenController implements Initializable {
     public void initiateCall(ActionEvent actionEvent) {
         String ip = this.ipAddrField.getText();
         try {
-            this.scanner = new WebcamScanner(new ImageSender(new URI(String.format("http://%s:8080/video",ip))), Webcam.getDefault());
+            this.scanner = new WebcamScanner(new ImageSender(new URI(String.format("ws://%s:8080/video",ip))), Webcam.getDefault());
         } catch (IOException | DeploymentException | URISyntaxException e) {
             e.printStackTrace();
         }
