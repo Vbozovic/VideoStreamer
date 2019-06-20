@@ -9,8 +9,8 @@ import java.util.concurrent.CopyOnWriteArraySet;
 import javax.websocket.server.ServerEndpoint;
 
 @ServerEndpoint(value = "/video",
-        decoders = VideoSegnemtDecoder.class,
-        encoders = VideoSegmentEncoder.class)
+        decoders = {VideoSegnemtDecoder.class},
+        encoders = {VideoSegmentEncoder.class})
 public class SegmentEndpoint {
 
     private Session session = null;
