@@ -27,9 +27,8 @@ public class SegmentEndpoint {
     }
 
     @OnMessage
-    public String onMessage(SegmentMessage msg,Session session){
+    public void onMessage(SegmentMessage msg,Session session){
         System.out.println("Got segment "+msg.length);
-        return "";
     }
 
     @OnClose
