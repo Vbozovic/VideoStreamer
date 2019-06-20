@@ -14,7 +14,6 @@ import javax.websocket.server.ServerEndpoint;
 public class SegmentEndpoint {
 
     private Session session = null;
-    private static Set<SegmentEndpoint> chatEndpoints = new CopyOnWriteArraySet<>();
 
     public SegmentEndpoint(){
         System.out.println("SegmentEndpoint started");
@@ -24,21 +23,18 @@ public class SegmentEndpoint {
     public void onOpen(Session session) throws IOException {
         System.out.println("Connection opened "+session.getRequestURI());
         this.session = session;
-        chatEndpoints.add(this);
 
     }
 
     @OnMessage
-    public void onMessage(Session session, SegmentMessage msg)
-            throws IOException {
-        System.out.println("Got segment");
-
+    public String onMessage(SegmentMessage msg,Session session){
+        System.out.println("Got segment "+msg.length);
+        return "";
     }
 
     @OnClose
     public void onClose(Session session) throws IOException {
         System.out.println("Connection closed");
-        chatEndpoints.remove(this);
 //        Message message = new Message();
 //        message.setFrom(users.get(session.getId()));
 //        message.setContent("Disconnected!");

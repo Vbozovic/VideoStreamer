@@ -1,8 +1,10 @@
 package app.image;
 
+import app.websocket.SegmentEndpoint;
 import app.websocket.VideoSegmentEncoder;
 import app.websocket.message.SegmentMessage;
 import org.apache.commons.codec.binary.Base64;
+import org.glassfish.tyrus.client.ClientManager;
 import org.jcodec.api.awt.AWTSequenceEncoder;
 import org.jcodec.common.io.NIOUtils;
 import org.jcodec.common.model.Rational;
