@@ -43,6 +43,8 @@ public class SegmentEndpoint {
     @OnError
     public void onError(Session session, Throwable throwable) {
         // Do error handling here
+        System.out.println("Error decoding ");
+        throwable.printStackTrace();
     }
 
 
