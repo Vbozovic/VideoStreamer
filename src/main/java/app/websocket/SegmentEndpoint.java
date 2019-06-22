@@ -2,9 +2,12 @@ package app.websocket;
 
 import app.websocket.message.SegmentMessage;
 import com.google.gson.Gson;
+import org.apache.commons.codec.binary.Base64;
 
 import javax.websocket.*;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 import javax.websocket.server.ServerEndpoint;
@@ -13,6 +16,7 @@ import javax.websocket.server.ServerEndpoint;
 public class SegmentEndpoint {
 
     private Session session = null;
+    private static int file = 0;
 
     public SegmentEndpoint(){
         System.out.println("SegmentEndpoint started");
@@ -26,11 +30,11 @@ public class SegmentEndpoint {
     }
 
     @OnMessage
-    public void onMessage(String segmentMessage,Session session){
+    public void onMessage(String segmentMessage,Session session) throws IOException {
         Gson g = new Gson();
         SegmentMessage msg = g.fromJson(segmentMessage,SegmentMessage.class);
-        System.out.println("Got segment "+msg.length);
-
+        System.out.println("Got segment "+msg.video.length() + "reported length "+msg.length);
+        Files.write(Paths.get("tmp"+file+".mp4"), Base64.decodeBase64(msg.video));
     }
 
     @OnClose
