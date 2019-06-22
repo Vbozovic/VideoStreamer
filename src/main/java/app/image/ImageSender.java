@@ -1,26 +1,18 @@
 package app.image;
 
-import app.websocket.SegmentEndpoint;
-import app.websocket.VideoSegmentEncoder;
 import app.websocket.message.SegmentMessage;
+import com.google.gson.Gson;
 import org.apache.commons.codec.binary.Base64;
-import org.glassfish.tyrus.client.ClientManager;
 import org.jcodec.api.awt.AWTSequenceEncoder;
 import org.jcodec.common.io.NIOUtils;
 import org.jcodec.common.model.Rational;
 
 import javax.websocket.*;
 import java.awt.image.BufferedImage;
-import java.io.DataOutputStream;
-import java.io.File;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.net.URI;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 
-@ClientEndpoint(encoders = VideoSegmentEncoder.class)
+@ClientEndpoint
 public class ImageSender implements ImageHandler {
 
     private static long segLength = 500; //milisekunde
@@ -60,7 +52,7 @@ public class ImageSender implements ImageHandler {
                 byte[] video = channel.getContents();
 
                 //Send the segment through WebSocket
-                sendSegment(new SegmentMessage(currentFrames,video.length,video));
+                sendSegment(new SegmentMessage(currentFrames,video.length,Base64.encodeBase64String(video)));
 
                 NIOUtils.closeQuietly(this.channel);
                 this.channel = new SeekableInMemoryByteChannel();
@@ -92,8 +84,10 @@ public class ImageSender implements ImageHandler {
 
     private void sendSegment(SegmentMessage videoSegment){
         try {
-            this.userSession.getBasicRemote().sendObject(videoSegment);
-        } catch (IOException | EncodeException e) {
+            Gson g = new Gson();
+            String json = g.toJson(videoSegment);
+            this.userSession.getBasicRemote().sendText(json);
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

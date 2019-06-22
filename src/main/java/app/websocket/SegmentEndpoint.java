@@ -1,6 +1,7 @@
 package app.websocket;
 
 import app.websocket.message.SegmentMessage;
+import com.google.gson.Gson;
 
 import javax.websocket.*;
 import java.io.IOException;
@@ -8,9 +9,7 @@ import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 import javax.websocket.server.ServerEndpoint;
 
-@ServerEndpoint(value = "/video",
-        decoders = {VideoSegnemtDecoder.class},
-        encoders = {VideoSegmentEncoder.class})
+@ServerEndpoint(value = "/video")
 public class SegmentEndpoint {
 
     private Session session = null;
@@ -27,8 +26,11 @@ public class SegmentEndpoint {
     }
 
     @OnMessage
-    public void onMessage(SegmentMessage msg,Session session){
+    public void onMessage(String segmentMessage,Session session){
+        Gson g = new Gson();
+        SegmentMessage msg = g.fromJson(segmentMessage,SegmentMessage.class);
         System.out.println("Got segment "+msg.length);
+
     }
 
     @OnClose
