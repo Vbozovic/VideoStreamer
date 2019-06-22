@@ -99,6 +99,10 @@ public class ImageSender implements ImageHandler {
         String json = g.toJson(videoSegment);
         this.userSession.getBasicRemote().sendText(json);
     }
+    @OnMessage
+    public void onMessage(String incomingSegment){
+        System.out.println("Other segment");
+    }
 
     @OnOpen
     public void onOpen(Session userSession) {
