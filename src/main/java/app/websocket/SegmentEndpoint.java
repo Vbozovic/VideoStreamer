@@ -1,6 +1,11 @@
 package app.websocket;
 
+import app.controller.MainScreenController;
+import app.image.ImageSender;
+import app.model.MainScreenModel;
+import app.threads.WebcamScanner;
 import app.websocket.message.SegmentMessage;
+import com.github.sarxos.webcam.Webcam;
 import com.google.gson.Gson;
 import org.apache.commons.codec.binary.Base64;
 
@@ -26,15 +31,17 @@ public class SegmentEndpoint {
     public void onOpen(Session session) throws IOException {
         System.out.println("Connection opened "+session.getRequestURI());
         this.session = session;
-
+        //open a ws connection towards the sender
+        System.out.println("Starting ");
+        MainScreenController.pool.submit(new WebcamScanner(new ImageSender(this.session), Webcam.getDefault()));
     }
 
     @OnMessage
     public void onMessage(String segmentMessage,Session session) throws IOException {
         Gson g = new Gson();
         SegmentMessage msg = g.fromJson(segmentMessage,SegmentMessage.class);
-        System.out.println("Got segment "+msg.video.length() + "reported length "+msg.length);
-        Files.write(Paths.get("tmp"+file+".mp4"), Base64.decodeBase64(msg.video));
+        System.out.println("Got segment");
+//        Files.write(Paths.get("tmp"+file+".mp4"), Base64.decodeBase64(msg.video));
     }
 
     @OnClose

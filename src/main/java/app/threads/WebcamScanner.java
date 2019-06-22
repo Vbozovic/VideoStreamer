@@ -25,7 +25,9 @@ public class WebcamScanner implements Runnable{
         while(running){
             synchronized (cam){
                 try {
-                    out.sendImage(img);
+                    if (!out.sendImage(img)){
+                        break;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     this.stop();

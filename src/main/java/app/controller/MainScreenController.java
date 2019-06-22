@@ -37,7 +37,6 @@ import java.util.concurrent.Executors;
 
 public class MainScreenController implements Initializable {
 
-    public static String database = "resources/contacts.ser";
     public Button callButton;
     public TextField ipAddrField;
     public ImageView chatImageView;
@@ -49,7 +48,7 @@ public class MainScreenController implements Initializable {
 
     private SegmentServer segmentWebSocket;
 
-    private ExecutorService pool;
+    public static ExecutorService pool = Executors.newCachedThreadPool();
 
     public void displayAdContact(ActionEvent actionEvent) {
         try {
@@ -110,7 +109,6 @@ public class MainScreenController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         try {
-            this.pool = Executors.newCachedThreadPool();
             this.model = new MainScreenModel(this.contactTree);
             this.contactTree.setCellFactory(param -> new ContactTreeCellFactory());
             this.segmentWebSocket = new SegmentServer();
@@ -136,7 +134,7 @@ public class MainScreenController implements Initializable {
         String ip = this.ipAddrField.getText();
         try {
             this.scanner = new WebcamScanner(new ImageSender(new URI(String.format("ws://%s:8025/websocket/video",ip))), Webcam.getDefault());
-            this.pool.submit(scanner);
+            pool.submit(scanner);
         } catch (IOException | DeploymentException | URISyntaxException e) {
             e.printStackTrace();
         }

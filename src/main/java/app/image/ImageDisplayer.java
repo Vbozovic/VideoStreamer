@@ -14,10 +14,11 @@ public class ImageDisplayer implements ImageHandler {
     }
 
     @Override
-    public void sendImage(BufferedImage img) {
+    public boolean sendImage(BufferedImage img) {
         synchronized (toDisplay){
             toDisplay.setImage(SwingFXUtils.toFXImage(img,null));
         }
+        return true;
     }
 
     @Override

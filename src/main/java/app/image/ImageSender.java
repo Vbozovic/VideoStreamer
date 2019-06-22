@@ -24,35 +24,46 @@ public class ImageSender implements ImageHandler {
     private int currentFrames = 0;
     private SeekableInMemoryByteChannel channel;
     private boolean started = false;
+    private boolean running;
 
-    public ImageSender(URI address) throws IOException, DeploymentException {
-        System.out.println("Web socket on "+address.toString());
-        WebSocketContainer container = ContainerProvider.getWebSocketContainer();
-        container.connectToServer(this,address);
+    public ImageSender() throws IOException {
         this.channel = new SeekableInMemoryByteChannel();
         this.encoder = new AWTSequenceEncoder(this.channel, Rational.R(15, 1));
+        this.running = true;
+    }
+
+    public ImageSender(URI address) throws IOException, DeploymentException {
+        this();
+        System.out.println("Web socket on " + address.toString());
+        WebSocketContainer container = ContainerProvider.getWebSocketContainer();
+        container.connectToServer(this, address);
+    }
+
+    public ImageSender(Session session) throws IOException {
+        this();
+        this.userSession = session;
     }
 
     @Override
-    public void sendImage(BufferedImage img) {
-        if(!started){
+    public boolean sendImage(BufferedImage img) {
+        if (!started) {
             this.last = System.currentTimeMillis();
             started = true;
         }
 
         long current = System.currentTimeMillis();
 
-        try{
+        try {
             if (current - last >= time) {
                 encoder.encodeImage(img);
                 this.currentFrames++;
                 encoder.finish();
-                System.out.println("Sending video frames "+currentFrames);
+                System.out.println("Sending video frames " + currentFrames);
                 last = current;
                 byte[] video = channel.getContents();
 
                 //Send the segment through WebSocket
-                sendSegment(new SegmentMessage(currentFrames,video.length,Base64.encodeBase64String(video)));
+                sendSegment(new SegmentMessage(currentFrames, video.length, Base64.encodeBase64String(video)));
 
                 NIOUtils.closeQuietly(this.channel);
                 this.channel = new SeekableInMemoryByteChannel();
@@ -65,12 +76,13 @@ public class ImageSender implements ImageHandler {
                 this.currentFrames++;
                 encoder.encodeImage(img);
             }
-        }catch(IOException e){
+        } catch (IOException e) {
             System.err.println("Image sender error ");
             e.printStackTrace();
+            this.running = false;
         }
 
-
+        return running;
     }
 
     @Override
@@ -82,14 +94,10 @@ public class ImageSender implements ImageHandler {
         }
     }
 
-    private void sendSegment(SegmentMessage videoSegment){
-        try {
-            Gson g = new Gson();
-            String json = g.toJson(videoSegment);
-            this.userSession.getBasicRemote().sendText(json);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private void sendSegment(SegmentMessage videoSegment) throws IOException {
+        Gson g = new Gson();
+        String json = g.toJson(videoSegment);
+        this.userSession.getBasicRemote().sendText(json);
     }
 
     @OnOpen
@@ -102,12 +110,13 @@ public class ImageSender implements ImageHandler {
      * Callback hook for Connection close events.
      *
      * @param userSession the userSession which is getting closed.
-     * @param reason the reason for connection close
+     * @param reason      the reason for connection close
      */
     @OnClose
     public void onClose(Session userSession, CloseReason reason) {
         System.out.println("closing websocket");
         this.userSession = null;
+        this.running = false;
     }
 
     @OnError

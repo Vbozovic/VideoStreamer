@@ -4,6 +4,6 @@ import java.awt.image.BufferedImage;
 
 public interface ImageHandler {
 
-    void sendImage(BufferedImage img);
+    boolean sendImage(BufferedImage img);
     void stop();
 }
