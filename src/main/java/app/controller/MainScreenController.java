@@ -42,12 +42,13 @@ public class MainScreenController implements Initializable {
     public ImageView chatImageView;
 
     private MainScreenModel model;
-    private WebcamScanner scanner = null;
+    public WebcamScanner scanner = null;
     public SplitPane beginScreen;
     public TreeView<GetPersonDto> contactTree;
 
     private SegmentServer segmentWebSocket;
 
+    public static MainScreenController mainScreen = null;
     public static ExecutorService pool = Executors.newCachedThreadPool();
 
     public void displayAdContact(ActionEvent actionEvent) {
@@ -109,6 +110,7 @@ public class MainScreenController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         try {
+            mainScreen = this;
             this.model = new MainScreenModel(this.contactTree);
             this.contactTree.setCellFactory(param -> new ContactTreeCellFactory());
             this.segmentWebSocket = new SegmentServer();
@@ -154,6 +156,8 @@ public class MainScreenController implements Initializable {
             if(this.scanner != null){
                 this.scanner.stop();
                 this.scanner = null;
+            }else{
+                System.err.println("Scanner not set");
             }
         });
 

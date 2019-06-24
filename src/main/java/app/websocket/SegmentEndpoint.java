@@ -33,7 +33,9 @@ public class SegmentEndpoint {
         this.session = session;
         //open a ws connection towards the sender
         System.out.println("Starting ");
-        MainScreenController.pool.submit(new WebcamScanner(new ImageSender(this.session), Webcam.getDefault()));
+        WebcamScanner sc = new WebcamScanner(new ImageSender(this.session), Webcam.getDefault());
+        MainScreenController.pool.submit(sc);
+        MainScreenController.mainScreen.scanner = sc;
     }
 
     @OnMessage
