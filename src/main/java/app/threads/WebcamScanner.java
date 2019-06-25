@@ -19,7 +19,8 @@ public class WebcamScanner implements Runnable{
     }
 
     public void run() {
-        cam.open();
+        System.out.println("Cam open "+cam.open());
+
         BufferedImage img = cam.getImage();
 
         while(running){
