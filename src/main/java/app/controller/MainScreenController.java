@@ -6,14 +6,17 @@ import app.error_handling.AzureException;
 import app.error_handling.CreateGroupException;
 import app.error_handling.GetGroupException;
 import app.gui.ContactTreeCellFactory;
+import app.image.ImageDisplayer;
 import app.image.ImageSender;
 import app.model.MainScreenModel;
 import app.service.AzureService;
 import app.service.Config;
 import app.threads.FaceIdentifierTask;
+import app.threads.VideoReciverTask;
 import app.threads.WebcamScanner;
 import app.utils.Utils;
 import app.websocket.SegmentServer;
+import app.websocket.message.SegmentMessage;
 import com.github.sarxos.webcam.Webcam;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -32,8 +35,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class MainScreenController implements Initializable {
 
@@ -170,4 +175,13 @@ public class MainScreenController implements Initializable {
 
         menu.show(this.chatImageView, contextMenuEvent.getScreenX(), contextMenuEvent.getScreenY());
     }
+
+    public BlockingQueue<SegmentMessage> startReceiver(){
+        BlockingQueue<SegmentMessage> toReturn = new LinkedBlockingQueue<>();
+        System.out.println("Start receiver");
+        VideoReciverTask vr = new VideoReciverTask(toReturn,new ImageDisplayer(this.chatImageView));
+        pool.submit(scanner);
+        return toReturn;
+    }
+
 }

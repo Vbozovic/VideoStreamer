@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Set;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CopyOnWriteArraySet;
 import javax.websocket.server.ServerEndpoint;
 
@@ -22,6 +23,7 @@ public class SegmentEndpoint {
 
     private Session session = null;
     private static int file = 0;
+    private BlockingQueue<SegmentMessage> send;
 
     public SegmentEndpoint(){
         System.out.println("SegmentEndpoint started");
@@ -36,14 +38,20 @@ public class SegmentEndpoint {
         WebcamScanner sc = new WebcamScanner(new ImageSender(this.session), Webcam.getDefault());
         MainScreenController.pool.submit(sc);
         MainScreenController.mainScreen.scanner = sc;
+        this.send = MainScreenController.mainScreen.startReceiver();
     }
 
     @OnMessage
-    public void onMessage(String segmentMessage,Session session) throws IOException {
+    public void onMessage(String segmentMessage,Session session) throws IOException, InterruptedException {
         Gson g = new Gson();
         SegmentMessage msg = g.fromJson(segmentMessage,SegmentMessage.class);
         System.out.println("Got segment");
 //        Files.write(Paths.get("tmp"+file+".mp4"), Base64.decodeBase64(msg.video));
+        if(send != null){
+            send.put(msg);
+        }else{
+            System.err.println("Msg null");
+        }
     }
 
     @OnClose

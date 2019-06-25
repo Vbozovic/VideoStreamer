@@ -2,33 +2,25 @@ package app.threads;
 
 import app.image.ImageHandler;
 import app.image.SeekableInMemoryByteChannel;
-import javafx.embed.swing.SwingFXUtils;
-import javafx.scene.image.ImageView;
+import app.websocket.message.SegmentMessage;
 import org.apache.commons.codec.binary.Base64;
 import org.jcodec.api.FrameGrab;
 import org.jcodec.api.JCodecException;
-import org.jcodec.api.specific.AVCMP4Adaptor;
-import org.jcodec.common.SeekableDemuxerTrack;
-import org.jcodec.common.io.NIOUtils;
 import org.jcodec.common.model.Picture;
-import org.jcodec.containers.mp4.demuxer.MP4Demuxer;
 import org.jcodec.scale.AWTUtil;
 
 import java.awt.image.BufferedImage;
-import java.io.DataInputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.util.concurrent.BlockingQueue;
 
 public class VideoReciverTask implements Runnable {
 
 
     private boolean running;
-    private DataInputStream in;
     private ImageHandler display;
+    private BlockingQueue<SegmentMessage> in;
 
-    public VideoReciverTask(DataInputStream in, ImageHandler display) {
+    public VideoReciverTask(BlockingQueue<SegmentMessage> in, ImageHandler display) {
         this();
         this.in = in;
         this.display = display;
@@ -43,17 +35,10 @@ public class VideoReciverTask implements Runnable {
         try {
 
             while (running) {
-                int length = this.in.readInt();
-                int frames = this.in.readInt();
-                System.out.println("Received video frames: " + frames + " length " + length);
-
-                String videoString = in.readUTF();
-                System.out.println("Stream read "+videoString.length());
-
-                byte[] video = Base64.decodeBase64(videoString);
-
+                SegmentMessage msg = this.in.take();
+                byte[] video = Base64.decodeBase64(msg.video);
                 FrameGrab fg = FrameGrab.createFrameGrab(new SeekableInMemoryByteChannel(video));
-                long timeout = (long) (1000 / frames);
+                long timeout = (long) (1000 / msg.frames);
                 long last = System.currentTimeMillis();
 
                 while (true) {
@@ -73,7 +58,6 @@ public class VideoReciverTask implements Runnable {
                 }
 
             }
-            in.close();
         } catch (IOException | JCodecException | InterruptedException e) {
             e.printStackTrace();
         }
