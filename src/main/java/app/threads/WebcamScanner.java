@@ -16,10 +16,10 @@ public class WebcamScanner implements Runnable{
         this.out = out;
         running = true;
         this.cam = cam;
+        this.cam.open();
     }
 
     public void run() {
-        System.out.println("Cam open "+cam.open());
 
         BufferedImage img = cam.getImage();
 
