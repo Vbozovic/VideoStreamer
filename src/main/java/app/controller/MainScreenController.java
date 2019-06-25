@@ -180,7 +180,7 @@ public class MainScreenController implements Initializable {
         BlockingQueue<SegmentMessage> toReturn = new LinkedBlockingQueue<>();
         System.out.println("Start receiver");
         VideoReciverTask vr = new VideoReciverTask(toReturn,new ImageDisplayer(this.chatImageView));
-        pool.submit(scanner);
+        pool.submit(vr);
         return toReturn;
     }
 
