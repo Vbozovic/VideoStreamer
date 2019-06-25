@@ -76,7 +76,7 @@ public class ImageSender implements ImageHandler {
                 this.currentFrames++;
                 encoder.encodeImage(img);
             }
-        } catch (IOException e) {
+        } catch (NullPointerException|IOException e) {
             System.err.println("Image sender error ");
             e.printStackTrace();
             this.running = false;
