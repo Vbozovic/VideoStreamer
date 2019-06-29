@@ -35,8 +35,8 @@ public class VideoReciverTask implements Runnable {
         try {
 
             while (running) {
-                System.out.println("Taken message");
                 SegmentMessage msg = this.in.take();
+                System.out.println("Taken message");
                 byte[] video = Base64.decodeBase64(msg.video);
                 FrameGrab fg = FrameGrab.createFrameGrab(new SeekableInMemoryByteChannel(video));
                 long timeout = (long) (1000 / msg.frames);

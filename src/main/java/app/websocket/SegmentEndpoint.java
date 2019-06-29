@@ -46,7 +46,6 @@ public class SegmentEndpoint {
         Gson g = new Gson();
         SegmentMessage msg = g.fromJson(segmentMessage,SegmentMessage.class);
         System.out.println("Got segment");
-//        Files.write(Paths.get("tmp"+file+".mp4"), Base64.decodeBase64(msg.video));
         if(send != null){
             send.put(msg);
         }else{
@@ -57,10 +56,6 @@ public class SegmentEndpoint {
     @OnClose
     public void onClose(Session session) throws IOException {
         System.out.println("Connection closed");
-//        Message message = new Message();
-//        message.setFrom(users.get(session.getId()));
-//        message.setContent("Disconnected!");
-//        broadcast(message);
     }
 
     @OnError
