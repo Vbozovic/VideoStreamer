@@ -23,7 +23,6 @@ public class SegmentEndpoint {
 
     private Session session = null;
     private int file;
-    private BlockingQueue<SegmentMessage> send;
 
     public SegmentEndpoint(){
         System.out.println("SegmentEndpoint started");
@@ -39,7 +38,6 @@ public class SegmentEndpoint {
         WebcamScanner sc = new WebcamScanner(new ImageSender(this.session), Webcam.getDefault());
         MainScreenController.pool.submit(sc);
         MainScreenController.mainScreen.scanner = sc;
-        this.send = MainScreenController.mainScreen.startReceiver();
     }
 
     @OnMessage

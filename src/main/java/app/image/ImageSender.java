@@ -29,7 +29,6 @@ public class ImageSender implements ImageHandler {
     private SeekableInMemoryByteChannel channel;
     private boolean started = false;
     private boolean running;
-    private BlockingQueue<SegmentMessage> in;
     private int file;
 
     public ImageSender() throws IOException {
@@ -37,7 +36,6 @@ public class ImageSender implements ImageHandler {
         this.encoder = new AWTSequenceEncoder(this.channel, Rational.R(15, 1));
         this.running = true;
         this.file = 0;
-        in = MainScreenController.mainScreen.startReceiver();
     }
 
     public ImageSender(URI address) throws IOException, DeploymentException {
@@ -69,7 +67,6 @@ public class ImageSender implements ImageHandler {
                 System.out.println("Sending video frames " + currentFrames);
                 last = current;
                 byte[] video = channel.getContents();
-
                 //Send the segment through WebSocket
                 sendSegment(new SegmentMessage(currentFrames, video.length, Base64.encodeBase64String(video)));
 
