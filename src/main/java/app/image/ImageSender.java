@@ -12,6 +12,8 @@ import javax.websocket.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.concurrent.BlockingQueue;
 
 @ClientEndpoint
@@ -28,11 +30,13 @@ public class ImageSender implements ImageHandler {
     private boolean started = false;
     private boolean running;
     private BlockingQueue<SegmentMessage> in;
+    private int file;
 
     public ImageSender() throws IOException {
         this.channel = new SeekableInMemoryByteChannel();
         this.encoder = new AWTSequenceEncoder(this.channel, Rational.R(15, 1));
         this.running = true;
+        this.file = 0;
         in = MainScreenController.mainScreen.startReceiver();
     }
 
@@ -80,7 +84,7 @@ public class ImageSender implements ImageHandler {
                 this.currentFrames++;
                 encoder.encodeImage(img);
             }
-        } catch (NullPointerException|IOException e) {
+        } catch (NullPointerException | IOException e) {
             System.err.println("Image sender error ");
             e.printStackTrace();
             this.running = false;
@@ -103,17 +107,16 @@ public class ImageSender implements ImageHandler {
         String json = g.toJson(videoSegment);
         this.userSession.getBasicRemote().sendText(json);
     }
+
     @OnMessage
-    public void onMessage(String incomingSegment) throws InterruptedException {
+    public void onMessage(String incomingSegment) throws InterruptedException, IOException {
         System.out.println("Other segment");
-        if (this.in != null){
-            Gson g = new Gson();
-            SegmentMessage msg = g.fromJson(incomingSegment,SegmentMessage.class);
-            this.in.put(msg);
-        }else{
-            System.err.println("Image sender Q null");
-        }
+        Gson g = new Gson();
+        SegmentMessage msg = g.fromJson(incomingSegment, SegmentMessage.class);
+        Files.write(Paths.get("resources/segment" + file + ".mp4"), Base64.decodeBase64(msg.video));
+        System.err.println("Image sender Q null");
     }
+
 
     @OnOpen
     public void onOpen(Session userSession) {

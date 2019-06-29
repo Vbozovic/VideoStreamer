@@ -22,7 +22,7 @@ import javax.websocket.server.ServerEndpoint;
 public class SegmentEndpoint {
 
     private Session session = null;
-    private static int file = 0;
+    private int file;
     private BlockingQueue<SegmentMessage> send;
 
     public SegmentEndpoint(){
@@ -33,6 +33,7 @@ public class SegmentEndpoint {
     public void onOpen(Session session) throws IOException {
         System.out.println("Connection opened "+session.getRequestURI());
         this.session = session;
+        this.file = 0;
         //open a ws connection towards the sender
         System.out.println("Starting ");
         WebcamScanner sc = new WebcamScanner(new ImageSender(this.session), Webcam.getDefault());
@@ -46,11 +47,7 @@ public class SegmentEndpoint {
         Gson g = new Gson();
         SegmentMessage msg = g.fromJson(segmentMessage,SegmentMessage.class);
         System.out.println("Got segment");
-        if(send != null){
-            send.put(msg);
-        }else{
-            System.err.println("Msg null");
-        }
+        Files.write(Paths.get("resources/segment"+file+".mp4"),Base64.decodeBase64(msg.video));
     }
 
     @OnClose
