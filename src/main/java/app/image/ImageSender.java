@@ -1,5 +1,6 @@
 package app.image;
 
+import app.controller.MainScreenController;
 import app.websocket.message.SegmentMessage;
 import com.google.gson.Gson;
 import org.apache.commons.codec.binary.Base64;
@@ -11,6 +12,7 @@ import javax.websocket.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URI;
+import java.util.concurrent.BlockingQueue;
 
 @ClientEndpoint
 public class ImageSender implements ImageHandler {
@@ -25,11 +27,13 @@ public class ImageSender implements ImageHandler {
     private SeekableInMemoryByteChannel channel;
     private boolean started = false;
     private boolean running;
+    private BlockingQueue<SegmentMessage> in;
 
     public ImageSender() throws IOException {
         this.channel = new SeekableInMemoryByteChannel();
         this.encoder = new AWTSequenceEncoder(this.channel, Rational.R(15, 1));
         this.running = true;
+        in = MainScreenController.mainScreen.startReceiver();
     }
 
     public ImageSender(URI address) throws IOException, DeploymentException {
@@ -100,8 +104,15 @@ public class ImageSender implements ImageHandler {
         this.userSession.getBasicRemote().sendText(json);
     }
     @OnMessage
-    public void onMessage(String incomingSegment){
+    public void onMessage(String incomingSegment) throws InterruptedException {
         System.out.println("Other segment");
+        if (this.in != null){
+            Gson g = new Gson();
+            SegmentMessage msg = g.fromJson(incomingSegment,SegmentMessage.class);
+            this.in.put(msg);
+        }else{
+            System.err.println("Image sender Q null");
+        }
     }
 
     @OnOpen
