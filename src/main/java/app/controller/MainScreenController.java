@@ -34,6 +34,8 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -85,7 +87,8 @@ public class MainScreenController implements Initializable {
         player.setOnEndOfMedia(()->{
             try {
                 initMediPlayer(sources);
-            } catch (InterruptedException e) {
+                Files.delete(Paths.get(src));
+            } catch (InterruptedException | IOException e) {
                 e.printStackTrace();
             }
         });
