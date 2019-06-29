@@ -48,7 +48,7 @@ public class SegmentEndpoint {
         SegmentMessage msg = g.fromJson(segmentMessage,SegmentMessage.class);
         String path = "resources/segment"+file++ +".mp4";
         Files.write(Paths.get(path),Base64.decodeBase64(msg.video));
-        this.sources.put(path);
+        this.sources.put(Paths.get(path).toUri().toString());
     }
 
     @OnClose

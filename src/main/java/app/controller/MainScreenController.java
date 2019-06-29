@@ -81,7 +81,6 @@ public class MainScreenController implements Initializable {
             System.out.println("Segment null");
             return;
         }
-        System.out.println("Play segment");
         MediaPlayer player = new MediaPlayer(new Media(src));
         player.setAutoPlay(true);
         player.setOnEndOfMedia(()->{
@@ -94,6 +93,7 @@ public class MainScreenController implements Initializable {
         });
         this.chatImageView.setMediaPlayer(player);
         player.play();
+        System.out.println("Play segment");
     }
 
     public void displayAddFace(ActionEvent actionEvent) {
