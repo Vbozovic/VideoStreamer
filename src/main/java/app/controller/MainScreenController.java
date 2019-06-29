@@ -86,8 +86,8 @@ public class MainScreenController implements Initializable {
         player.setOnEndOfMedia(()->{
             try {
                 initMediPlayer(sources);
-                Files.delete(Paths.get(src));
-            } catch (InterruptedException | IOException e) {
+                Files.delete(Paths.get(new URI(src)));
+            } catch (InterruptedException | IOException | URISyntaxException e) {
                 e.printStackTrace();
             }
         });
