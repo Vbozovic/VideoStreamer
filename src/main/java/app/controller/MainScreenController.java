@@ -204,7 +204,13 @@ public class MainScreenController implements Initializable {
 
     public BlockingQueue<String> startReceiver() throws InterruptedException {
         BlockingQueue<String> toReturn = new LinkedBlockingQueue<>();
-        initMediPlayer(toReturn);
+        pool.submit(()->{
+            try {
+                initMediPlayer(toReturn);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
         return toReturn;
     }
 
