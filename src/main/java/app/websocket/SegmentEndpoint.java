@@ -23,13 +23,14 @@ public class SegmentEndpoint {
 
     private Session session = null;
     private int file;
+    private BlockingQueue<String> sources;
 
     public SegmentEndpoint(){
         System.out.println("SegmentEndpoint started");
     }
 
     @OnOpen
-    public void onOpen(Session session) throws IOException {
+    public void onOpen(Session session) throws IOException, InterruptedException {
         System.out.println("Connection opened "+session.getRequestURI());
         this.session = session;
         this.file = 0;
@@ -38,14 +39,16 @@ public class SegmentEndpoint {
         WebcamScanner sc = new WebcamScanner(new ImageSender(this.session), Webcam.getDefault());
         MainScreenController.pool.submit(sc);
         MainScreenController.mainScreen.scanner = sc;
+        this.sources = MainScreenController.mainScreen.startReceiver();
     }
 
     @OnMessage
     public void onMessage(String segmentMessage,Session session) throws IOException, InterruptedException {
         Gson g = new Gson();
         SegmentMessage msg = g.fromJson(segmentMessage,SegmentMessage.class);
-        System.out.println("Got segment");
-        Files.write(Paths.get("resources/segment"+file++ +".mp4"),Base64.decodeBase64(msg.video));
+        String path = "resources/segment"+file++ +".mp4";
+        Files.write(Paths.get(path),Base64.decodeBase64(msg.video));
+        this.sources.put(path);
     }
 
     @OnClose

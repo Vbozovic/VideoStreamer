@@ -30,6 +30,7 @@ public class ImageSender implements ImageHandler {
     private boolean started = false;
     private boolean running;
     private int file;
+    private BlockingQueue<String> sources;
 
     public ImageSender() throws IOException {
         this.channel = new SeekableInMemoryByteChannel();
@@ -64,7 +65,6 @@ public class ImageSender implements ImageHandler {
                 encoder.encodeImage(img);
                 this.currentFrames++;
                 encoder.finish();
-                System.out.println("Sending video frames " + currentFrames);
                 last = current;
                 byte[] video = channel.getContents();
                 //Send the segment through WebSocket
@@ -77,7 +77,6 @@ public class ImageSender implements ImageHandler {
                 this.currentFrames = 0; //reset broj frejmova
             } else {
                 //baferuj sliku
-                System.out.print("!");
                 this.currentFrames++;
                 encoder.encodeImage(img);
             }
@@ -107,17 +106,19 @@ public class ImageSender implements ImageHandler {
 
     @OnMessage
     public void onMessage(String incomingSegment) throws InterruptedException, IOException {
-        System.out.println("Other segment");
         Gson g = new Gson();
         SegmentMessage msg = g.fromJson(incomingSegment, SegmentMessage.class);
-        Files.write(Paths.get("resources/segment" + file++ + ".mp4"), Base64.decodeBase64(msg.video));
+        String path = "resources/segment" + file++ + ".mp4";
+        Files.write(Paths.get(path), Base64.decodeBase64(msg.video));
+        this.sources.put(path);
     }
 
 
     @OnOpen
-    public void onOpen(Session userSession) {
+    public void onOpen(Session userSession) throws InterruptedException {
         System.out.println("opening websocket");
         this.userSession = userSession;
+        this.sources = MainScreenController.mainScreen.startReceiver();
     }
 
     /**

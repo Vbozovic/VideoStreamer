@@ -24,6 +24,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ContextMenuEvent;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
+import jdk.nashorn.internal.ir.Block;
 
 import javax.websocket.DeploymentException;
 import java.io.IOException;
@@ -44,7 +48,7 @@ public class MainScreenController implements Initializable {
 
     public Button callButton;
     public TextField ipAddrField;
-    public ImageView chatImageView;
+    public MediaView chatImageView;
 
     private MainScreenModel model;
     public WebcamScanner scanner = null;
@@ -64,6 +68,27 @@ public class MainScreenController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void initMediPlayer(BlockingQueue<String> sources) throws InterruptedException {
+        if(sources == null){
+            return;
+        }
+        String src = sources.take();
+        if (src == null){
+            return;
+        }
+        MediaPlayer player = new MediaPlayer(new Media(src));
+        player.setAutoPlay(true);
+
+        player.setOnEndOfMedia(()->{
+            try {
+                initMediPlayer(sources);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+        this.chatImageView.setMediaPlayer(player);
     }
 
     public void displayAddFace(ActionEvent actionEvent) {
@@ -147,7 +172,7 @@ public class MainScreenController implements Initializable {
         }
     }
 
-    public void displayChatoptions(ContextMenuEvent contextMenuEvent) {
+    public void displayChatOptions(ContextMenuEvent contextMenuEvent) {
         //Desni klik na sliku
         ContextMenu menu = new ContextMenu();
 
@@ -173,14 +198,12 @@ public class MainScreenController implements Initializable {
 //            this.pool.execute(new FaceIdentifierTask(this.model,img));
         });
 
-        menu.show(this.chatImageView, contextMenuEvent.getScreenX(), contextMenuEvent.getScreenY());
+        this.beginScreen.setContextMenu(menu);
     }
 
-    public BlockingQueue<SegmentMessage> startReceiver(){
-        BlockingQueue<SegmentMessage> toReturn = new LinkedBlockingQueue<>();
-        System.out.println("Start receiver");
-        VideoReciverTask vr = new VideoReciverTask(toReturn,new ImageDisplayer(this.chatImageView));
-        pool.submit(vr);
+    public BlockingQueue<String> startReceiver() throws InterruptedException {
+        BlockingQueue<String> toReturn = new LinkedBlockingQueue<>();
+        initMediPlayer(toReturn);
         return toReturn;
     }
 
