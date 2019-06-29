@@ -110,8 +110,7 @@ public class ImageSender implements ImageHandler {
         System.out.println("Other segment");
         Gson g = new Gson();
         SegmentMessage msg = g.fromJson(incomingSegment, SegmentMessage.class);
-        Files.write(Paths.get("resources/segment" + file + ".mp4"), Base64.decodeBase64(msg.video));
-        System.err.println("Image sender Q null");
+        Files.write(Paths.get("resources/segment" + file++ + ".mp4"), Base64.decodeBase64(msg.video));
     }
 
 

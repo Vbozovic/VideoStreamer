@@ -45,7 +45,7 @@ public class SegmentEndpoint {
         Gson g = new Gson();
         SegmentMessage msg = g.fromJson(segmentMessage,SegmentMessage.class);
         System.out.println("Got segment");
-        Files.write(Paths.get("resources/segment"+file+".mp4"),Base64.decodeBase64(msg.video));
+        Files.write(Paths.get("resources/segment"+file++ +".mp4"),Base64.decodeBase64(msg.video));
     }
 
     @OnClose
