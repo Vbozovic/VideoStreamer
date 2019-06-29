@@ -93,6 +93,7 @@ public class MainScreenController implements Initializable {
             }
         });
         this.chatImageView.setMediaPlayer(player);
+        player.play();
     }
 
     public void displayAddFace(ActionEvent actionEvent) {
