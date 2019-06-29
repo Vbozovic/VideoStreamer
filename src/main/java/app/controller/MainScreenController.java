@@ -76,11 +76,12 @@ public class MainScreenController implements Initializable {
         }
         String src = sources.take();
         if (src == null){
+            System.out.println("Segment null");
             return;
         }
+        System.out.println("Play segment");
         MediaPlayer player = new MediaPlayer(new Media(src));
         player.setAutoPlay(true);
-
         player.setOnEndOfMedia(()->{
             try {
                 initMediPlayer(sources);

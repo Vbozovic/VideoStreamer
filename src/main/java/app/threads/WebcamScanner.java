@@ -22,11 +22,10 @@ public class WebcamScanner implements Runnable{
     public void run() {
 
         BufferedImage img = cam.getImage();
-
+        System.out.println("Webcam scanner started");
         while(running){
             synchronized (cam){
                 try {
-
                     if (img!=null && !out.sendImage(img)){
                         break;
                     }
