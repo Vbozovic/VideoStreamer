@@ -14,6 +14,7 @@ import app.service.Config;
 import app.threads.FaceIdentifierTask;
 import app.threads.VideoReceiverTask;
 import app.threads.WebcamScanner;
+import app.utils.SegmentSpec;
 import app.utils.Utils;
 import app.websocket.SegmentServer;
 import app.websocket.message.SegmentMessage;
@@ -176,8 +177,8 @@ public class MainScreenController implements Initializable {
         menu.show(this.chatImageView, contextMenuEvent.getScreenX(), contextMenuEvent.getScreenY());
     }
 
-    public BlockingQueue<SegmentMessage> startReceiver(){
-        BlockingQueue<SegmentMessage> toReturn = new LinkedBlockingQueue<>();
+    public BlockingQueue<SegmentSpec> startReceiver(){
+        BlockingQueue<SegmentSpec> toReturn = new LinkedBlockingQueue<>();
         System.out.println("Start receiver");
         VideoReceiverTask vr = new VideoReceiverTask(toReturn,new ImageDisplayer(this.chatImageView));
         pool.submit(vr);

@@ -4,6 +4,7 @@ import app.controller.MainScreenController;
 import app.image.ImageSender;
 import app.model.MainScreenModel;
 import app.threads.WebcamScanner;
+import app.utils.SegmentSpec;
 import app.websocket.message.SegmentMessage;
 import com.github.sarxos.webcam.Webcam;
 import com.google.gson.Gson;
@@ -21,7 +22,7 @@ import javax.websocket.server.ServerEndpoint;
 @ServerEndpoint(value = "/video")
 public class SegmentEndpoint {
 
-    private BlockingQueue<SegmentMessage> msgBuffer;
+    private BlockingQueue<SegmentSpec> msgBuffer;
     private Session session = null;
     private int file;
 
@@ -48,9 +49,10 @@ public class SegmentEndpoint {
         Gson g = new Gson();
         SegmentMessage msg = g.fromJson(segmentMessage,SegmentMessage.class);
         System.out.println("Got segment");
-        Files.write(Paths.get("resources/segment"+file++ +".mp4"),Base64.decodeBase64(msg.video));
+        String path = "resources/segment"+file++ +".mp4";
+        Files.write(Paths.get(path),Base64.decodeBase64(msg.video));
         if(this.msgBuffer != null){
-            this.msgBuffer.put(msg);
+            this.msgBuffer.put(new SegmentSpec(msg.frames,path));
         }else{
             System.err.println("msgBuffer null");
         }

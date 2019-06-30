@@ -1,6 +1,7 @@
 package app.image;
 
 import app.controller.MainScreenController;
+import app.utils.SegmentSpec;
 import app.websocket.message.SegmentMessage;
 import com.google.gson.Gson;
 import org.apache.commons.codec.binary.Base64;
@@ -29,7 +30,7 @@ public class ImageSender implements ImageHandler {
     private boolean running;
     private int file;
     private ArrayList<BufferedImage> imageBuffer;
-    private BlockingQueue<SegmentMessage> segmentBuffer;
+    private BlockingQueue<SegmentSpec> segmentBuffer;
 
     public ImageSender() throws IOException {
         this.running = true;
@@ -119,9 +120,10 @@ public class ImageSender implements ImageHandler {
         System.out.println("Other segment");
         Gson g = new Gson();
         SegmentMessage msg = g.fromJson(incomingSegment, SegmentMessage.class);
-        Files.write(Paths.get("resources/segment" + file++ + ".mp4"), Base64.decodeBase64(msg.video));
+        String path = "resources/segment" + file++ + ".mp4";
+        Files.write(Paths.get(path), Base64.decodeBase64(msg.video));
         if (this.segmentBuffer != null){
-            this.segmentBuffer.put(msg);
+            this.segmentBuffer.put(new SegmentSpec(msg.frames,path));
         }else{
             System.err.println("segmentBuffer null");
         }

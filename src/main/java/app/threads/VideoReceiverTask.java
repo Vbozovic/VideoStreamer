@@ -2,15 +2,20 @@ package app.threads;
 
 import app.image.ImageHandler;
 import app.image.SeekableInMemoryByteChannel;
+import app.utils.SegmentSpec;
 import app.websocket.message.SegmentMessage;
 import org.apache.commons.codec.binary.Base64;
 import org.jcodec.api.FrameGrab;
 import org.jcodec.api.JCodecException;
+import org.jcodec.common.io.NIOUtils;
 import org.jcodec.common.model.Picture;
 import org.jcodec.scale.AWTUtil;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.concurrent.BlockingQueue;
 
 public class VideoReceiverTask implements Runnable {
@@ -18,9 +23,9 @@ public class VideoReceiverTask implements Runnable {
 
     private boolean running;
     private ImageHandler display;
-    private BlockingQueue<SegmentMessage> in;
+    private BlockingQueue<SegmentSpec> in;
 
-    public VideoReceiverTask(BlockingQueue<SegmentMessage> in, ImageHandler display) {
+    public VideoReceiverTask(BlockingQueue<SegmentSpec> in, ImageHandler display) {
         this();
         this.in = in;
         this.display = display;
@@ -35,11 +40,12 @@ public class VideoReceiverTask implements Runnable {
         try {
 
             while (running) {
-                SegmentMessage msg = this.in.take();
+                SegmentSpec segment = this.in.take();
+
                 System.out.println("Taken message");
-                byte[] video = Base64.decodeBase64(msg.video);
-                FrameGrab fg = FrameGrab.createFrameGrab(new SeekableInMemoryByteChannel(video));
-                long timeout = (long) (1000 / msg.frames);
+                FrameGrab fg = FrameGrab.createFrameGrab(NIOUtils.readableChannel(new File(segment.file)));
+
+                long timeout = (long) (1000 / segment.frames);
                 long last = System.currentTimeMillis();
 
                 while (true) {
