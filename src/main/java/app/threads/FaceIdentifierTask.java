@@ -30,6 +30,13 @@ public class FaceIdentifierTask implements Runnable {
         try {
             FaceDetectDto[] faces = AzureService.detectFaces(imageWithFaces);
             List<String> ids = Arrays.stream(faces).map(FaceDetectDto::getFaceId).collect(Collectors.toList());
+            if (ids.isEmpty()){
+                Alert al = new Alert(Alert.AlertType.INFORMATION);
+                al.setTitle("Faces");
+                al.setContentText("No face detected");
+                al.showAndWait();
+                return;
+            }
             IdentifyFaceDto[] persons = AzureService.identifyFace(Config.getInstance().group_id,ids.toArray(new String[ids.size()]));
 
             Arrays.stream(persons).map(pdto->pdto.candidates).forEach(cand->{

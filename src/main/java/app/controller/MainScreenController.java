@@ -172,8 +172,9 @@ public class MainScreenController implements Initializable {
         idFace.setOnAction(value -> {
             //Identifikovanje lica
             BufferedImage img = SwingFXUtils.fromFXImage(this.chatImageView.getImage(),null);
-//            Platform.runLater(new FaceIdentifierTask(this.model,null));
-            this.pool.execute(new FaceIdentifierTask(this.model,img));
+            System.out.println(img);
+            Platform.runLater(new FaceIdentifierTask(this.model,img));
+//            this.pool.execute(new FaceIdentifierTask(this.model,img));
         });
 
         menu.show(this.chatImageView, contextMenuEvent.getScreenX(), contextMenuEvent.getScreenY());
