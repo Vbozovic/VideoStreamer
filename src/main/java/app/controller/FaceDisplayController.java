@@ -28,8 +28,8 @@ public class FaceDisplayController {
         try {
             BufferedImage face = SwingFXUtils.fromFXImage(smalFacePane.getImage(),null);
             PersistedFaceDto dto = AzureService.addFaceToPerson(face,person.personId, Config.getInstance().group_id);
-            ImageIO.write(face,"png",new File(Config.getInstance().faces_folder+"\\"+dto.persistedFaceId+".png"));
-        } catch (AzureException | IOException e) {
+            //ImageIO.write(face,"png",new File(Config.getInstance().faces_folder+"\\"+dto.persistedFaceId+".png"));
+        } catch (AzureException e) {
             e.printStackTrace();
         }
         st.close();

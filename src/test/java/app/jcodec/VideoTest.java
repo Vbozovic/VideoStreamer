@@ -19,9 +19,10 @@ public class VideoTest {
 
     @Test
     public void readVideoTest() throws IOException, JCodecException {
-        int frameCount = 10;
+        int frameCount = 8;
 
-        FrameGrab grab = FrameGrab.createFrameGrab(new SeekableInMemoryByteChannel(Files.readAllBytes(Paths.get("resources\\tmp1.mp4"))));
+//        FrameGrab grab = FrameGrab.createFrameGrab(new SeekableInMemoryByteChannel(Files.readAllBytes(Paths.get("resources\\segment0.mp4"))));
+        FrameGrab grab = FrameGrab.createFrameGrab(NIOUtils.readableChannel(new File("resources\\segment0.mp4")));
 
         for (int i=0;i<frameCount;i++) {
             Picture picture = grab.getNativeFrame();
