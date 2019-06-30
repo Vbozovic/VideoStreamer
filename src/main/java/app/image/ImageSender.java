@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import org.apache.commons.codec.binary.Base64;
 import org.jcodec.api.awt.AWTSequenceEncoder;
 import org.jcodec.common.io.NIOUtils;
+import org.jcodec.common.io.SeekableByteChannel;
 import org.jcodec.common.model.Rational;
 
 import javax.websocket.*;
@@ -14,6 +15,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 
 @ClientEndpoint
@@ -22,20 +24,18 @@ public class ImageSender implements ImageHandler {
     private static long segLength = 500; //milisekunde
     private Session userSession = null;
 
-    private AWTSequenceEncoder encoder;
-    private long time = 500;
     private long last;
     private int currentFrames = 0;
-    private SeekableInMemoryByteChannel channel;
     private boolean started = false;
     private boolean running;
     private int file;
+    private ArrayList<BufferedImage> imageBuffer;
+
 
     public ImageSender() throws IOException {
-        this.channel = new SeekableInMemoryByteChannel();
-        this.encoder = new AWTSequenceEncoder(this.channel, Rational.R(15, 1));
         this.running = true;
         this.file = 0;
+        imageBuffer = new ArrayList<>();
     }
 
     public ImageSender(URI address) throws IOException, DeploymentException {
@@ -60,26 +60,18 @@ public class ImageSender implements ImageHandler {
         long current = System.currentTimeMillis();
 
         try {
-            if (current - last >= time) {
-                encoder.encodeImage(img);
+            if (current - last >= segLength) {
+                imageBuffer.add(img);
                 this.currentFrames++;
-                encoder.finish();
                 System.out.println("Sending video frames " + currentFrames);
                 last = current;
-                byte[] video = channel.getContents();
                 //Send the segment through WebSocket
-                sendSegment(new SegmentMessage(currentFrames, video.length, Base64.encodeBase64String(video)));
-
-                NIOUtils.closeQuietly(this.channel);
-                this.channel = new SeekableInMemoryByteChannel();
-                this.encoder = new AWTSequenceEncoder(this.channel, Rational.R((int) currentFrames, 1));
-
+                sendSegment(generateSegment());
                 this.currentFrames = 0; //reset broj frejmova
             } else {
                 //baferuj sliku
-                System.out.print("!");
                 this.currentFrames++;
-                encoder.encodeImage(img);
+                imageBuffer.add(img);
             }
         } catch (NullPointerException | IOException e) {
             System.err.println("Image sender error ");
@@ -90,10 +82,30 @@ public class ImageSender implements ImageHandler {
         return running;
     }
 
+    private SegmentMessage generateSegment(){
+        SeekableInMemoryByteChannel channel = new SeekableInMemoryByteChannel();
+
+        try {
+            AWTSequenceEncoder encoder = new AWTSequenceEncoder(channel,Rational.R(this.currentFrames,1));
+            for (BufferedImage img:this.imageBuffer) {
+                encoder.encodeImage(img);
+            }
+            encoder.finish();
+            SegmentMessage msg = new SegmentMessage(this.currentFrames,(int)channel.size(),Base64.encodeBase64String(channel.getContents()));
+            this.currentFrames = 0; //reset frame count
+            NIOUtils.closeQuietly(channel);
+            return msg;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     @Override
     public void stop() {
         try {
             userSession.close();
+            this.running = false;
         } catch (IOException e) {
             e.printStackTrace();
         }
