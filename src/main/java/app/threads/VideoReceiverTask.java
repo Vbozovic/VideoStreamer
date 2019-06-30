@@ -49,7 +49,7 @@ public class VideoReceiverTask implements Runnable {
                 long last = System.currentTimeMillis();
 
                 while (true) {
-                    if (last - System.currentTimeMillis() >= timeout) {
+                    if (System.currentTimeMillis() - last >= timeout) {
                         //display picutre
                         Picture pic = fg.getNativeFrame();
                         if (pic == null) {
