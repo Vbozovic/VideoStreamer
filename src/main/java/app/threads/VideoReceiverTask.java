@@ -81,6 +81,8 @@ public class VideoReceiverTask implements Runnable {
             e.printStackTrace();
         }
 
+        System.out.println("Stop receiver");
+
     }
 
     public void stop() {

@@ -7,7 +7,6 @@ import com.google.gson.Gson;
 import org.apache.commons.codec.binary.Base64;
 import org.jcodec.api.awt.AWTSequenceEncoder;
 import org.jcodec.common.io.NIOUtils;
-import org.jcodec.common.io.SeekableByteChannel;
 import org.jcodec.common.model.Rational;
 
 import javax.websocket.*;

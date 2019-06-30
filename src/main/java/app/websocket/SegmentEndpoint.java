@@ -26,34 +26,32 @@ public class SegmentEndpoint {
     private Session session = null;
     private int file;
 
-    public SegmentEndpoint(){
+    public SegmentEndpoint() {
         System.out.println("SegmentEndpoint started");
     }
 
     @OnOpen
     public void onOpen(Session session) throws IOException {
-        System.out.println("Connection opened "+session.getRequestURI());
+        System.out.println("Connection opened " + session.getRequestURI());
         this.session = session;
         this.file = 0;
         //open a ws connection towards the sender
         System.out.println("Starting ");
         //Start image sending
-        WebcamScanner sc = new WebcamScanner(new ImageSender(this.session), Webcam.getDefault());
-        MainScreenController.pool.submit(sc);
-        MainScreenController.mainScreen.scanner = sc;
+        MainScreenController.mainScreen.startScanner(new WebcamScanner(new ImageSender(this.session), Webcam.getDefault()));
         this.msgBuffer = MainScreenController.mainScreen.startReceiver();
     }
 
     @OnMessage
-    public void onMessage(String segmentMessage,Session session) throws IOException, InterruptedException {
+    public void onMessage(String segmentMessage, Session session) throws IOException, InterruptedException {
         Gson g = new Gson();
-        SegmentMessage msg = g.fromJson(segmentMessage,SegmentMessage.class);
+        SegmentMessage msg = g.fromJson(segmentMessage, SegmentMessage.class);
         System.out.println("Got segment");
-        String path = "resources/segment"+file++ +".mp4";
-        Files.write(Paths.get(path),Base64.decodeBase64(msg.video));
-        if(this.msgBuffer != null){
-            this.msgBuffer.put(new SegmentSpec(msg.frames,path));
-        }else{
+        String path = "resources/segment" + file++ + ".mp4";
+        Files.write(Paths.get(path), Base64.decodeBase64(msg.video));
+        if (this.msgBuffer != null) {
+            this.msgBuffer.put(new SegmentSpec(msg.frames, path));
+        } else {
             System.err.println("msgBuffer null");
         }
     }
@@ -61,6 +59,7 @@ public class SegmentEndpoint {
     @OnClose
     public void onClose(Session session) throws IOException {
         System.out.println("Connection closed");
+        MainScreenController.mainScreen.stopChat();
     }
 
     @OnError

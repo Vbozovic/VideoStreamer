@@ -51,6 +51,7 @@ public class MainScreenController implements Initializable {
 
     private MainScreenModel model;
     public WebcamScanner scanner = null;
+    public VideoReceiverTask receiver = null;
     public SplitPane beginScreen;
     public TreeView<GetPersonDto> contactTree;
 
@@ -162,8 +163,7 @@ public class MainScreenController implements Initializable {
         endCall.setOnAction(value -> {
             //Zavrsavanje poziva
             if(this.scanner != null){
-                this.scanner.stop();
-                this.scanner = null;
+                stopChat();
             }else{
                 System.err.println("Scanner not set");
             }
@@ -184,8 +184,21 @@ public class MainScreenController implements Initializable {
         BlockingQueue<SegmentSpec> toReturn = new LinkedBlockingQueue<>();
         System.out.println("Start receiver");
         VideoReceiverTask vr = new VideoReceiverTask(toReturn,new ImageDisplayer(this.chatImageView));
+        this.receiver = vr;
         pool.submit(vr);
         return toReturn;
+    }
+
+    public void startScanner(WebcamScanner sc){
+        this.scanner = sc;
+        pool.submit(sc);
+    }
+
+    public void stopChat(){
+        this.receiver.stop();
+        this.scanner.stop();
+        this.receiver = null;
+        this.scanner = null;
     }
 
 }
