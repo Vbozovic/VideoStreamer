@@ -1,6 +1,7 @@
 package app.threads;
 
 import app.image.ImageHandler;
+import app.image.ImageSender;
 import app.image.SeekableInMemoryByteChannel;
 import app.utils.SegmentSpec;
 import app.websocket.message.SegmentMessage;
@@ -52,7 +53,7 @@ public class VideoReceiverTask implements Runnable {
                 System.out.println("Taken message");
                 FrameGrab fg = FrameGrab.createFrameGrab(NIOUtils.readableChannel(new File(segment.file)));
 
-                long timeout = (long) (1000 / segment.frames);
+                long timeout = (long) (ImageSender.segLength / segment.frames);
                 long last = System.currentTimeMillis();
 
                 while (true) {

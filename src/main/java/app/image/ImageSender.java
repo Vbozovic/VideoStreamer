@@ -22,7 +22,7 @@ import java.util.concurrent.BlockingQueue;
 @ClientEndpoint
 public class ImageSender implements ImageHandler {
 
-    private static long segLength = 500; //milisekunde
+    public static long segLength = 500; //milisekunde
     private Session userSession = null;
 
     private long last;
