@@ -20,6 +20,7 @@ import app.websocket.SegmentServer;
 import app.websocket.message.SegmentMessage;
 import com.github.sarxos.webcam.Webcam;
 import javafx.application.Platform;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -27,6 +28,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.ContextMenuEvent;
 
 import javax.websocket.DeploymentException;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -169,9 +171,9 @@ public class MainScreenController implements Initializable {
 
         idFace.setOnAction(value -> {
             //Identifikovanje lica
-//            BufferedImage img = this.callServer.getCamImg();
-            Platform.runLater(new FaceIdentifierTask(this.model,null));
-//            this.pool.execute(new FaceIdentifierTask(this.model,img));
+            BufferedImage img = SwingFXUtils.fromFXImage(this.chatImageView.getImage(),null);
+//            Platform.runLater(new FaceIdentifierTask(this.model,null));
+            this.pool.execute(new FaceIdentifierTask(this.model,img));
         });
 
         menu.show(this.chatImageView, contextMenuEvent.getScreenX(), contextMenuEvent.getScreenY());
