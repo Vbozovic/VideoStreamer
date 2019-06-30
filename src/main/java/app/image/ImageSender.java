@@ -84,7 +84,7 @@ public class ImageSender implements ImageHandler {
 
         try {
             AWTSequenceEncoder encoder = new AWTSequenceEncoder(channel,Rational.R(this.imageBuffer.size(),1));
-            System.out.println("images "+this.segmentBuffer.size());
+            System.out.println("images "+this.imageBuffer.size());
             for (BufferedImage img:this.imageBuffer) {
                 encoder.encodeImage(img);
             }
