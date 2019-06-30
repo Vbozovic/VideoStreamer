@@ -30,7 +30,7 @@ public class ImageSender implements ImageHandler {
     private boolean running;
     private int file;
     private ArrayList<BufferedImage> imageBuffer;
-
+    private BlockingQueue<SegmentMessage> segmentBuffer;
 
     public ImageSender() throws IOException {
         this.running = true;
@@ -123,6 +123,11 @@ public class ImageSender implements ImageHandler {
         Gson g = new Gson();
         SegmentMessage msg = g.fromJson(incomingSegment, SegmentMessage.class);
         Files.write(Paths.get("resources/segment" + file++ + ".mp4"), Base64.decodeBase64(msg.video));
+        if (this.segmentBuffer != null){
+            this.segmentBuffer.put(msg);
+        }else{
+            System.err.println("segmentBuffer null");
+        }
     }
 
 
@@ -130,6 +135,7 @@ public class ImageSender implements ImageHandler {
     public void onOpen(Session userSession) {
         System.out.println("opening websocket");
         this.userSession = userSession;
+        this.segmentBuffer = MainScreenController.mainScreen.startReceiver();
     }
 
     /**

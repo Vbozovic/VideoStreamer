@@ -21,6 +21,7 @@ import javax.websocket.server.ServerEndpoint;
 @ServerEndpoint(value = "/video")
 public class SegmentEndpoint {
 
+    private BlockingQueue<SegmentMessage> msgBuffer;
     private Session session = null;
     private int file;
 
@@ -35,9 +36,11 @@ public class SegmentEndpoint {
         this.file = 0;
         //open a ws connection towards the sender
         System.out.println("Starting ");
+        //Start image sending
         WebcamScanner sc = new WebcamScanner(new ImageSender(this.session), Webcam.getDefault());
         MainScreenController.pool.submit(sc);
         MainScreenController.mainScreen.scanner = sc;
+        this.msgBuffer = MainScreenController.mainScreen.startReceiver();
     }
 
     @OnMessage
@@ -46,6 +49,11 @@ public class SegmentEndpoint {
         SegmentMessage msg = g.fromJson(segmentMessage,SegmentMessage.class);
         System.out.println("Got segment");
         Files.write(Paths.get("resources/segment"+file++ +".mp4"),Base64.decodeBase64(msg.video));
+        if(this.msgBuffer != null){
+            this.msgBuffer.put(msg);
+        }else{
+            System.err.println("msgBuffer null");
+        }
     }
 
     @OnClose

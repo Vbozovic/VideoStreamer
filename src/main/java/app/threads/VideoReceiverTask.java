@@ -13,20 +13,20 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.concurrent.BlockingQueue;
 
-public class VideoReciverTask implements Runnable {
+public class VideoReceiverTask implements Runnable {
 
 
     private boolean running;
     private ImageHandler display;
     private BlockingQueue<SegmentMessage> in;
 
-    public VideoReciverTask(BlockingQueue<SegmentMessage> in, ImageHandler display) {
+    public VideoReceiverTask(BlockingQueue<SegmentMessage> in, ImageHandler display) {
         this();
         this.in = in;
         this.display = display;
     }
 
-    public VideoReciverTask() {
+    public VideoReceiverTask() {
         this.running = true;
     }
 

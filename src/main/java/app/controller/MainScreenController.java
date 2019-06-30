@@ -12,7 +12,7 @@ import app.model.MainScreenModel;
 import app.service.AzureService;
 import app.service.Config;
 import app.threads.FaceIdentifierTask;
-import app.threads.VideoReciverTask;
+import app.threads.VideoReceiverTask;
 import app.threads.WebcamScanner;
 import app.utils.Utils;
 import app.websocket.SegmentServer;
@@ -179,7 +179,7 @@ public class MainScreenController implements Initializable {
     public BlockingQueue<SegmentMessage> startReceiver(){
         BlockingQueue<SegmentMessage> toReturn = new LinkedBlockingQueue<>();
         System.out.println("Start receiver");
-        VideoReciverTask vr = new VideoReciverTask(toReturn,new ImageDisplayer(this.chatImageView));
+        VideoReceiverTask vr = new VideoReceiverTask(toReturn,new ImageDisplayer(this.chatImageView));
         pool.submit(vr);
         return toReturn;
     }
