@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 
 public class VideoReceiverTask implements Runnable {
@@ -40,7 +41,13 @@ public class VideoReceiverTask implements Runnable {
         try {
 
             while (running) {
-                SegmentSpec segment = this.in.take();
+                if (this.in.isEmpty()){
+                    continue;
+                }
+                ArrayList<SegmentSpec> segments = new ArrayList<>();
+
+                this.in.drainTo(segments);
+                SegmentSpec segment = segments.get(segments.size()-1);
 
                 System.out.println("Taken message");
                 FrameGrab fg = FrameGrab.createFrameGrab(NIOUtils.readableChannel(new File(segment.file)));
@@ -51,6 +58,7 @@ public class VideoReceiverTask implements Runnable {
                 while (true) {
                     if (System.currentTimeMillis() - last >= timeout) {
                         //display picutre
+                        System.out.println("Display receiver");
                         Picture pic = fg.getNativeFrame();
                         if (pic == null) {
                             break;
