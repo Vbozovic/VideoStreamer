@@ -8,6 +8,7 @@ import app.websocket.message.SegmentMessage;
 import org.apache.commons.codec.binary.Base64;
 import org.jcodec.api.FrameGrab;
 import org.jcodec.api.JCodecException;
+import org.jcodec.common.io.FileChannelWrapper;
 import org.jcodec.common.io.NIOUtils;
 import org.jcodec.common.model.Picture;
 import org.jcodec.scale.AWTUtil;
@@ -50,8 +51,8 @@ public class VideoReceiverTask implements Runnable {
                 this.in.drainTo(segments);
                 SegmentSpec segment = segments.get(segments.size()-1);
 
-                System.out.println("Taken message");
-                FrameGrab fg = FrameGrab.createFrameGrab(NIOUtils.readableChannel(new File(segment.file)));
+                FileChannelWrapper wrap = NIOUtils.readableChannel(new File(segment.file));
+                FrameGrab fg = FrameGrab.createFrameGrab(wrap);
 
                 long timeout = (long) (ImageSender.segLength / segment.frames);
                 long last = System.currentTimeMillis();
@@ -59,12 +60,10 @@ public class VideoReceiverTask implements Runnable {
                 while (true) {
                     if (System.currentTimeMillis() - last >= timeout) {
                         //display picutre
-                        System.out.println("Display receiver");
                         Picture pic = fg.getNativeFrame();
                         if (pic == null) {
                             break;
                         }
-                        System.out.print(".");
                         BufferedImage frame = AWTUtil.toBufferedImage(pic);
                         this.display.sendImage(frame);
                         last = System.currentTimeMillis();
@@ -73,6 +72,10 @@ public class VideoReceiverTask implements Runnable {
                     }
                 }
 
+                wrap.close();
+                for (SegmentSpec seg: segments){
+                    Files.delete(Paths.get(seg.file));
+                }
             }
         } catch (IOException | JCodecException | InterruptedException e) {
             e.printStackTrace();
