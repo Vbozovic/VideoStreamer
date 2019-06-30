@@ -25,7 +25,6 @@ public class ImageSender implements ImageHandler {
     private Session userSession = null;
 
     private long last;
-    private int currentFrames = 0;
     private boolean started = false;
     private boolean running;
     private int file;
@@ -62,15 +61,13 @@ public class ImageSender implements ImageHandler {
         try {
             if (current - last >= segLength) {
                 imageBuffer.add(img);
-                this.currentFrames++;
-                System.out.println("Sending video frames " + currentFrames);
+                System.out.println("Sending video frames " + this.imageBuffer.size());
                 last = current;
                 //Send the segment through WebSocket
                 sendSegment(generateSegment());
-                this.currentFrames = 0; //reset broj frejmova
+                this.imageBuffer = new ArrayList<>();
             } else {
                 //baferuj sliku
-                this.currentFrames++;
                 imageBuffer.add(img);
             }
         } catch (NullPointerException | IOException e) {
@@ -86,13 +83,13 @@ public class ImageSender implements ImageHandler {
         SeekableInMemoryByteChannel channel = new SeekableInMemoryByteChannel();
 
         try {
-            AWTSequenceEncoder encoder = new AWTSequenceEncoder(channel,Rational.R(this.currentFrames,1));
+            AWTSequenceEncoder encoder = new AWTSequenceEncoder(channel,Rational.R(this.imageBuffer.size(),1));
+            System.out.println("images "+this.segmentBuffer.size());
             for (BufferedImage img:this.imageBuffer) {
                 encoder.encodeImage(img);
             }
             encoder.finish();
-            SegmentMessage msg = new SegmentMessage(this.currentFrames,(int)channel.size(),Base64.encodeBase64String(channel.getContents()));
-            this.currentFrames = 0; //reset frame count
+            SegmentMessage msg = new SegmentMessage(this.imageBuffer.size(),(int)channel.size(),Base64.encodeBase64String(channel.getContents()));
             NIOUtils.closeQuietly(channel);
             return msg;
         } catch (IOException e) {
