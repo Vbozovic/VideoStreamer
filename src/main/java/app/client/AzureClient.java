@@ -4,7 +4,6 @@ import app.error_handling.AzureException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.*;
-import org.asynchttpclient.RequestBuilder;
 
 import java.io.IOException;
 import java.util.Map;
@@ -14,10 +13,6 @@ public class AzureClient{
     private static String key = "d5db1512976c43668db4882691200a45";
     private static String endpoint = "https://westeurope.api.cognitive.microsoft.com/face/v1.0";
 
-    private RequestBuilder setupAuthentication(RequestBuilder request){
-        request.setHeader("Ocp-Apim-Subscription-Key",key);
-        return request;
-    }
 
     public static <P,T> T delete(String route, Map<String,String> params,P dto,Class<T> ctype) throws AzureException {
         OkHttpClient client = new OkHttpClient();
