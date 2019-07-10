@@ -91,4 +91,17 @@ public class Utils {
         return root;
     }
 
+    public static <Controller,R> R getWindowResult(String urlPath,ReturnLambda<Controller,R> setup) throws IOException {
+        URI uri = new File(urlPath).toURI();
+        FXMLLoader loader = new FXMLLoader(uri.toURL());
+        Parent root = loader.load();
+
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+
+        Controller cont = loader.<Controller>getController();
+        stage.showAndWait();
+        return setup.getRes(cont);
+    }
+
 }

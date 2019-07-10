@@ -128,11 +128,11 @@ public class MainScreenController implements Initializable {
             if (gge.statusCode == 404) {
                 //create new group
                 try {
-                    AzureService.createGroup("Vuk contacts", "Custom data", Config.getInstance().group_id);
+                    AzureService.createGroup("name", "", Config.getInstance().group_id);
                 } catch (CreateGroupException e1) {
                     e1.printStackTrace();
-                    System.exit(-1);
                 }
+                initialize(location,resources);
             }
         } catch (AzureException | DeploymentException le) {
             le.printStackTrace();
