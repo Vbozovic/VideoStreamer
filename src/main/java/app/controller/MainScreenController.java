@@ -62,7 +62,7 @@ public class MainScreenController implements Initializable {
 
     public void displayAdContact(ActionEvent actionEvent) {
         try {
-            Utils.loadAndWaitWindow("src/main/resources/AddContactWindow.fxml", 400, 300, (AddContactController controller) -> {
+            Utils.loadAndWaitWindow("src/main/resources/AddContactWindow.fxml", (AddContactController controller) -> {
                 controller.model = this.model;
             });
         } catch (IOException e) {

@@ -48,7 +48,7 @@ public class ContactTreeCellFactory extends TreeCell<GetPersonDto> {
 
                 GetPersonDto person = getTreeView().getSelectionModel().getSelectedItems().get(0).getValue();
 
-                Utils.loadAndWaitWindow("src/main/resources/AddFaceDialog.fxml",500,350,(FaceDialogController controller)->{
+                Utils.loadAndWaitWindow("src/main/resources/AddFaceDialog.fxml",(FaceDialogController controller)->{
                     controller.personToParse = person;
                     try {
                         BufferedImage bufferedImage;
@@ -91,7 +91,7 @@ public class ContactTreeCellFactory extends TreeCell<GetPersonDto> {
 
         addFaceFromCameraMenuItem.setOnAction(event -> {
             try {
-                Utils.loadAndWaitWindow("src/main/resources/WebcamDisplay.fxml",500,400,(WebcamDisplayDontroller controller)->{
+                Utils.loadAndWaitWindow("src/main/resources/WebcamDisplay.fxml",(WebcamDisplayDontroller controller)->{
                     controller.person = getTreeView().getSelectionModel().getSelectedItems().get(0).getValue();
                     controller.executor = Executors.newSingleThreadExecutor();
                     Webcam cam = Webcam.getDefault();

@@ -54,13 +54,13 @@ public class Utils {
         return img;
     }
 
-    public static <Controller> void loadAndWaitWindow(String urlPath,int width,int height,Lambda<Controller> setup) throws IOException {
+    public static <Controller> void loadAndWaitWindow(String urlPath,Lambda<Controller> setup) throws IOException {
         URI uri = new File(urlPath).toURI();
         FXMLLoader loader = new FXMLLoader(uri.toURL());
         Parent root = loader.load();
 
         Stage stage = new Stage();
-        stage.setScene(new Scene(root,width,height));
+        stage.setScene(new Scene(root));
 
         Controller cont = loader.<Controller>getController();
         setup.lambda(cont);

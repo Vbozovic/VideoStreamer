@@ -12,13 +12,6 @@ public class WebcamScanner implements Runnable{
     private ImageHandler out;
     private Webcam cam;
 
-    public WebcamScanner(ImageHandler out,Webcam cam) {
-        this.out = out;
-        running = true;
-        this.cam = cam;
-        this.cam.open();
-    }
-
     public void run() {
 
         BufferedImage img = cam.getImage();
@@ -36,11 +29,15 @@ public class WebcamScanner implements Runnable{
             }
             img = cam.getImage();
         }
-        System.out.println("Scanner stopped");
         cam.close();
         out.stop();
     }
-
+    public WebcamScanner(ImageHandler out,Webcam cam) {
+        this.out = out;
+        running = true;
+        this.cam = cam;
+        this.cam.open();
+    }
     public void stop(){
         this.running = false;
     }

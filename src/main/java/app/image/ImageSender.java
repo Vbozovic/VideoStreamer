@@ -75,7 +75,6 @@ public class ImageSender implements ImageHandler {
             e.printStackTrace();
             this.running = false;
         }
-
         return running;
     }
 

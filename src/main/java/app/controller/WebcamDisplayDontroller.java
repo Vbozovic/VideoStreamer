@@ -28,7 +28,7 @@ public class WebcamDisplayDontroller{
         final Image image = SwingFXUtils.toFXImage(img, null);
 
         try {
-            Utils.loadAndWaitWindow("src/main/resources/AddFaceDialog.fxml",500,350,(FaceDialogController controller)->{
+            Utils.loadAndWaitWindow("src/main/resources/AddFaceDialog.fxml",(FaceDialogController controller)->{
                 controller.personToParse = person;
                 BufferedImage bufferedImage;
                 controller.imageWithFaces = image;
